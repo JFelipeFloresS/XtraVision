@@ -16,6 +16,11 @@ public class XtraVision {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        gerarDatabase();
+    }
+    
+    public static void gerarDatabase() {
+        System.out.println("teste");
     }
     
 }
