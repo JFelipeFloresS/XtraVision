@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package model.order;
 
 /**
  *
  * @author José Felipe Flores da Silva
  */
-public class Customer {
+public class Order {
+    
     
 }

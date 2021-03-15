@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package model.machine;
 
 /**
  *
  * @author José Felipe Flores da Silva
  */
-public class Frame {
+public class Machine {
     
 }
