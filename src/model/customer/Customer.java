@@ -6,7 +6,7 @@
 package model.customer;
 
 import java.util.ArrayList;
-import model.DBConnection.Connection;
+import model.DBConnection.DBConnection;
 
 /**
  *
@@ -18,7 +18,7 @@ public class Customer {
     private String email;
     private ArrayList<String> creditCards;
     private int moviesRented;
-    private Connection connection;
+    private DBConnection connection;
     //private Loyalty loyalty;
 
     public Customer(int id, String email, int moviesRented) {
@@ -26,7 +26,7 @@ public class Customer {
         this.email = email;
         this.creditCards = new ArrayList<>();
         this.moviesRented = moviesRented;
-        this.connection = new Connection();    
+        this.connection = new DBConnection();    
     }
 
     public Customer(int id) {

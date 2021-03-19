@@ -8,24 +8,28 @@ package model.DBConnection;
 import controller.Controller;
 import java.util.ArrayList;
 import model.movie.Movie;
+import java.sql.Connection;
 
 /**
  *
  * @author José Felipe Flores da Silva
  */
-public class Connection {
+public class DBConnection {
     
-    private final String dbServer, dbUser, dbPass;
+    private String dbServer, dbUser, dbPass;
     private Controller controller;
+    private java.sql.Connection conn;
     
-    public Connection (Controller controller) {
+    public DBConnection (Controller controller) {
         this.controller = controller;
-        this.dbServer = "jdbc:mysql://apontejaj.com:3306/Felipe_2019405?useSSL=false";
-        this.dbUser = "Felipe_2019405";
-        this.dbPass = "2019405";
+        setUpCredentials();
     }
 
-    public Connection() {
+    public DBConnection() {
+        setUpCredentials();
+    }
+    
+    private void setUpCredentials() {
         this.dbServer = "jdbc:mysql://apontejaj.com:3306/Felipe_2019405?useSSL=false";
         this.dbUser = "Felipe_2019405";
         this.dbPass = "2019405";
@@ -48,5 +52,6 @@ public class Connection {
     public ArrayList<Movie> getMachineCurrentMovies(int id) {
         return new ArrayList<>();
     }
+    
     
 }
