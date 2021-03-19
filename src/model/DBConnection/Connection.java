@@ -35,7 +35,7 @@ public class Connection {
      * @param id
      * @return 
      */
-    public static ArrayList<String> getCustomerCreditCards(int id) {
+    public ArrayList<String> getCustomerCreditCards(int id) {
         return new ArrayList<>();
     }
     
