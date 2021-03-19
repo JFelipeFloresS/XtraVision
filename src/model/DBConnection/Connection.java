@@ -24,10 +24,10 @@ public class Connection {
         this.dbPass = "2019405";
     }
 
-    public Connection(String dbServer, String dbUser, String dbPass) {
-        this.dbServer = dbServer;
-        this.dbUser = dbUser;
-        this.dbPass = dbPass;
+    public Connection() {
+        this.dbServer = "jdbc:mysql://apontejaj.com:3306/Felipe_2019405?useSSL=false";
+        this.dbUser = "Felipe_2019405";
+        this.dbPass = "2019405";
     }
     
     /**
