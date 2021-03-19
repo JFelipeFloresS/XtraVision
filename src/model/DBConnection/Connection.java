@@ -7,6 +7,7 @@ package model.DBConnection;
 
 import controller.Controller;
 import java.util.ArrayList;
+import model.movie.Movie;
 
 /**
  *
@@ -36,6 +37,15 @@ public class Connection {
      * @return 
      */
     public ArrayList<String> getCustomerCreditCards(int id) {
+        return new ArrayList<>();
+    }
+    
+    /**
+     * Sort out database first!!!!!
+     * @param id
+     * @return 
+     */
+    public ArrayList<Movie> getMachineCurrentMovies(int id) {
         return new ArrayList<>();
     }
     
