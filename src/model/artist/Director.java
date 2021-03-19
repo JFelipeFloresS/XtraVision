@@ -9,6 +9,10 @@ package model.artist;
  *
  * @author thyag
  */
-public class Director {
+public class Director extends Artist {
+    
+    public Director(String name) {
+        super(name);
+    }
     
 }
