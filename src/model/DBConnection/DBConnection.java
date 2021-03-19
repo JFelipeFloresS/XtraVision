@@ -18,7 +18,7 @@ public class DBConnection {
     
     private String dbServer, dbUser, dbPass;
     private Controller controller;
-    private java.sql.Connection conn;
+    private Connection conn;
     
     public DBConnection (Controller controller) {
         this.controller = controller;
