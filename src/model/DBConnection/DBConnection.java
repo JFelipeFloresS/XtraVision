@@ -5,6 +5,7 @@
  */
 package model.DBConnection;
 
+import DataCreation.HardCoded;
 import controller.Controller;
 import java.util.ArrayList;
 import model.movie.Movie;
@@ -50,7 +51,8 @@ public class DBConnection {
      * @return 
      */
     public ArrayList<Movie> getMachineCurrentMovies(int id) {
-        return new ArrayList<>();
+        HardCoded hc = new HardCoded();
+        return hc.getMovies();
     }
     
     
