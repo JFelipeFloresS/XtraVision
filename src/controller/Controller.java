@@ -21,7 +21,7 @@ public class Controller implements ActionListener {
     
     public Controller() {
         this.conn = new DBConnection();
-        this.frame = new Frame();
+        this.frame = new Frame(this);
     }
     
     @Override
