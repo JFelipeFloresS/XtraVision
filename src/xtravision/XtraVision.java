@@ -5,6 +5,8 @@
  */
 package xtravision;
 
+import controller.Controller;
+
 /**
  *
  * @author José Felipe Flores da Silva
@@ -16,7 +18,7 @@ public class XtraVision {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-       
+     new Controller();  
     }
     
 }

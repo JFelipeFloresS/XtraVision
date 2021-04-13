@@ -7,8 +7,10 @@ package view.frame;
 
 import controller.Controller;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import view.screens.HomeScreen;
 
 /**
  *
@@ -22,13 +24,23 @@ public class Frame extends JFrame {
     public Frame (Controller controller) {
         this.controller = controller;
         setUpWindow();
-        changePanel(new JPanel());
+        changePanel(new HomeScreen(this.controller));
     }
     
     /**
      * Window settings, such as size, visible and close default operations
      */
     private void setUpWindow() {
+        
+        this.setVisible(true);
+        this.windowSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setSize(this.windowSize);
+        this.setResizable(false);
+        this.setTitle("XtraVision");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+      ///  this.setUndecorated(true);
+        
         
     }
     
@@ -37,6 +49,16 @@ public class Frame extends JFrame {
      * @param panel New panel to be added
      */
     private void changePanel(JPanel panel) {
+        
+        this.getContentPane().removeAll();
+        this.add(panel);
+        this.validate();
+        this.repaint();
+        
+        
+        
+        
+        
         
     }
 }

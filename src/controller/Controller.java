@@ -7,7 +7,9 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import model.DBConnection.DBConnection;
+import model.movie.Movie;
 import view.frame.Frame;
 
 /**
@@ -32,5 +34,19 @@ public class Controller implements ActionListener {
                 break;
         }
     }
+
+    public ArrayList < Movie > getMachineCurrentMovies(){
+        
+       return this.conn.getMachineCurrentMovies(0);
+        /// vamos pegar numero da maquina em uso
+        
+        
+        
+    }
+    
+    
+    
+    
+    
     
 }
