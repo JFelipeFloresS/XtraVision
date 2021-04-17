@@ -47,7 +47,7 @@ public class Controller implements ActionListener {
     
     public Dimension getWindowsSize(){
         
-       return this.frame.getSize();
+       return this.frame.getsize();
                
         
     }
