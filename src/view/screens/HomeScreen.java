@@ -7,6 +7,7 @@ package view.screens;
 
 import controller.Controller;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -43,6 +44,8 @@ public class HomeScreen extends JPanel{
        
        changeButtons(center);
        
+       rent.setActionCommand("Go to rent home screem");
+       returnButton.setActionCommand("Go to return home screem");
        
        
        
@@ -57,8 +60,9 @@ public class HomeScreen extends JPanel{
                Dimension windowSize = Toolkit.getDefaultToolkit().getScreenSize();
                 c.setPreferredSize (new Dimension(windowSize.width /4 , windowSize.height /3));
                 
+                ((JButton) c).addActionListener(this.controller);
                 
-                
+                c.setBackground(Color.CYAN);
             }
  
             

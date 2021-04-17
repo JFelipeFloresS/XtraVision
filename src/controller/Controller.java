@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import model.DBConnection.DBConnection;
 import model.movie.Movie;
 import view.frame.Frame;
+import view.screens.RentHomescreens;
+import view.screens.ReturnHomeScreem;
 
 /**
  *
@@ -30,6 +32,15 @@ public class Controller implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
+            case "Go to rent home screem":
+                this.frame.changePanel(new RentHomescreens(this));
+                break;
+            
+            case "Go to return home screem":
+                this.frame.changePanel(new ReturnHomeScreem(this));
+                
+                break;
+            
             default:
                 System.out.println(e.getActionCommand());
                 break;
@@ -45,12 +56,7 @@ public class Controller implements ActionListener {
         
     }
     
-    public Dimension getWindowsSize(){
-        
-       return this.frame.getsize();
-               
-        
-    }
+
     
     
     

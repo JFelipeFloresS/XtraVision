@@ -48,7 +48,7 @@ public class Frame extends JFrame {
      * Removes old panel from the frame's content pane, adds the new one, repaints and validates
      * @param panel New panel to be added
      */
-    private void changePanel(JPanel panel) {
+    public void changePanel(JPanel panel) {
         
         this.getContentPane().removeAll();
         this.add(panel);
