@@ -61,4 +61,13 @@ public class Frame extends JFrame {
         
         
     }
+    
+    public Dimension getsize(){ 
+        return this.windowSize;
+        
+        
+    }
+    
+    
+    
 }

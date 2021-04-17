@@ -7,8 +7,11 @@ package view.screens;
 
 import controller.Controller;
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import model.movie.Movie;
@@ -24,22 +27,61 @@ public class HomeScreen extends JPanel{
     public HomeScreen(Controller controller) {
         
         this.controller = controller;
-        this.setLayout(new GridLayout(2,3));
-        ArrayList < Movie > movies = this.controller.getMachineCurrentMovies();
-        for(Movie movie:movies){
-            JPanel p = new JPanel();
-            this.add(p);
-            p.setLayout(new BorderLayout());
-            JLabel title = new JLabel(movie.getTitle());
-            p.add(title,BorderLayout.CENTER);
-            System.out.println(movie.getTitle());
+        this.setLayout(new BorderLayout());
+        
+        JPanel north = new JPanel();
+        this.add(north,BorderLayout.NORTH);
+        
+       JPanel center = new JPanel();
+       this.add(center,BorderLayout.CENTER);
+     
+       JButton rent = new JButton("Rent");
+       center.add (rent);
+       JButton returnButton = new JButton("Return");
+       center.add (returnButton);
+       
+       changeButtons(center);
+       
+       
+       
+       
+      }
+     
+    
+    private void changeButtons(JPanel panel){
+        
+        Component [] components = panel.getComponents();
+        for(Component c: components){
+            if (c instanceof JButton) {
+                c.setPreferredSize(new Dimension(this.controller.getWindowsSize()));
+                
+                
+                
+            }
+ 
+            
+            
+            
+            
         }
         
+        
+        
+        
+        
+        
+    }
+   
+    
+    
+    
+    
+    
+    
     }
     
     
     
     
     
-    
-}
+ 
