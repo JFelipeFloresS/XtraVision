@@ -10,6 +10,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -53,7 +54,8 @@ public class HomeScreen extends JPanel{
         Component [] components = panel.getComponents();
         for(Component c: components){
             if (c instanceof JButton) {
-                c.setPreferredSize(new Dimension(this.controller.getWindowsSize()));
+               Dimension windowSize = Toolkit.getDefaultToolkit().getScreenSize();
+                c.setPreferredSize (new Dimension(windowSize.width /4 , windowSize.height /3));
                 
                 
                 
