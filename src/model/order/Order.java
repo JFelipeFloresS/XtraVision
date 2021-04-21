@@ -5,11 +5,51 @@
  */
 package model.order;
 
+import java.sql.Timestamp;
+
 /**
  *
  * @author José Felipe Flores da Silva
  */
 public class Order {
+    private final int rentID, customerID, machineID;
+    private final String discID, status;
+    private final Timestamp rentDate;
+
+    public Order(int rentID, int customerID, int machineID, String discID, String status, Timestamp rentDate) {
+        this.rentID = rentID;
+        this.customerID = customerID;
+        this.machineID = machineID;
+        this.discID = discID;
+        this.status = status;
+        this.rentDate = rentDate;
+    }
+
+    public int getRentID() {
+        return rentID;
+    }
+
+    public int getCustomerID() {
+        return customerID;
+    }
+
+    public int getMachineID() {
+        return machineID;
+    }
+
+    public String getDiscID() {
+        return discID;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Timestamp getRentDate() {
+        return rentDate;
+    }
+    
+    
     
     
 }
