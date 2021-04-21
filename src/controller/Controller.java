@@ -8,6 +8,7 @@ package controller;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import model.DBConnection.DBConnection;
 import model.movie.Movie;
@@ -47,7 +48,7 @@ public class Controller implements ActionListener {
         }
     }
 
-    public ArrayList < Movie > getMachineCurrentMovies(){
+    public ArrayList < Movie > getMachineCurrentMovies() throws IOException{
         
        return this.conn.getMachineCurrentMovies(1);
         /// vamos pegar numero da maquina em uso
