@@ -42,14 +42,14 @@ public class Controller implements ActionListener {
                 break;
             
             default:
-                System.out.println(e.getActionCommand());
+                //System.out.println(e.getActionCommand());
                 break;
         }
     }
 
     public ArrayList < Movie > getMachineCurrentMovies(){
         
-       return this.conn.getMachineCurrentMovies(0);
+       return this.conn.getMachineCurrentMovies(1);
         /// vamos pegar numero da maquina em uso
         
         

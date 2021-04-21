@@ -9,6 +9,7 @@ import controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import model.movie.Movie;
@@ -24,15 +25,17 @@ public class RentHomescreens extends JPanel {
     public RentHomescreens(Controller controller) {
         this.controller = controller;
     
-        this.setLayout(new GridLayout(2, 3));
         ArrayList< Movie> movies = this.controller.getMachineCurrentMovies();
+        //this.setLayout(new GridLayout(movies.size() / 8, movies.size() / 8));
         for (Movie movie : movies) {
             JPanel p = new JPanel();
             this.add(p);
             p.setLayout(new BorderLayout());
             JLabel title = new JLabel(movie.getTitle());
             p.add(title, BorderLayout.CENTER);
-            System.out.println(movie.getTitle());
+            JLabel img = new JLabel();
+            img.setIcon(movie.getThumbnail());
+            p.add(img, BorderLayout.NORTH);
 
         }
 

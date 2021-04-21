@@ -32,14 +32,14 @@ public class Frame extends JFrame {
      */
     private void setUpWindow() {
         
-        this.setVisible(true);
         this.windowSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(this.windowSize);
         this.setResizable(false);
         this.setTitle("XtraVision");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-      ///  this.setUndecorated(true);
+        this.setUndecorated(true);
+        this.setVisible(true);
         
         
     }
