@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.DBConnection.DBConnection;
 import model.movie.Movie;
 import view.frame.Frame;
@@ -34,7 +36,13 @@ public class Controller implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Go to rent home screem":
+        {
+            try {
                 this.frame.changePanel(new RentHomescreens(this));
+            } catch (IOException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
                 break;
             
             case "Go to return home screem":
@@ -55,9 +63,14 @@ public class Controller implements ActionListener {
         
         
         
+    
+        
     }
     
-
+    public Frame getFrame(){
+        return this.frame;
+        
+    }
     
     
     
