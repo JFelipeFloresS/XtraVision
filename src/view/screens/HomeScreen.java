@@ -14,6 +14,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,11 +34,16 @@ public class HomeScreen extends JPanel{
         this.setLayout(new BorderLayout());
         
         JPanel north = new JPanel();
-        this.add(north,BorderLayout.NORTH);
+        this.add(north,BorderLayout.CENTER);
         
        JPanel center = new JPanel();
        this.add(center,BorderLayout.CENTER);
    
+       JLabel image = new JLabel();
+            image.setIcon(new ImageIcon(getClass().getResource("/Images/HomeScreem.jpg")));
+            center.add (image);
+            
+       
        
        
        
@@ -46,7 +52,7 @@ public class HomeScreen extends JPanel{
        JButton returnButton = new JButton("RETURN");
        center.add (returnButton);
        
-       changeButtons(center);
+       changeButtons(this);
        
        rent.setActionCommand("Go to rent home screem");
        returnButton.setActionCommand("Go to return home screem");
@@ -57,7 +63,7 @@ public class HomeScreen extends JPanel{
      
     
     private void changeButtons(JPanel panel){
-        
+        panel.setBackground(Color.white);
         Component [] components = panel.getComponents();
         for(Component c: components){
             if (c instanceof JButton) {
@@ -72,7 +78,8 @@ public class HomeScreen extends JPanel{
                 c.setBackground(new Color(204,0,0));
             }
  
-            
+            if (c instanceof JPanel)
+               changeButtons ((JPanel)c);
             
             
             
