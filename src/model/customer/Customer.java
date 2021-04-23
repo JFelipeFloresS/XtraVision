@@ -19,14 +19,15 @@ public class Customer {
     private ArrayList<String> creditCards;
     private int moviesRented;
     private DBConnection connection;
-    //private Loyalty loyalty;
+    private Loyalty loyalty;
 
-    public Customer(int id, String email, int moviesRented) {
+    public Customer(int id, String email, int moviesRented, String loyalty) {
         this.id = id;
         this.email = email;
         this.creditCards = new ArrayList<>();
         this.moviesRented = moviesRented;
         this.connection = new DBConnection();    
+        this.loyalty = Loyalty.getLoyalty(loyalty);
     }
 
     public Customer(int id) {
