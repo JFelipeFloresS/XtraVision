@@ -15,14 +15,20 @@ public class Order {
     private final int rentID, customerID, machineID;
     private final String discID, status;
     private final Timestamp rentDate;
+    private final double paidFor;
 
-    public Order(int rentID, int customerID, int machineID, String discID, String status, Timestamp rentDate) {
+    public Order(int rentID, int customerID, int machineID, String discID, String status, Timestamp rentDate, double paidFor) {
         this.rentID = rentID;
         this.customerID = customerID;
         this.machineID = machineID;
         this.discID = discID;
         this.status = status;
         this.rentDate = rentDate;
+        this.paidFor = paidFor;
+    }
+
+    public double getPaidFor() {
+        return paidFor;
     }
 
     public int getRentID() {

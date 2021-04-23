@@ -52,7 +52,7 @@ public class DistributeMoviesToMachines {
             ResultSet rs = stmt.executeQuery(query);
 
             while (rs.next()) {
-                Movie m = new Movie(rs.getString("movieID"), rs.getString("title"), rs.getString("description"), rs.getString("ageRestriction"), rs.getString("thumbnail"));
+                Movie m = new Movie(rs.getString("movieID"), rs.getString("title"), rs.getString("description"), rs.getString("ageRestriction"), rs.getString("thumbnail"), rs.getString("duration"), rs.getString("director"));
                 movies.add(m);
             }
 
@@ -78,7 +78,7 @@ public class DistributeMoviesToMachines {
                     id += "0";
                 }
                 id += i;
-                discs.add(new Movie(id, m.getTitle(), m.getDescription(), m.getRestriction(), m.getThumbnail().toString(), c));
+                discs.add(new Movie(id, m.getTitle(), m.getDescription(), m.getRestriction(), m.getThumbnail().toString(), c, m.getDuration(), m.getDirector()));
                 c++;
                 if (c > 6) {
                     c = 1;
@@ -94,18 +94,18 @@ public class DistributeMoviesToMachines {
         
         try {
             this.conn = DriverManager.getConnection(this.dbServer, this.dbUser, this.dbPass);
-            PreparedStatement ps = this.conn.prepareStatement(query);
-            int paramIndex = 1;
-            for(Movie m: discs) {
-                ps.setString(paramIndex, m.getId());
-                paramIndex++;
-                ps.setString(paramIndex, m.getId().substring(0, m.getId().length()-2));
-                paramIndex++;
-                ps.setInt(paramIndex, m.getMachine());
-                paramIndex++;
+            try (PreparedStatement ps = this.conn.prepareStatement(query)) {
+                int paramIndex = 1;
+                for(Movie m: discs) {
+                    ps.setString(paramIndex, m.getId());
+                    paramIndex++;
+                    ps.setString(paramIndex, m.getId().substring(0, m.getId().length()-2));
+                    paramIndex++;
+                    ps.setInt(paramIndex, m.getMachine());
+                    paramIndex++;
+                }
+                ps.execute();
             }
-            ps.execute();
-            ps.close();
             this.conn.close();
         } catch (SQLException e) {
             System.out.println(e);
