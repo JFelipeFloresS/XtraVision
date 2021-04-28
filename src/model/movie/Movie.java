@@ -11,7 +11,9 @@ import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
@@ -24,7 +26,7 @@ import javax.swing.ImageIcon;
 public class Movie {
 
     private final String id, title, description, restriction, duration, director;
-    private String[] category;
+    private ArrayList<String> category;
     private boolean isAvailable;
     private Date rentDate, returnDate;
     private final ImageIcon thumbnail;
@@ -41,6 +43,7 @@ public class Movie {
         this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
         this.duration = duration;
         this.director = director;
+        this.category = new ArrayList<>();
     }
 
     public Movie(String id, String title, String description, String restriction, String thumbnail, String duration, String director) throws MalformedURLException, IOException {
@@ -51,6 +54,7 @@ public class Movie {
         this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
         this.duration = duration;
         this.director = director;
+        this.category = new ArrayList<>();
     }
 
     public Movie(String id, String title, String restriction, boolean isAvailable, Date rentDate, String thumbnail, String duration, String director) throws MalformedURLException, IOException {
@@ -64,6 +68,7 @@ public class Movie {
         this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
         this.duration = duration;
         this.director = director;
+        this.category = new ArrayList<>();
     }
 
     public Movie(String id, String title, String description, String restriction, boolean isAvailable, String thumbnail, String duration, String director) throws MalformedURLException, IOException {
@@ -77,6 +82,7 @@ public class Movie {
         this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
         this.duration = duration;
         this.director = director;
+        this.category = new ArrayList<>();
     }
 
     public Movie(String id, String title, String restriction, boolean isAvailable, String thumbnail, String duration, String director) throws MalformedURLException, IOException {
@@ -90,6 +96,7 @@ public class Movie {
         this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
         this.duration = duration;
         this.director = director;
+        this.category = new ArrayList<>();
     }
 
     public Movie(String id, String title, String description, String restriction, String thumbnail, int machine, String duration, String director) throws MalformedURLException, IOException {
@@ -101,6 +108,7 @@ public class Movie {
         this.machine = machine;
         this.duration = duration;
         this.director = director;
+        this.category = new ArrayList<>();
     }
 
     public String getDuration() {
@@ -127,12 +135,16 @@ public class Movie {
         return title;
     }
 
-    public String[] getCategory() {
+    public ArrayList<String> getCategory() {
         return category;
     }
 
-    public void setCategory(String[] c) {
+    public void setCategory(ArrayList<String> c) {
         this.category = c;
+    }
+    
+    public void addCategory(String c) {
+        this.category.add(c);
     }
 
     public String getDescription() {
@@ -194,5 +206,11 @@ public class Movie {
 
         this.isAvailable = true;
     }
+    
+    public static Comparator<Movie> MovieTitleComparator = new Comparator<Movie>() {
+        @Override
+        public int compare(Movie m1, Movie m2) {
+            return m1.getTitle().compareToIgnoreCase(m2.getTitle());
+        }};
 
 }

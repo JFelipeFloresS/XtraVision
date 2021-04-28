@@ -334,7 +334,7 @@ public class DBConnection {
                 Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
+        movies = addCategoriesToMovies(movies);
         return movies;
     }
 
@@ -543,6 +543,40 @@ public class DBConnection {
         }
 
         return movies;
+    }
+
+    private ArrayList<Movie> addCategoriesToMovies(ArrayList<Movie> movies) {
+        ArrayList<Movie> newMovies = movies;
+        Statement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            String query = "SELECT * FROM moviesGenre;";
+            stmt = this.CONNECTION.createStatement();
+            rs = stmt.executeQuery(query);
+            while(rs.next()) {
+                String id = rs.getString("movieID");
+                String genre = rs.getString("genre");
+                for (Movie m : newMovies) {
+                    if (m.getId().substring(0, m.getId().length() - 2).equals(id)) {
+                        m.addCategory(genre);
+                        break;
+                    }
+                }
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error addCategoriesToMovies(): \r\n" + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return newMovies;
     }
 
 }
