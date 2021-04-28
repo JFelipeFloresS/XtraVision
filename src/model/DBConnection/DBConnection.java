@@ -598,7 +598,7 @@ public class DBConnection {
         
         machines = new String[i];
         for (int j = 0; j < machines.length; j++) {
-            machines[i] = ""+i;
+            machines[j] = ""+(j+1);
         }
         return machines;
     }
