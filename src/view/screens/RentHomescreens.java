@@ -41,7 +41,7 @@ public class RentHomescreens extends JPanel {
 
         ArrayList< Movie> movies = this.controller.getMovieList();
         panel.setLayout(new GridLayout(movies.size() / 4, movies.size() / 8, 15, 15));
-        panel.setBackground(new Color(234, 63, 51));
+        panel.setBackground(new Color(9, 9, 9));
         panel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.lightGray, Color.yellow));
         for (int i = 0; i < movies.size(); i++) {
             Movie movie = movies.get(i);
