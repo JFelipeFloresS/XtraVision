@@ -47,7 +47,7 @@ public class RentHomescreens extends JPanel {
             Movie movie = movies.get(i);
             JButton p = new JButton();
             p.addActionListener(this.controller);
-            p.setActionCommand("Selected movie" + movie.getId());
+            p.setActionCommand("Selected movie " + movie.getId());
             p.setMinimumSize(new Dimension(winSize.width / 10, winSize.height / 4));
             p.setBackground(Color.WHITE);
             p.setBorder(BorderFactory.createLineBorder(new Color(217, 218, 64), 3));
