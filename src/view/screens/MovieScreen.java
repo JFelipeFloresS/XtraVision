@@ -34,8 +34,20 @@ public class MovieScreen extends JPanel {
         this.add(north,BorderLayout.NORTH);
         
         north.setLayout(new BorderLayout());
+
         JLabel titleLabel = new JLabel(this.movie.getTitle());
         north.add(titleLabel,BorderLayout.NORTH);
+
+        JLabel descriptionLable = new JLabel(this.movie.getDescription());
+        north.add(descriptionLable,BorderLayout.NORTH);
+
+        JLabel director = new JLabel(this.movie.getDirector());
+        north.add(director,BorderLayout.NORTH);
+        
+      
+
+
+
         
          JPanel east = new JPanel();
        this.add(east,BorderLayout.EAST);
@@ -50,7 +62,7 @@ public class MovieScreen extends JPanel {
 
 
 
-
+     
 
 
 
