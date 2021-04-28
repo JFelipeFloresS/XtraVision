@@ -5,10 +5,23 @@
  */
 package view.screens;
 
+import controller.Controller;
+import javax.swing.JPanel;
+import model.movie.Movie;
+
 /**
  *
  * @author thyag
  */
-public class MovieScreen {
+public class MovieScreen extends JPanel {
+    
+    private final Movie movie;
+    private final Controller controller;
+
+    public MovieScreen(Movie movie, Controller controller) {
+        this.movie = movie;
+        this.controller = controller;
+    }
+    
     
 }
