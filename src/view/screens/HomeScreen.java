@@ -21,6 +21,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -33,6 +34,7 @@ import model.movie.Movie;
 public class HomeScreen extends JPanel{
 
     Controller controller;
+     private JComboBox machineSelect;
     
     public HomeScreen(Controller controller) {
         Dimension windowSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -41,6 +43,16 @@ public class HomeScreen extends JPanel{
         
         JPanel north = new JPanel();
         this.add(north,BorderLayout.NORTH);
+        
+         north.setLayout(new BorderLayout());
+
+         machineSelect = new JComboBox(this.controller.getMachineIDs());
+        north.add(machineSelect, BorderLayout.EAST);
+        
+        
+        
+        
+        
         
         JLabel image2 = new JLabel();
         Image img = null;
@@ -128,6 +140,10 @@ public class HomeScreen extends JPanel{
     }
    
     
+    public String getmachineSelect() {
+        return machineSelect.getSelectedItem().toString();
+
+    }
     
     
     
