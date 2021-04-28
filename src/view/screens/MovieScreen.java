@@ -6,6 +6,11 @@
 package view.screens;
 
 import controller.Controller;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import model.movie.Movie;
 
@@ -19,8 +24,37 @@ public class MovieScreen extends JPanel {
     private final Controller controller;
 
     public MovieScreen(Movie movie, Controller controller) {
+      Dimension windowSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLayout(new BorderLayout());
         this.movie = movie;
         this.controller = controller;
+        
+        
+        JPanel north = new JPanel();
+        this.add(north,BorderLayout.NORTH);
+        
+        north.setLayout(new BorderLayout());
+        JLabel titleLabel = new JLabel(this.movie.getTitle());
+        north.add(titleLabel,BorderLayout.NORTH);
+        
+         JPanel east = new JPanel();
+       this.add(east,BorderLayout.EAST);
+       
+       east.setLayout(new BorderLayout());
+       
+       
+       JPanel buttonPanel = new JPanel();
+    
+
+
+
+
+
+
+
+
+
+        
     }
     
     
