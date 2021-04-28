@@ -11,12 +11,14 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.DBConnection.DBConnection;
 import model.movie.Movie;
 import view.frame.Frame;
+import view.screens.MovieScreen;
 import view.screens.RentHomescreens;
 import view.screens.ReturnHomeScreem;
 
@@ -51,6 +53,10 @@ public class Controller implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().startsWith("Selected movie ")) {
+            String[] a = e.getActionCommand().split(" ");
+            goToMovieScreen(a[2]);
+        }
         switch (e.getActionCommand()) {
             case "Go to rent home screem": {
                 try {
@@ -93,6 +99,12 @@ public class Controller implements ActionListener {
     
     public String[] getMachineIDs() {
         return this.conn.getMachineIDs();
+    }
+    
+    private void goToMovieScreen(String m) {
+        this.movieList.stream().filter((movie) -> (movie.getId().equals(m))).forEachOrdered((Movie movie) -> {
+            Controller.this.frame.changePanel(new MovieScreen(movie, Controller.this));
+        });
     }
 
 }
