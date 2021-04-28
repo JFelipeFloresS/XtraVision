@@ -110,7 +110,7 @@ public class DBConnection {
             stmt.setString(1, card);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                customer = new Customer(rs.getInt("customers.customerID"), rs.getString("email"), rs.getInt("currentMovies"), rs.getString("loyalty"));
+                customer = new Customer(rs.getInt("customers.customerID"), rs.getString("email"), rs.getInt("currentMovies"), rs.getInt("totalMovies"), rs.getString("loyalty"));
             }
 
         } catch (SQLException e) {
@@ -133,10 +133,11 @@ public class DBConnection {
      * @param card credit card number (not null)
      * @param email email address (if not input, set to null)
      * @param passInput password (if not input, set to null)
-     * @param numberOfMovies number of movies currently rented
+     * @param currentMovies movies currently rented
+     * @param totalMovies all movies
      * @return success of creation
      */
-    public boolean createCustomer(String card, String email, String passInput, int numberOfMovies) {
+    public boolean createCustomer(String card, String email, String passInput, int currentMovies, int totalMovies) {
         String salt = null;
         String password = null;
 
@@ -147,18 +148,19 @@ public class DBConnection {
         PreparedStatement stmt = null;
 
         try {
-            String query = "INSERT INTO customers(email, currentMovies, loyalty, password, salt) VALUES(?, ?, ?, ?, ?);";
+            String query = "INSERT INTO customers(email, currentMovies, totalMovies, loyalty, password, salt) VALUES(?, ?, ?, ?, ?, ?);";
             stmt = this.CONNECTION.prepareStatement(query);
             stmt.setString(1, email);
-            stmt.setInt(2, numberOfMovies);
+            stmt.setInt(2, currentMovies);
+            stmt.setInt(3, totalMovies);
             if (password == null) {
 
-                stmt.setString(3, Loyalty.NONE.getName());
+                stmt.setString(4, Loyalty.NONE.getName());
             } else {
-                stmt.setString(3, Loyalty.STANDARD.getName());
+                stmt.setString(4, Loyalty.STANDARD.getName());
             }
-            stmt.setString(4, password);
-            stmt.setString(5, salt);
+            stmt.setString(5, password);
+            stmt.setString(6, salt);
             stmt.executeQuery();
             stmt.close();
             return true;

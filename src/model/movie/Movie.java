@@ -9,13 +9,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Date;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -26,7 +21,7 @@ import javax.swing.ImageIcon;
 public class Movie {
 
     private final String id, title, description, restriction, duration, director;
-    private ArrayList<String> category;
+    private final ArrayList<String> category;
     private boolean isAvailable;
     private Date rentDate, returnDate;
     private final ImageIcon thumbnail;
@@ -138,10 +133,6 @@ public class Movie {
     public ArrayList<String> getCategory() {
         return category;
     }
-
-    public void setCategory(ArrayList<String> c) {
-        this.category = c;
-    }
     
     public void addCategory(String c) {
         this.category.add(c);
@@ -171,40 +162,18 @@ public class Movie {
         return rentDate;
     }
 
-    public void setRentDate(Date rentDate) {
-        this.rentDate = rentDate;
-    }
-
-    public void rentMovie(int customerID, int machineID) {
-        Calendar calendar = Calendar.getInstance(Locale.UK);
-        Date currentDate = new Date(calendar.getTimeInMillis());
-        this.rentDate = currentDate;
-
-        this.isAvailable = false;
-    }
-
     /**
-     * Returns a movie using the current date, updates the database with where
-     * the movie is currently located, when the order was finished and the
-     * customer's loyalty points
-     *
-     * @param machineID the ID of the machine where the movie is being returned
-     * to
+     * Gets price to be paid if it's late return
+     * @param movie object movie to be returned
+     * @return extra to be paid
      */
-    public void returnMovie(int machineID) {
-        LocalDateTime local = LocalDateTime.now(ZoneId.of("Ireland")); // gets current date and time
-
-        Date currentDate = null;
-
-        if (local.getHour() >= 20) { // if it's past 20pm on the day, the next day will be considered when calculating the difference
-            currentDate = new Date(local.getYear(), local.getMonthValue(), local.getDayOfMonth());
-        }
-
-        this.returnDate = currentDate;
-
-        long differenceInDays = TimeUnit.DAYS.convert((currentDate.getTime() - this.rentDate.getTime()), TimeUnit.MILLISECONDS); // difference in days between when the movie was rented and when it was returned
-
-        this.isAvailable = true;
+    public static double getLateReturnPrice(Movie movie) {
+        double price = 1.50;
+        
+        Date date = new Date(System.currentTimeMillis());
+        long diffInDays = ( (date.getTime() - movie.getRentDate().getTime()) / (1000 * 60 * 60 * 24) ) % 365;
+        
+        return (price * diffInDays) - price;
     }
     
     public static Comparator<Movie> MovieTitleComparator = (Movie m1, Movie m2) -> m1.getTitle().compareToIgnoreCase(m2.getTitle());

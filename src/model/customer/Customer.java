@@ -16,14 +16,15 @@ public class Customer {
     private final int id;
     private String email;
     private ArrayList<String> creditCards;
-    private int moviesRented;
+    private int currentMovies, totalMovies;
     private Loyalty loyalty;
 
-    public Customer(int id, String email, int moviesRented, String loyalty) {
+    public Customer(int id, String email, int moviesRented, int totalMovies, String loyalty) {
         this.id = id;
         this.email = email;
         this.creditCards = new ArrayList<>();
-        this.moviesRented = moviesRented;    
+        this.currentMovies = moviesRented;    
+        this.totalMovies = totalMovies;
         this.loyalty = Loyalty.getLoyalty(loyalty);
     }
 
@@ -39,8 +40,12 @@ public class Customer {
         return email;
     }
 
-    public int getMoviesRented() {
-        return moviesRented;
+    public int getCurrentMovies() {
+        return currentMovies;
+    }
+
+    public int getTotalMovies() {
+        return totalMovies;
     }
 
     public void setEmail(String email) {
@@ -55,7 +60,7 @@ public class Customer {
  * @param moviesRented number of movies to add
  */
     public void addMoviesRented(int moviesRented) {
-        this.moviesRented += moviesRented;
+        this.currentMovies += moviesRented;
     }
     
   /**
@@ -63,7 +68,7 @@ public class Customer {
    * @param moviesRented number of movies to remove
    */
     public void removeMoviesRented(int moviesRented) {
-        this.moviesRented -= moviesRented;          
+        this.currentMovies -= moviesRented;          
     }
 
     public ArrayList<String> getCreditCards() {

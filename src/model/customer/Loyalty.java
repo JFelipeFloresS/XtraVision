@@ -39,4 +39,13 @@ public enum Loyalty {
         }
         return Loyalty.NONE;
     }
+    
+    public static boolean isNextFree(String loyalName, int rentedMovies) {
+        Loyalty loyalty = getLoyalty(loyalName);
+        if (rentedMovies == loyalty.getNumberOfMovies()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
