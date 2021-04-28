@@ -8,6 +8,9 @@ package view.frame;
 import controller.Controller;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import view.screens.HomeScreen;
@@ -36,12 +39,26 @@ public class Frame extends JFrame {
         this.setSize(this.windowSize);
         this.setResizable(false);
         this.setTitle("XtraVision");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                closeProgram();
+            }
+        });
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setUndecorated(true);
         this.setVisible(true);
         
         
+    }
+    
+    /**
+     * Closes DB connection before exiting the system.
+     */
+    private void closeProgram() {
+        this.controller.closeDBConnection();
+        System.exit(0);
     }
     
     /**
@@ -54,11 +71,6 @@ public class Frame extends JFrame {
         this.add(panel);
         this.validate();
         this.repaint();
-        
-        
-        
-        
-        
         
     }
     

@@ -19,6 +19,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.customer.Customer;
 import model.customer.Loyalty;
 import model.order.Order;
@@ -29,23 +31,16 @@ import model.order.Order;
  */
 public class DBConnection {
 
-    private String dbServer, dbUser, dbPass;
     private Controller controller;
-    private Connection conn;
+    private final Connection CONNECTION;
 
-    public DBConnection(Controller controller) {
+    public DBConnection(Controller controller) throws SQLException {
         this.controller = controller;
-        setUpCredentials();
+        this.CONNECTION = establishConnection();
     }
 
-    public DBConnection() {
-        setUpCredentials();
-    }
-
-    private void setUpCredentials() {
-        this.dbServer = "jdbc:mysql://apontejaj.com:3306/Felipe_2019405?useSSL=false";
-        this.dbUser = "Felipe_2019405";
-        this.dbPass = "2019405";
+    public DBConnection() throws SQLException {
+        this.CONNECTION = establishConnection();
     }
 
     /**
@@ -54,7 +49,18 @@ public class DBConnection {
      * @throws SQLException
      */
     private Connection establishConnection() throws SQLException {
-        return DriverManager.getConnection(this.dbServer, this.dbUser, this.dbPass);
+        return DriverManager.getConnection("jdbc:mysql://apontejaj.com:3306/Felipe_2019405?useSSL=false", "Felipe_2019405", "2019405");
+    }
+
+    /**
+     * Closes DB connection
+     */
+    public void closeConnection() {
+        try {
+            this.CONNECTION.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -65,20 +71,26 @@ public class DBConnection {
      */
     public ArrayList<String> getCustomerCreditCards(int id) {
         ArrayList<String> cards = new ArrayList<>();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         try {
             String query = "SELECT cardNumber FROM creditCards WHERE customerID=?";
-            this.conn = establishConnection();
-            try (PreparedStatement stmt = this.conn.prepareStatement(query)) {
-                stmt.setInt(1, id);
-                try (ResultSet rs = stmt.executeQuery()) {
-                    while (rs.next()) {
-                        cards.add(rs.getString("cardNumber"));
-                    }
-                }
+            stmt = this.CONNECTION.prepareStatement(query);
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                cards.add(rs.getString("cardNumber"));
             }
-            this.conn.close();
+
         } catch (SQLException e) {
             System.out.println("Error getCustomerCreditCards(): \r\n" + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return cards;
     }
@@ -90,22 +102,26 @@ public class DBConnection {
      */
     public Customer getCustomerFromCreditCard(String card) {
         Customer customer = null;
-
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         try {
             String query = "SELECT * FROM creditCards INNER JOIN customers ON creditCards.customerID=customers.customerID WHERE cardNumber=?";
-            this.conn = establishConnection();
-            try (PreparedStatement stmt = this.conn.prepareStatement(query)) {
-                stmt.setString(1, card);
-                try (ResultSet rs = stmt.executeQuery()) {
-                    while (rs.next()) {
-                        customer = new Customer(rs.getInt("customers.customerID"), rs.getString("email"), rs.getInt("currentMovies"), rs.getString("loyalty"));
-                    }
-                }
+            stmt = this.CONNECTION.prepareStatement(query);
+            stmt.setString(1, card);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                customer = new Customer(rs.getInt("customers.customerID"), rs.getString("email"), rs.getInt("currentMovies"), rs.getString("loyalty"));
             }
-            this.conn.close();
 
         } catch (SQLException e) {
             System.out.println("Error getCustomerFromCreditCard(): \r\n" + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return customer;
@@ -127,24 +143,34 @@ public class DBConnection {
         if (passInput != null) {
             salt = createSalt();
             password = createHash(passInput, salt);
-
         }
+        PreparedStatement stmt = null;
+
         try {
             String query = "INSERT INTO customers(email, currentMovies, loyalty, password, salt) VALUES(?, ?, ?, ?, ?);";
-            this.conn = establishConnection();
-            try (PreparedStatement stmt = this.conn.prepareStatement(query)) {
-                stmt.setString(1, email);
-                stmt.setInt(2, numberOfMovies);
+            stmt = this.CONNECTION.prepareStatement(query);
+            stmt.setString(1, email);
+            stmt.setInt(2, numberOfMovies);
+            if (password == null) {
+
+                stmt.setString(3, Loyalty.NONE.getName());
+            } else {
                 stmt.setString(3, Loyalty.STANDARD.getName());
-                stmt.setString(4, password);
-                stmt.setString(5, salt);
-                stmt.executeQuery();
             }
-            this.conn.close();
+            stmt.setString(4, password);
+            stmt.setString(5, salt);
+            stmt.executeQuery();
+            stmt.close();
             return true;
         } catch (SQLException e) {
             System.out.println("Error createCustomerFromCreditCard(): \r\n" + e.getMessage());
             return false;
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -196,6 +222,7 @@ public class DBConnection {
 
     /**
      * Updates password
+     *
      * @param customerID
      * @param passInput password
      * @return success of update
@@ -203,57 +230,72 @@ public class DBConnection {
     public boolean changePassword(int customerID, String passInput) {
         String salt = createSalt();
         String password = createHash(passInput, salt);
-        
+        PreparedStatement stmt = null;
+
         try {
             String query = "UPDATE customers SET password=?, salt=? WHERE customerID=?";
-            this.conn = establishConnection();
-            try (PreparedStatement stmt = this.conn.prepareStatement(query)) {
-                stmt.setString(1, password);
-                stmt.setString(2, salt);
-                stmt.setInt(3, customerID);
-                stmt.executeUpdate();
-            }
-            this.conn.close();
-            
-            return true;
+            stmt = this.CONNECTION.prepareStatement(query);
+            stmt.setString(1, password);
+            stmt.setString(2, salt);
+            stmt.setInt(3, customerID);
+            stmt.executeUpdate();
+
         } catch (SQLException e) {
             System.out.println("Error changePassword(): \r\n" + e.getMessage());
             return false;
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
         }
+        return true;
     }
-    
+
     /**
      * Checks whether password is correct.
+     *
      * @param email account email
      * @param passInput password input by user
      * @return 0: connection error \r\n 1: match \r\n 2: not a match
      */
     public int checkPassword(String email, String passInput) {
+        String pass = "";
+        String salt = "";
+        String hashFromInput = "";
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
         try {
-            String pass = "";
-            String salt = "";
             String query = "SELECT password, salt FROM customers WHERE email=?";
-            this.conn = establishConnection();
-            try (PreparedStatement stmt = this.conn.prepareStatement(query)) {
-                stmt.setString(1, email);
-                try (ResultSet rs = stmt.executeQuery()) {
-                    while(rs.next()) {
-                        pass = rs.getString("password");
-                        salt = rs.getString("salt");
-                    }
-                }
+            stmt = this.CONNECTION.prepareStatement(query);
+            stmt.setString(1, email);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                pass = rs.getString("password");
+                salt = rs.getString("salt");
             }
-            
-            String hashFromInput = createHash(passInput, salt);
-            if (hashFromInput.equals(pass)) {
-                return 1;
-            } else {
-                return 2;
-            }
-            
+
+            hashFromInput = createHash(passInput, salt);
+
         } catch (SQLException e) {
             System.out.println("Error checkPassword(): \r\n" + e.getMessage());
             return 0;
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        if (hashFromInput.equals(pass) && !hashFromInput.equals("")) {
+            return 1;
+        } else {
+            return 2;
         }
     }
 
@@ -267,22 +309,30 @@ public class DBConnection {
     public ArrayList<Movie> getMachineCurrentMovies(int id) throws IOException {
         ArrayList<Movie> movies = new ArrayList<>();
         ArrayList<String> unique = new ArrayList<>();
+        Statement stmt = null;
+        ResultSet rs = null;
 
         try {
             String query = "SELECT * FROM discs LEFT JOIN movies ON discs.movieID = movies.movieID WHERE discs.machine=" + id + ";";
-            this.conn = establishConnection();
-            try (Statement stmt = this.conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+            stmt = this.CONNECTION.createStatement();
+            rs = stmt.executeQuery(query);
 
-                while (rs.next()) {
-                    if (!unique.contains(rs.getString("discs.movieID"))) {
-                        unique.add(rs.getString("discs.movieID"));
-                        movies.add(new Movie(rs.getString("discID"), rs.getString("title"), rs.getString("description"), rs.getString("ageRestriction"), true, rs.getString("thumbnail"), rs.getString("duration"), rs.getString("director")));
-                    }
+            while (rs.next()) {
+                if (!unique.contains(rs.getString("discs.movieID"))) {
+                    unique.add(rs.getString("discs.movieID"));
+                    movies.add(new Movie(rs.getString("discID"), rs.getString("title"), rs.getString("description"), rs.getString("ageRestriction"), true, rs.getString("thumbnail"), rs.getString("duration"), rs.getString("director")));
                 }
             }
-            this.conn.close();
+
         } catch (SQLException e) {
             System.out.println("Error getMachineCurrentMovies(): \r\n" + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return movies;
@@ -298,26 +348,34 @@ public class DBConnection {
      * @return success of rent
      */
     public boolean rentMovie(String discID, int machine, Customer customer) {
+        PreparedStatement stmt = null;
+
         try {
             String query = "INSERT INTO rent(discID, customerID, machineID, status) VALUES(?, ?, ?, 'rented');";
-            this.conn = establishConnection();
-            try (PreparedStatement stmt = this.conn.prepareStatement(query)) {
-                stmt.setString(1, discID);
-                stmt.setInt(2, customer.getId());
-                stmt.setInt(3, machine);
-                stmt.executeUpdate();
-            }
+            stmt = this.CONNECTION.prepareStatement(query);
+            stmt.setString(1, discID);
+            stmt.setInt(2, customer.getId());
+            stmt.setInt(3, machine);
+            stmt.executeUpdate();
+            stmt.close();
+
             String query2 = "UPDATE discs SET machineID=-1 WHERE discID=?;";
-            try (PreparedStatement stmt2 = this.conn.prepareStatement(query2)) {
-                stmt2.setString(1, discID);
-                stmt2.executeUpdate();
-            }
-            this.conn.close();
-            return true;
+            stmt = this.CONNECTION.prepareStatement(query2);
+            stmt.setString(1, discID);
+            stmt.executeUpdate();
+
         } catch (SQLException e) {
             System.out.println("Error rentMovie(): \r\n" + e.getMessage());
             return false;
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+
+        return true;
     }
 
     /**
@@ -328,22 +386,27 @@ public class DBConnection {
      */
     public Order getOrderFromMovieID(String movieID) {
         Order order = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
 
         try {
             String query = "SELECT * FROM rent WHERE movieID=? AND status='rented';";
-            this.conn = establishConnection();
-            try (PreparedStatement stmt = this.conn.prepareStatement(query)) {
-                stmt.setString(1, movieID);
-                try (ResultSet rs = stmt.executeQuery()) {
-                    while (rs.next()) {
-                        order = new Order(rs.getInt("rentID"), rs.getInt("customerID"), rs.getInt("machineID"), rs.getString("discID"), rs.getString("status"), rs.getTimestamp("rentDate"), rs.getDouble("paidFor"));
-                    }
-                }
+            stmt = this.CONNECTION.prepareStatement(query);
+            stmt.setString(1, movieID);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                order = new Order(rs.getInt("rentID"), rs.getInt("customerID"), rs.getInt("machineID"), rs.getString("discID"), rs.getString("status"), rs.getTimestamp("rentDate"), rs.getDouble("paidFor"));
             }
-            this.conn.close();
 
         } catch (SQLException e) {
             System.out.println("Error getOrderFromMovieID(): \r\n" + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return order;
@@ -360,19 +423,25 @@ public class DBConnection {
      */
     public boolean returnMovie(Order order, int machineID, double furtherPayment) {
         furtherPayment += 2.99;
-        
+        Statement stmt = null;
+
         try {
             String query = "UPDATE rent SET status=available, paidFor=" + furtherPayment + " WHERE rentID=" + order.getRentID() + "; UPDATE discs SET machine=" + machineID + " WHERE discID=" + order.getDiscID() + ";";
-            this.conn = establishConnection();
-            try (Statement stmt = this.conn.createStatement()) {
-                stmt.executeUpdate(query);
-            }
-            this.conn.close();
-            return true;
+            stmt = this.CONNECTION.createStatement();
+            stmt.executeUpdate(query);
+
         } catch (SQLException e) {
             System.out.println("Error returnMovie(): \r\n" + e.getMessage());
             return false;
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+
+        return true;
     }
 
     /**
@@ -382,18 +451,25 @@ public class DBConnection {
      * @return success of payment
      */
     public boolean payForMaxFee(Order order) {
+        Statement stmt = null;
+
         try {
             String query = "UPDATE rent SET status=paid, paidFor=17.99 WHERE rentID=" + order.getRentID() + ";";
-            this.conn = establishConnection();
-            try (Statement stmt = this.conn.createStatement()) {
-                stmt.executeUpdate(query);
-            }
-            this.conn.close();
-            return true;
+            stmt = this.CONNECTION.createStatement();
+            stmt.executeUpdate(query);
+
         } catch (SQLException e) {
             System.out.println("Error payForMaxFee(): \r\n" + e.getMessage());
             return false;
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+
+        return true;
     }
 
     /**
@@ -403,16 +479,28 @@ public class DBConnection {
      */
     public ArrayList<String> getUniqueGenres() {
         ArrayList<String> genres = new ArrayList<>();
+        Statement stmt = null;
+        ResultSet rs = null;
+
         try {
             String query = "SELECT DISTINCT genre FROM moviesGenre;";
-            this.conn = establishConnection();
-            try (Statement stmt = this.conn.createStatement()) {
-                stmt.execute(query);
+            stmt = this.CONNECTION.createStatement();
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                genres.add(rs.getString("genre"));
             }
-            this.conn.close();
+
         } catch (SQLException e) {
             System.out.println("Error getUniqueGenres(): \r\n" + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+
         return genres;
     }
 
@@ -427,25 +515,31 @@ public class DBConnection {
     public ArrayList<Movie> getMoviesFromGenre(int machine, String genre) throws IOException {
         ArrayList<Movie> movies = new ArrayList<>();
         ArrayList<String> unique = new ArrayList<>();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
 
         try {
             String query = "SELECT DISTINCT discs.movieID, discID, title, description, ageRestriction, thumbnail, duration, director FROM discs INNER JOIN movies ON discs.movieID = movies.movieID LEFT JOIN moviesGenre ON discs.movieID = moviesGenre.movieID WHERE genre=? AND machine=?;";
-            this.conn = establishConnection();
-            try (PreparedStatement stmt = this.conn.prepareStatement(query)) {
-                stmt.setString(1, query);
-                stmt.setInt(2, machine);
-                try (ResultSet rs = stmt.executeQuery()) {
-                    while (rs.next()) {
-                        if (!unique.contains(rs.getString("discs.movieID"))) {
-                            unique.add(rs.getString("discs.movieID"));
-                            movies.add(new Movie(rs.getString("discID"), rs.getString("title"), rs.getString("description"), rs.getString("ageRestriction"), true, rs.getString("thumbnail"), rs.getString("duration"), rs.getString("director")));
-                        }
-                    }
+            stmt = this.CONNECTION.prepareStatement(query);
+            stmt.setString(1, query);
+            stmt.setInt(2, machine);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                if (!unique.contains(rs.getString("discs.movieID"))) {
+                    unique.add(rs.getString("discs.movieID"));
+                    movies.add(new Movie(rs.getString("discID"), rs.getString("title"), rs.getString("description"), rs.getString("ageRestriction"), true, rs.getString("thumbnail"), rs.getString("duration"), rs.getString("director")));
                 }
             }
-            this.conn.close();
+
         } catch (SQLException e) {
             System.out.println("Error getMoviesFromGenre(): \r\n" + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return movies;

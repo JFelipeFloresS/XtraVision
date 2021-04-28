@@ -6,7 +6,6 @@
 package model.customer;
 
 import java.util.ArrayList;
-import model.DBConnection.DBConnection;
 
 /**
  *
@@ -18,15 +17,13 @@ public class Customer {
     private String email;
     private ArrayList<String> creditCards;
     private int moviesRented;
-    private DBConnection connection;
     private Loyalty loyalty;
 
     public Customer(int id, String email, int moviesRented, String loyalty) {
         this.id = id;
         this.email = email;
         this.creditCards = new ArrayList<>();
-        this.moviesRented = moviesRented;
-        this.connection = new DBConnection();    
+        this.moviesRented = moviesRented;    
         this.loyalty = Loyalty.getLoyalty(loyalty);
     }
 
@@ -66,14 +63,19 @@ public class Customer {
    * @param moviesRented number of movies to remove
    */
     public void removeMoviesRented(int moviesRented) {
-        this.moviesRented -= moviesRented;
-
-        
-          
+        this.moviesRented -= moviesRented;          
     }
 
-    public void getCreditCardsFromDB(){
-       this.creditCards = this.connection.getCustomerCreditCards(this.id);
+    public ArrayList<String> getCreditCards() {
+        return creditCards;
+    }
+
+    public Loyalty getLoyalty() {
+        return loyalty;
+    }
+
+    public void setCreditCards(ArrayList<String> cards){
+       this.creditCards = cards;
      
     }
     
