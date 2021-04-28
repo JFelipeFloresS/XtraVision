@@ -44,7 +44,7 @@ public class MovieScreen extends JPanel {
         JLabel director = new JLabel(this.movie.getDirector());
         north.add(director,BorderLayout.NORTH);
         
-      
+      ///criar GridLayout
 
 
 
