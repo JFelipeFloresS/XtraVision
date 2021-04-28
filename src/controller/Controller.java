@@ -90,5 +90,9 @@ public class Controller implements ActionListener {
     public void closeDBConnection() {
         this.conn.closeConnection();
     }
+    
+    public String[] getMachineIDs() {
+        return this.conn.getMachineIDs();
+    }
 
 }

@@ -207,10 +207,6 @@ public class Movie {
         this.isAvailable = true;
     }
     
-    public static Comparator<Movie> MovieTitleComparator = new Comparator<Movie>() {
-        @Override
-        public int compare(Movie m1, Movie m2) {
-            return m1.getTitle().compareToIgnoreCase(m2.getTitle());
-        }};
+    public static Comparator<Movie> MovieTitleComparator = (Movie m1, Movie m2) -> m1.getTitle().compareToIgnoreCase(m2.getTitle());
 
 }

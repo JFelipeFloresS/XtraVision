@@ -578,5 +578,29 @@ public class DBConnection {
 
         return newMovies;
     }
+    
+    public String[] getMachineIDs() {
+        String[] machines;
+        Statement stmt = null;
+        ResultSet rs = null;
+        int i = 0;
+        try {
+            String query = "SELECT DISTINCT machine FROM discs;";
+            stmt = this.CONNECTION.createStatement();
+            rs = stmt.executeQuery(query);
+            while(rs.next()) {
+                i++;
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error getmachineIDs(): \r\n" + e.getMessage());
+        }
+        
+        machines = new String[i];
+        for (int j = 0; j < machines.length; j++) {
+            machines[i] = ""+i;
+        }
+        return machines;
+    }
 
 }
