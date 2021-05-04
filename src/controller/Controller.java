@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import model.DBConnection.DBConnection;
 import model.movie.Movie;
 import view.frame.Frame;
+import view.screens.HomeScreen;
 import view.screens.MovieScreen;
 import view.screens.RentHomescreens;
 import view.screens.ReturnHomeScreem;
@@ -57,10 +58,18 @@ public class Controller implements ActionListener {
             String[] a = e.getActionCommand().split(" ");
             goToMovieScreen(a[2]);
         }
+        
+        if (e.getActionCommand().startsWith("selected genre ")) {
+            String[] a = e.getActionCommand().split(" ");
+            changeGenreInMovieScreen(a[2]);
+        }
         switch (e.getActionCommand()) {
+            case "Go to main home screen":
+                this.frame.changePanel(new HomeScreen(this));
+                break;
             case "Go to rent home screem": {
                 try {
-                    this.frame.changePanel(new RentHomescreens(this));
+                    this.frame.changePanel(new RentHomescreens(this, null));
                 } catch (IOException ex) {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -101,10 +110,24 @@ public class Controller implements ActionListener {
         return this.conn.getMachineIDs();
     }
     
+    public ArrayList<String> getUniqueGenres() {
+        return this.conn.getUniqueGenres();
+    }
+    
     private void goToMovieScreen(String m) {
         this.movieList.stream().filter((movie) -> (movie.getId().equals(m))).forEachOrdered((Movie movie) -> {
             Controller.this.frame.changePanel(new MovieScreen(movie, Controller.this));
         });
+    }
+    
+    private void changeGenreInMovieScreen(String g) {
+        
+        try {
+            this.frame.changePanel(new RentHomescreens(this, g));
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
 }

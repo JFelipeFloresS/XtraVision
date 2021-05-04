@@ -9,6 +9,7 @@ import controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -46,8 +47,13 @@ public class HomeScreen extends JPanel{
         
          north.setLayout(new BorderLayout());
 
+         JPanel machinePanel = new JPanel();
+         JLabel temporary = new JLabel("<html>(temporary)<br>choose machine</html>");
+         temporary.setForeground(Color.WHITE);
+         machinePanel.add(temporary);
          machineSelect = new JComboBox(this.controller.getMachineIDs());
-        north.add(machineSelect, BorderLayout.EAST);
+         machinePanel.add(machineSelect);
+        north.add(machinePanel, BorderLayout.EAST);
         
         
         
@@ -58,7 +64,7 @@ public class HomeScreen extends JPanel{
         Image img = null;
         try {
             img = ImageIO.read(getClass().getResource("/Images/ExtraVision.jpeg"));
-            img = img.getScaledInstance(windowSize.width,windowSize.height / 8 , java.awt.Image.SCALE_SMOOTH);
+            img = img.getScaledInstance(windowSize.width / 2,windowSize.height / 8 , java.awt.Image.SCALE_SMOOTH);
         } catch (IOException ex) {
             System.out.println("Image erro");
         }
@@ -117,7 +123,7 @@ public class HomeScreen extends JPanel{
                 c.setFont(new Font(Font.SERIF,Font.BOLD,60));
                 c.setForeground(new Color(255,210,25));
                 ((JButton) c).setBorder(BorderFactory.createLineBorder(Color.WHITE,4,true));
-                
+                c.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 ((JButton) c).addActionListener(this.controller);
                 
             ///    c.setBackground(new Color(243,242,237));

@@ -74,6 +74,11 @@ public class Frame extends JFrame {
         
     }
     
+    public void update() {
+        this.validate();
+        this.repaint();
+    }
+    
 
     
     
