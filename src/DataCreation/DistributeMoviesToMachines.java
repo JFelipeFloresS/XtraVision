@@ -6,7 +6,6 @@
 package DataCreation;
 
 import controller.Controller;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -29,7 +28,7 @@ public class DistributeMoviesToMachines {
     private Random rd;
     private final ArrayList<Movie> movies;
 
-    public DistributeMoviesToMachines(Controller controller) throws IOException {
+    public DistributeMoviesToMachines(Controller controller) {
         this.controller = controller;
         this.movies = getMovies();
         setUpCredentials();
@@ -41,7 +40,7 @@ public class DistributeMoviesToMachines {
         this.dbPass = "2019405";
     }
 
-    public ArrayList<Movie> getMovies() throws IOException {
+    public ArrayList<Movie> getMovies() {
         ArrayList<Movie> movies = new ArrayList<>();
 
         try {
@@ -68,7 +67,7 @@ public class DistributeMoviesToMachines {
         return movies;
     }
 
-    public void createDiscs(ArrayList<Movie> movies) throws IOException {
+    public void createDiscs(ArrayList<Movie> movies) {
         ArrayList<Movie> discs = new ArrayList<>();
         int c = 1;
         for (Movie m : movies) {

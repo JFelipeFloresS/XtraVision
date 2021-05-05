@@ -34,22 +34,26 @@ public class DBConnection {
     private Controller controller;
     private final Connection CONNECTION;
 
-    public DBConnection(Controller controller) throws SQLException {
+    public DBConnection(Controller controller) {
         this.controller = controller;
         this.CONNECTION = establishConnection();
     }
 
-    public DBConnection() throws SQLException {
+    public DBConnection() {
         this.CONNECTION = establishConnection();
     }
 
     /**
      *
      * @return connection to DB
-     * @throws SQLException
      */
-    private Connection establishConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://apontejaj.com:3306/Felipe_2019405?useSSL=false", "Felipe_2019405", "2019405");
+    private Connection establishConnection() {
+        try {
+            return DriverManager.getConnection("jdbc:mysql://apontejaj.com:3306/Felipe_2019405?useSSL=false", "Felipe_2019405", "2019405");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
     /**
@@ -306,9 +310,8 @@ public class DBConnection {
      *
      * @param id machineID
      * @return list of unique movies
-     * @throws java.io.IOException
      */
-    public ArrayList<Movie> getMachineCurrentMovies(int id) throws IOException {
+    public ArrayList<Movie> getMachineCurrentMovies(int id) {
         ArrayList<Movie> movies = new ArrayList<>();
         ArrayList<String> unique = new ArrayList<>();
         Statement stmt = null;
@@ -512,9 +515,8 @@ public class DBConnection {
      * @param machine current machineID
      * @param genre genre chosen
      * @return list of movies of a given genre
-     * @throws IOException
      */
-    public ArrayList<Movie> getMoviesFromGenre(int machine, String genre) throws IOException {
+    public ArrayList<Movie> getMoviesFromGenre(int machine, String genre) {
         ArrayList<Movie> movies = new ArrayList<>();
         ArrayList<String> unique = new ArrayList<>();
         PreparedStatement stmt = null;

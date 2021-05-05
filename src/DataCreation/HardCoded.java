@@ -5,7 +5,6 @@
  */
 package DataCreation;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import model.movie.Movie;
 
@@ -17,7 +16,7 @@ public class HardCoded {
 
     ArrayList< Movie> movies;
 
-    public HardCoded() throws IOException {
+    public HardCoded() {
         
         this.movies = new ArrayList<>(); 
 

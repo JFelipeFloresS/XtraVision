@@ -31,7 +31,7 @@ public class Validator {
     
     /**
      * Validates password
-     * @param password
+     * @param password password to be checked
      * @return if is valid password
      */
     public static boolean isValidPassword(String password) {
@@ -44,6 +44,11 @@ public class Validator {
         return matcher.matches();
     }
     
+    /**
+     * Validates credit card number
+     * @param card card to be checked
+     * @return if is valid credit card number
+     */
     public static boolean isValidCreditCard(String card) {
         if (card == null || card.equals("")) {
             return false;

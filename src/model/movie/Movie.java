@@ -11,6 +11,8 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -24,10 +26,10 @@ public class Movie {
     private final ArrayList<String> category;
     private boolean isAvailable;
     private Date rentDate, returnDate;
-    private final ImageIcon thumbnail;
+    private ImageIcon thumbnail;
     private int machine;
 
-    public Movie(String id, String title, String description, String restriction, boolean isAvailable, Date rentDate, String thumbnail, String duration, String director) throws MalformedURLException, IOException {
+    public Movie(String id, String title, String description, String restriction, boolean isAvailable, Date rentDate, String thumbnail, String duration, String director)  {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -35,24 +37,36 @@ public class Movie {
         this.isAvailable = isAvailable;
         this.rentDate = rentDate;
         this.returnDate = null;
-        this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
+        try {
+            this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Movie.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Movie.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.duration = duration;
         this.director = director;
         this.category = new ArrayList<>();
     }
 
-    public Movie(String id, String title, String description, String restriction, String thumbnail, String duration, String director) throws MalformedURLException, IOException {
+    public Movie(String id, String title, String description, String restriction, String thumbnail, String duration, String director) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.restriction = restriction;
-        this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
+        try {
+            this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Movie.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Movie.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.duration = duration;
         this.director = director;
         this.category = new ArrayList<>();
     }
 
-    public Movie(String id, String title, String restriction, boolean isAvailable, Date rentDate, String thumbnail, String duration, String director) throws MalformedURLException, IOException {
+    public Movie(String id, String title, String restriction, boolean isAvailable, Date rentDate, String thumbnail, String duration, String director) {
         this.id = id;
         this.title = title;
         this.restriction = restriction;
@@ -60,13 +74,19 @@ public class Movie {
         this.description = "Description not currently available.";
         this.rentDate = rentDate;
         this.returnDate = null;
-        this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
+        try {
+            this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Movie.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Movie.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.duration = duration;
         this.director = director;
         this.category = new ArrayList<>();
     }
 
-    public Movie(String id, String title, String description, String restriction, boolean isAvailable, String thumbnail, String duration, String director) throws MalformedURLException, IOException {
+    public Movie(String id, String title, String description, String restriction, boolean isAvailable, String thumbnail, String duration, String director) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -74,13 +94,19 @@ public class Movie {
         this.isAvailable = isAvailable;
         this.rentDate = null;
         this.returnDate = null;
-        this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
+        try {
+            this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Movie.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Movie.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.duration = duration;
         this.director = director;
         this.category = new ArrayList<>();
     }
 
-    public Movie(String id, String title, String restriction, boolean isAvailable, String thumbnail, String duration, String director) throws MalformedURLException, IOException {
+    public Movie(String id, String title, String restriction, boolean isAvailable, String thumbnail, String duration, String director) {
         this.id = id;
         this.title = title;
         this.description = "Description not currently available.";
@@ -88,18 +114,30 @@ public class Movie {
         this.isAvailable = isAvailable;
         this.rentDate = null;
         this.returnDate = null;
-        this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
+        try {
+            this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Movie.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Movie.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.duration = duration;
         this.director = director;
         this.category = new ArrayList<>();
     }
 
-    public Movie(String id, String title, String description, String restriction, String thumbnail, int machine, String duration, String director) throws MalformedURLException, IOException {
+    public Movie(String id, String title, String description, String restriction, String thumbnail, int machine, String duration, String director){
         this.id = id;
         this.title = title;
         this.description = description;
         this.restriction = restriction;
-        this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
+        try {
+            this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Movie.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Movie.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.machine = machine;
         this.duration = duration;
         this.director = director;

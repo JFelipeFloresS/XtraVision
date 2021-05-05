@@ -11,25 +11,18 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -45,7 +38,7 @@ public class RentHomescreens extends JPanel {
     private final Controller controller;
     private final String currentGenre;
 
-    public RentHomescreens(Controller controller, String selectedGenre) throws IOException {
+    public RentHomescreens(Controller controller, String selectedGenre) {
 
         this.setLayout(new BorderLayout(10, 10));
         this.setBackground(new Color(9, 9, 9));

@@ -7,13 +7,8 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -46,17 +41,9 @@ public class Controller implements ActionListener {
         this.order = new ArrayList<>();
         this.selectedMovies = new ArrayList<>();
 
-        try {
-            this.conn = new DBConnection();
-            this.movieList = getMachineCurrentMoviesFromDB(this.machineID);
-            Collections.sort(this.movieList, Movie.MovieTitleComparator);
-        } catch (SQLException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showConfirmDialog(this.frame, "Fatal error, please restart the program.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
-        } catch (IOException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.conn = new DBConnection();
+        this.movieList = getMachineCurrentMoviesFromDB(this.machineID);
+        Collections.sort(this.movieList, Movie.MovieTitleComparator); 
         this.frame = new Frame(this);
     }
 
@@ -79,21 +66,13 @@ public class Controller implements ActionListener {
             case "Go to main home screen":
                 this.frame.changePanel(new HomeScreen(this));
                 break;
-            case "Go to rent home screem": {
+            case "Go to rent home screem":  {
                 if (this.machineID != Integer.parseInt(HomeScreen.getmachineSelect())) {
                     this.machineID = Integer.parseInt(HomeScreen.getmachineSelect());
-                    try {
-                        this.movieList = getMachineCurrentMoviesFromDB(this.machineID);
-                    } catch (IOException ex) {
-                        Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    this.movieList = getMachineCurrentMoviesFromDB(this.machineID);
                     Collections.sort(this.movieList, Movie.MovieTitleComparator);
                 }
-                try {
-                    this.frame.changePanel(new RentHomescreens(this, null));
-                } catch (IOException ex) {
-                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                this.frame.changePanel(new RentHomescreens(this, null));
             }
             break;
 
@@ -116,11 +95,10 @@ public class Controller implements ActionListener {
         return machineID;
     }
 
-    public ArrayList< Movie> getMachineCurrentMoviesFromDB(int id) throws IOException {
+    public ArrayList< Movie> getMachineCurrentMoviesFromDB(int id) {
 
         return this.conn.getMachineCurrentMovies(id);
-        /// vamos pegar numero da maquina em uso
-
+        
     }
 
     public Frame getFrame() {
@@ -151,14 +129,14 @@ public class Controller implements ActionListener {
 
     private void changeGenreInMovieScreen(String g) {
 
-        try {
-            this.frame.changePanel(new RentHomescreens(this, g));
-        } catch (IOException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.frame.changePanel(new RentHomescreens(this, g));
 
     }
 
+    /**
+     * Adds movie to the ArrayList selectedMovies. Handles the movie having already been added by the current user.
+     * @param movieID movie to be added
+     */
     private void addMovieToCart(String movieID) {
         Movie movie = null;
         for (Movie m : this.movieList) {
@@ -174,6 +152,10 @@ public class Controller implements ActionListener {
         }
     }
 
+    /**
+     * Removes movie from the ArrayList selectedMovies.
+     * @param movieID 
+     */
     private void removeMovieFromCart(String movieID) {
         Movie movie = null;
         for (Movie m : this.movieList) {
@@ -184,6 +166,11 @@ public class Controller implements ActionListener {
         this.selectedMovies.remove(movie);
     }
 
+    /**
+     * Creates order and inserts them into DB, clears cart and creates customer if non-existent.
+     * Gets card number. If unknown, ask user if they want an account and proceed gathering that information to create a new user.
+     * Sends receipt.
+     */
     private void rentMovies() {
         String cardNumber = "";
         String email = "";
@@ -244,9 +231,9 @@ public class Controller implements ActionListener {
                                 break;
                             }
                         }
-                        this.conn.createCustomer(cardNumber, email, password, currentMovies, totalMovies);
+                       // this.conn.createCustomer(cardNumber, email, password, currentMovies, totalMovies);
                     } else {
-                        this.conn.createCustomer(cardNumber, null, null, currentMovies, totalMovies);
+                       // this.conn.createCustomer(cardNumber, null, null, currentMovies, totalMovies);
 
                     }
 
@@ -264,8 +251,13 @@ public class Controller implements ActionListener {
                 if (success) {
                     int receipt = JOptionPane.showConfirmDialog(this.frame, "Your order was successful! Please don't forget to take your movies. Would you like your receipt?", "Thank you!", JOptionPane.YES_NO_OPTION);
 
+                    if (receipt == JOptionPane.YES_OPTION) {
+                        // ****** BOTAR CODIGO DE MANDAR EMAIL AQUI **********
+                    } 
+                    
                     this.order.removeAll(this.order);
                 } else {
+                    JOptionPane.showMessageDialog(this.frame, "There seems to be an issue with your order. Please try again.", "Oops...", JOptionPane.PLAIN_MESSAGE);
                 }
             } else {
                 if (cardNumber.equals("")) {
