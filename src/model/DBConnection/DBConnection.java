@@ -346,17 +346,17 @@ public class DBConnection {
      *
      * @param discID
      * @param machine machineID (currently 1 to 6)
-     * @param customer customerID
+     * @param customerID
      * @return success of rent
      */
-    public boolean rentMovie(String discID, int machine, Customer customer) {
+    public boolean rentMovie(String discID, int machine, int customerID) {
         PreparedStatement stmt = null;
 
         try {
             String query = "INSERT INTO rent(discID, customerID, machineID, status) VALUES(?, ?, ?, 'rented');";
             stmt = this.CONNECTION.prepareStatement(query);
             stmt.setString(1, discID);
-            stmt.setInt(2, customer.getId());
+            stmt.setInt(2, customerID);
             stmt.setInt(3, machine);
             stmt.executeUpdate();
             stmt.close();
@@ -397,7 +397,7 @@ public class DBConnection {
             stmt.setString(1, movieID);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                order = new Order(rs.getInt("rentID"), rs.getInt("customerID"), rs.getInt("machineID"), rs.getString("discID"), rs.getString("status"), rs.getTimestamp("rentDate"), rs.getDouble("paidFor"));
+                order = new Order(rs.getInt("rentID"), rs.getInt("customerID"), rs.getInt("machineID"), rs.getString("discID"), rs.getString("status"), rs.getDate("rentDate"), rs.getDouble("paidFor"));
             }
 
         } catch (SQLException e) {

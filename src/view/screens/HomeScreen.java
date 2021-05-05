@@ -35,7 +35,7 @@ import model.movie.Movie;
 public class HomeScreen extends JPanel{
 
     Controller controller;
-     private JComboBox machineSelect;
+    static JComboBox machineSelect;
     
     public HomeScreen(Controller controller) {
         Dimension windowSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -48,10 +48,11 @@ public class HomeScreen extends JPanel{
          north.setLayout(new BorderLayout());
 
          JPanel machinePanel = new JPanel();
-         JLabel temporary = new JLabel("<html>(temporary)<br>choose machine</html>");
+         JLabel temporary = new JLabel("<html>(temporary)<br>choose machine to browse</html>");
          temporary.setForeground(Color.WHITE);
          machinePanel.add(temporary);
          machineSelect = new JComboBox(this.controller.getMachineIDs());
+         machineSelect.setPreferredSize(new Dimension(50, 30));
          machinePanel.add(machineSelect);
         north.add(machinePanel, BorderLayout.EAST);
         
@@ -146,7 +147,7 @@ public class HomeScreen extends JPanel{
     }
    
     
-    public String getmachineSelect() {
+    public static String getmachineSelect() {
         return machineSelect.getSelectedItem().toString();
 
     }
