@@ -184,10 +184,6 @@ public class Movie {
         return restriction;
     }
 
-    public boolean isIsAvailable() {
-        return isAvailable;
-    }
-
     public int getMachine() {
         return machine;
     }
