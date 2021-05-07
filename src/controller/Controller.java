@@ -177,6 +177,7 @@ public class Controller implements ActionListener {
         String password = "";
         int currentMovies = selectedMovies.size();
         int totalMovies = selectedMovies.size();
+        int limitOfMovies = 2;
 
         int tryAgain = JOptionPane.NO_OPTION;
 
@@ -188,6 +189,15 @@ public class Controller implements ActionListener {
 
                 // if non existing customer, ask for profile creation if wanted
                 if (customer == null) {
+                    
+                    customer = new Customer(cardNumber, currentMovies, totalMovies);
+                    
+                    // 
+                    if (this.selectedMovies.size() > limitOfMovies) {
+                        JOptionPane.showMessageDialog(this.frame, "New customers can only rent " + limitOfMovies + " movies at a time. "
+                                + "Please remove " + (this.selectedMovies.size() - limitOfMovies) + " from your cart before proceeding to payment.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+                        break;
+                    }
 
                     int wantsAccount = JOptionPane.showConfirmDialog(this.frame, "Would you like to create an account?", "Create account", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
                     if (wantsAccount == JOptionPane.YES_OPTION) {
@@ -198,6 +208,8 @@ public class Controller implements ActionListener {
                             }
                         }
 
+                        customer.setEmail(email);
+                        
                         String confirmPassword = " ";
                         while (!Validator.isValidPassword(password) && !password.equals(confirmPassword)) {
                             JPasswordField passField = new JPasswordField(10);
@@ -223,6 +235,8 @@ public class Controller implements ActionListener {
                                     confirmPassword = confirm.getText();
                                     if (!password.equals(confirmPassword)) {
                                         JOptionPane.showConfirmDialog(this.frame, "Your passwords don't match, please try again.");
+                                    } else {
+                                        
                                     }
                                 } else {
                                     break;

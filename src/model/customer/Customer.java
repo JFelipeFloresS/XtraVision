@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Customer {
 
-    private final int id;
+    private int id;
     private String email;
     private ArrayList<String> creditCards;
     private int currentMovies, totalMovies;
@@ -26,6 +26,14 @@ public class Customer {
         this.currentMovies = moviesRented;    
         this.totalMovies = totalMovies;
         this.loyalty = Loyalty.getLoyalty(loyalty);
+    }
+    
+    public Customer(String cardNumber, int moviesRented, int totalMovies) {
+        this.creditCards = new ArrayList<>();
+        this.creditCards.add(cardNumber);
+        this.currentMovies = moviesRented;
+        this.totalMovies = totalMovies;
+        this.loyalty = Loyalty.NONE;
     }
 
     public Customer(int id) {
@@ -50,6 +58,10 @@ public class Customer {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    public void startLoyaltyProgramme() {
+        this.loyalty = Loyalty.STANDARD;
     }
 
     public void addCreditCard(String creditCard) {

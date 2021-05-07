@@ -150,6 +150,7 @@ public class DBConnection {
             password = createHash(passInput, salt);
         }
         PreparedStatement stmt = null;
+        ResultSet rs = null;
 
         try {
             String query = "INSERT INTO customers(email, currentMovies, totalMovies, loyalty, password, salt) VALUES(?, ?, ?, ?, ?, ?);";
@@ -167,12 +168,31 @@ public class DBConnection {
             stmt.setString(6, salt);
             stmt.executeQuery();
             stmt.close();
+            
+            query = "SELECT customerID FROM customers WHERE email=?;";
+            stmt = this.CONNECTION.prepareStatement(query);
+            stmt.setString(1, email);
+            rs = stmt.executeQuery();
+            int customerID = -1;
+            while(rs.next()) {
+                customerID = rs.getInt("customerID");
+            }
+            rs.close();
+            stmt.close();
+            
+            query = "INSERT INTO creditCards(cardNumber, customerID) VALUES(?,?)";
+            stmt = this.CONNECTION.prepareStatement(query);
+            stmt.setString(1, card);
+            stmt.setInt(2, customerID);
+            stmt.execute();
+            
             return true;
         } catch (SQLException e) {
             System.out.println("Error createCustomerFromCreditCard(): \r\n" + e.getMessage());
             return false;
         } finally {
             try {
+                rs.close();
                 stmt.close();
             } catch (SQLException ex) {
                 Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -350,17 +370,19 @@ public class DBConnection {
      * @param discID
      * @param machine machineID (currently 1 to 6)
      * @param customerID
+     * @param paidFor
      * @return success of rent
      */
-    public boolean rentMovie(String discID, int machine, int customerID) {
+    public boolean rentMovie(String discID, int machine, int customerID, int paidFor) {
         PreparedStatement stmt = null;
 
         try {
-            String query = "INSERT INTO rent(discID, customerID, machineID, status) VALUES(?, ?, ?, 'rented');";
+            String query = "INSERT INTO rent(discID, customerID, machineID, status, paidFor) VALUES(?, ?, ?, 'rented', ?);";
             stmt = this.CONNECTION.prepareStatement(query);
             stmt.setString(1, discID);
             stmt.setInt(2, customerID);
             stmt.setInt(3, machine);
+            stmt.setDouble(4, paidFor);
             stmt.executeUpdate();
             stmt.close();
 
@@ -427,8 +449,27 @@ public class DBConnection {
      * @return success of return
      */
     public boolean returnMovie(Order order, int machineID, double furtherPayment) {
-        furtherPayment += 2.99;
         Statement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            String query = "SELECT paidFor FROM rent WHERE rentID=" + order.getRentID() + ";";
+            stmt = this.CONNECTION.createStatement();
+            rs = stmt.executeQuery(query);
+            while(rs.next()) {
+                furtherPayment += rs.getDouble("paidFor");
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error returnMovie(): \r\n" + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
         try {
             String query = "UPDATE rent SET status=available, paidFor=" + furtherPayment + " WHERE rentID=" + order.getRentID() + "; UPDATE discs SET machine=" + machineID + " WHERE discID=" + order.getDiscID() + ";";
@@ -457,9 +498,11 @@ public class DBConnection {
      */
     public boolean payForMaxFee(Order order) {
         Statement stmt = null;
+        double paidFor = order.getPaidFor();
+        paidFor += 15.00;
 
         try {
-            String query = "UPDATE rent SET status=paid, paidFor=17.99 WHERE rentID=" + order.getRentID() + ";";
+            String query = "UPDATE rent SET status=paid, paidFor=" + paidFor + " WHERE rentID=" + order.getRentID() + ";";
             stmt = this.CONNECTION.createStatement();
             stmt.executeUpdate(query);
 
