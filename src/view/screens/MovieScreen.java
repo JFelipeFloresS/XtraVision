@@ -20,6 +20,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -70,6 +71,7 @@ public class MovieScreen extends JPanel {
         movieInfo.setLayout(new BorderLayout());
         movieInfo.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 2));
         movieInfo.setPreferredSize(new Dimension(windowSize.width / 2, (int) (windowSize.height / 1.5)));
+
         JLabel movieImg = new JLabel();
         movieImg.setIcon(movie.getThumbnail());
         movieImg.setHorizontalAlignment(SwingConstants.CENTER);
@@ -99,9 +101,15 @@ public class MovieScreen extends JPanel {
         infoPanel.setBackground(Color.white);
 
         JPanel descriptionPanel = new JPanel();
-        descriptionPanel.setPreferredSize(new Dimension(windowSize.width / 2, 130));
+        descriptionPanel.setPreferredSize(new Dimension(windowSize.width / 2, 150));
         descriptionPanel.setBackground(Color.white);
+        descriptionPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 2));
+        descriptionPanel.setBackground(new Color(255, 210, 25));
 
+       
+        
+        
+        
         infoPanel.setLayout(new GridLayout(4, 1, 10, 10));
         gridPanel.add(descriptionPanel, BorderLayout.CENTER);
 
@@ -163,6 +171,10 @@ public class MovieScreen extends JPanel {
         returnButton.addActionListener(this.controller);
 
         System.out.println(movie.getDescription());
+    }
+
+    private void getContentPane() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
