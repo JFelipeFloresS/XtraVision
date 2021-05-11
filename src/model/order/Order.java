@@ -74,6 +74,10 @@ public class Order {
     public Date getRentDate() {
         return this.rentDate;
     }
+
+    public void setPaidFor(double paidFor) {
+        this.paidFor = paidFor;
+    }
     
     
 }

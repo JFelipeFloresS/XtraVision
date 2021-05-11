@@ -32,6 +32,8 @@ import view.screens.ReturnHomeScreem;
  */
 public class Controller implements ActionListener {
 
+    private final double MOVIE_PRICE = 2.99;
+    private final String FREE_CODE = "FREEMOVIE";
     private final Frame frame;
     private final DBConnection conn;
     private ArrayList<Movie> movieList;
@@ -72,6 +74,11 @@ public class Controller implements ActionListener {
             String[] a = e.getActionCommand().split(" ");
             addMovieToCart(a[1]);
         }
+
+        if (e.getActionCommand().startsWith("remove movie ")) {
+            String[] a = e.getActionCommand().split(" ");
+            removeMovieFromCart(a[2]);
+        }
         switch (e.getActionCommand()) {
             case "Go to main home screen":
                 resetSession();
@@ -95,9 +102,13 @@ public class Controller implements ActionListener {
             case "log in":
                 logIn();
                 break;
-                
+
             case "return DVD":
                 returnDVD(ReturnHomeScreem.getReturnIDInput());
+                break;
+
+            case "Go to check out":
+                rentMovies();
                 break;
 
             default:
@@ -223,6 +234,7 @@ public class Controller implements ActionListener {
         int currentMovies = selectedMovies.size();
         int totalMovies = selectedMovies.size();
         int limitOfMovies = 2;
+        boolean isFirstFree = false;
 
         int tryAgain = JOptionPane.NO_OPTION;
 
@@ -241,7 +253,26 @@ public class Controller implements ActionListener {
                     if (this.selectedMovies.size() > limitOfMovies) {
                         JOptionPane.showMessageDialog(this.frame, "New customers can only rent " + limitOfMovies + " movies at a time. "
                                 + "Please remove " + (this.selectedMovies.size() - limitOfMovies) + " from your cart before proceeding to payment.", "Oops...", JOptionPane.PLAIN_MESSAGE);
-                        break;
+                        return;
+                    }
+
+                    JLabel freeLabel = new JLabel("Please enter code");
+                    freeLabel.setForeground(Color.WHITE);
+                    JTextField freeField = new JTextField(16);
+                    Box freeBox = Box.createVerticalBox();
+                    freeBox.add(freeLabel);
+                    freeBox.add(freeField);
+
+                    int freeChoice = JOptionPane.showConfirmDialog(this.frame, freeBox, FREE_CODE, JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                    if (freeChoice == JOptionPane.YES_OPTION) {
+                        if (freeField.getText().equalsIgnoreCase(FREE_CODE)) {
+                            isFirstFree = true;
+                            JOptionPane.showMessageDialog(this.frame, "Your order is free of charge, on us!", FREE_CODE, JOptionPane.PLAIN_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(this.frame, "Invalid code", FREE_CODE, JOptionPane.PLAIN_MESSAGE);
+                            return;
+                        }
                     }
 
                     int wantsAccount = JOptionPane.showConfirmDialog(this.frame, "Would you like to create an account?", "Create account", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -302,7 +333,12 @@ public class Controller implements ActionListener {
 
                 boolean success = true;
                 for (Order o : this.order) {
-                    // success = success && this.conn.rentMovie(o.getDiscID(), o.getMachineID(), o.getCustomerID());
+                    if (isFirstFree) {
+                        o.setPaidFor(0.0);
+                    } else {
+                        o.setPaidFor(MOVIE_PRICE);
+                    }
+                    // success = success && this.conn.rentMovie(o.getMovie().getId(), o.getMachineID(), o.getCustomerID(), o.getPaidFor());
                 }
                 // this.conn.updateCustomer(currentMovies, totalMovies);
                 if (success) {
@@ -328,7 +364,8 @@ public class Controller implements ActionListener {
     }
 
     /**
-     * Login pop-up for user to log in using either a credit card or email and password.
+     * Login pop-up for user to log in using either a credit card or email and
+     * password.
      */
     private void logIn() {
         String[] loginOptions = {"CARD", "EMAIL AND PASSWORD"};
@@ -404,7 +441,8 @@ public class Controller implements ActionListener {
     }
 
     /**
-     * Resets the currentCustomer, selectMovies list and order list, then returns the user to the home screen.
+     * Resets the currentCustomer, selectMovies list and order list, then
+     * returns the user to the home screen.
      */
     private void resetSession() {
         this.selectedMovies.removeAll(this.selectedMovies);
@@ -412,7 +450,7 @@ public class Controller implements ActionListener {
         this.currentCustomer = null;
         this.frame.changePanel(new HomeScreen(this));
     }
-    
+
     private void returnDVD(String id) {
         Order o = this.conn.getOrderFromMovieID(id);
         if (o == null) {
@@ -426,7 +464,7 @@ public class Controller implements ActionListener {
         } else {
             System.out.println("just return");
         }
-        
+
         resetSession();
     }
 }

@@ -429,7 +429,7 @@ public class DBConnection {
      * @param paidFor
      * @return success of rent
      */
-    public boolean rentMovie(String discID, int machine, int customerID, int paidFor) {
+    public boolean rentMovie(String discID, int machine, int customerID, double paidFor) {
         PreparedStatement stmt = null;
 
         try {
