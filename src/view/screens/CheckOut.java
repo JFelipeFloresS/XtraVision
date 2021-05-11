@@ -11,12 +11,14 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import model.movie.Movie;
 
 /**
  *
@@ -62,6 +64,32 @@ public class CheckOut extends JPanel {
         JPanel center =  new JPanel();
         this.add(center,BorderLayout.CENTER);
         
+        JPanel moviesCheckout = new JPanel();
+        center.add(moviesCheckout,BorderLayout.CENTER);
+        
+        ArrayList< Movie> movies = this.controller.getSelectedMovies();
+        for (Movie movie:movies){
+            
+            JPanel p = new JPanel();
+            moviesCheckout.add(p);
+            
+            JLabel name = new JLabel(movie.getTitle());
+            p.add(name);
+            
+            JButton x = new JButton();
+             Image imgX = null;
+        try {
+            imgX = ImageIO.read(getClass().getResource("/Images/XXXXXX.jpeg"));
+            imgX = imgX.getScaledInstance(10,10, java.awt.Image.SCALE_SMOOTH);
+        } catch (IOException ex) {
+            System.out.println("Image erro");
+        }
+          x.setIcon(new ImageIcon(imgX));
+          p.add(x);
+          x.setActionCommand("remove movie " + movie.getId());
+          x.addActionListener(this.controller);
+       
+        }
         
         
         
