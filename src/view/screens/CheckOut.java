@@ -93,6 +93,9 @@ public class CheckOut extends JPanel {
         
         
         
+        
+        
+        
         JPanel east = new JPanel();
         this.add(east,BorderLayout.EAST);
         
