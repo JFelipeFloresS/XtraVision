@@ -3,9 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/thyag/Documents/GitHub/XtraVision/src/view/screens/HomeScreen.java</file>
-            <file>file:/C:/Users/thyag/Documents/GitHub/XtraVision/src/view/screens/MovieScreen.java</file>
-            <file>file:/C:/Users/thyag/Documents/GitHub/XtraVision/src/view/screens/RentHomescreens.java</file>
+            <file>file:/C:/Users/josef/messing%20with%20codes/XtraVision/src/view/screens/HomeScreen.java</file>
+            <file>file:/C:/Users/josef/messing%20with%20codes/XtraVision/src/controller/Controller.java</file>
+            <file>file:/C:/Users/josef/messing%20with%20codes/XtraVision/src/model/order/Order.java</file>
+            <file>file:/C:/Users/josef/messing%20with%20codes/XtraVision/src/model/DBConnection/DBConnection.java</file>
+            <file>file:/C:/Users/josef/messing%20with%20codes/XtraVision/src/view/screens/ReturnHomeScreem.java</file>
+            <file>file:/C:/Users/josef/messing%20with%20codes/XtraVision/src/model/movie/Movie.java</file>
+            <file>file:/C:/Users/josef/messing%20with%20codes/XtraVision/src/model/customer/Customer.java</file>
+            <file>file:/C:/Users/josef/messing%20with%20codes/XtraVision/src/model/customer/Loyalty.java</file>
+            <file>file:/C:/Users/josef/messing%20with%20codes/XtraVision/src/view/screens/RentHomescreens.java</file>
+            <file>file:/C:/Users/josef/messing%20with%20codes/XtraVision/src/view/screens/MovieScreen.java</file>
+            <file>file:/C:/Users/josef/messing%20with%20codes/XtraVision/src/view/frame/Frame.java</file>
         </group>
     </open-files>
 </project-private>
