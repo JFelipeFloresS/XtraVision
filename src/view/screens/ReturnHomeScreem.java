@@ -6,6 +6,7 @@
 package view.screens;
 
 import controller.Controller;
+import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,31 +17,29 @@ import javax.swing.JTextField;
  * @author thyag
  */
 public class ReturnHomeScreem extends JPanel {
-    
+
     private final Controller controller;
-    private JTextField idInput;
-    
+    private static JTextField idInput;
+
     public ReturnHomeScreem(Controller controller) {
         this.controller = controller;
-        
-       this.idInput = new JTextField(20);
-        
-     JButton returnDvd = new JButton("Return DvD");
-     JLabel label = new JLabel("Insert The Dvd Id!");
-     
-     this.add(label);
-     this.add(this.idInput);
-     this.add(returnDvd);
-     
-        
-        
+
+        ReturnHomeScreem.idInput = new JTextField(20);
+
+        JButton returnDvd = new JButton("Return DVD");
+        returnDvd.setActionCommand("return DVD");
+        returnDvd.addActionListener(this.controller);
+        JLabel label = new JLabel("Insert The DVD ID:");
+        label.setForeground(Color.WHITE);
+
+        this.add(label);
+        this.add(ReturnHomeScreem.idInput);
+        this.add(returnDvd);
+
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
+    public static String getReturnIDInput() {
+        return ReturnHomeScreem.idInput.getText();
+    }
+
 }

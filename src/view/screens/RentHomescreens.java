@@ -16,6 +16,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -120,6 +122,7 @@ public class RentHomescreens extends JPanel {
         north.add(returnButtonPanel, BorderLayout.EAST);
         returnButtonPanel.setPreferredSize(new Dimension(winSize.width / 12, winSize.height / 6));
         returnButtonPanel.setBackground(new Color(9, 9, 9));
+        returnButtonPanel.setLayout(new BorderLayout(5, 5));
         JButton homeScreen = new JButton("HOME");
         homeScreen.setPreferredSize(new Dimension(75, 50));
         homeScreen.addActionListener(this.controller);
@@ -129,7 +132,27 @@ public class RentHomescreens extends JPanel {
         homeScreen.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 2));
         homeScreen.setFont(new Font("DIALOG", Font.BOLD, 20));
         homeScreen.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        returnButtonPanel.add(homeScreen);
+        returnButtonPanel.add(homeScreen, BorderLayout.NORTH);
+        JButton cart = new JButton();
+        cart.setActionCommand("Check valid order");
+        cart.addActionListener(this.controller);
+        cart.setBackground(new Color(9, 9, 9));
+        cart.setForeground(Color.WHITE);
+        cart.setBorder(null);
+        cart.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        cart.setText("" + this.controller.getSelectedMovies().size());
+        cart.setForeground(new Color(255, 210, 25));
+        cart.setFont(new Font("DIALOG", Font.BOLD, 30));
+        cart.setVerticalTextPosition(JButton.NORTH);
+        cart.setHorizontalTextPosition(SwingConstants.TRAILING);
+        try {
+            Image cartImage = ImageIO.read(getClass().getResource("/Images/cart.png"));
+            cartImage = cartImage.getScaledInstance(75, 75, Image.SCALE_SMOOTH);
+            cart.setIcon(new ImageIcon(cartImage));
+        } catch (IOException ex) {
+            Logger.getLogger(RentHomescreens.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        returnButtonPanel.add(cart, BorderLayout.SOUTH);
 
         JLabel topImage = new JLabel();
         Image img = null;
@@ -142,6 +165,23 @@ public class RentHomescreens extends JPanel {
         topImage.setIcon(new ImageIcon(img));
         north.add(topImage);
         topImage.setHorizontalAlignment(SwingConstants.CENTER);
+
+        if (this.controller.getCurrentCustomer() == null) {
+
+            JPanel northwest = new JPanel();
+            northwest.setBackground(new Color(9, 9, 9));
+            north.add(northwest, BorderLayout.WEST);
+            JButton login = new JButton("LOG IN");
+            login.setActionCommand("log in");
+            login.addActionListener(this.controller);
+            login.setForeground(Color.WHITE);
+            login.setBorder(BorderFactory.createLineBorder(new Color(250, 210, 25), 2));
+            login.setFont(new Font("DIALOG", Font.BOLD, 20));
+            login.setPreferredSize(new Dimension(75, 50));
+            login.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            northwest.add(login);
+        
+        }
 
         JPanel sidePanel = new JPanel();
         sidePanel.setBackground(new Color(255, 210, 25));

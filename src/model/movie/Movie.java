@@ -144,6 +144,14 @@ public class Movie {
         this.category = new ArrayList<>();
     }
 
+    public Movie(String discID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Movie(String discID, Date rentDate) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public String getDuration() {
         return duration;
     }

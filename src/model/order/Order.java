@@ -6,6 +6,7 @@
 package model.order;
 
 import java.sql.Date;
+import model.movie.Movie;
 
 /**
  *
@@ -14,15 +15,16 @@ import java.sql.Date;
 public class Order {
     private int rentID, customerID;
     private final int machineID;
-    private String discID, status;
+    private Movie movie;
+    private String status;
     private Date rentDate;
     private double paidFor;
 
-    public Order(int rentID, int customerID, int machineID, String discID, String status, Date rentDate, double paidFor) {
+    public Order(int rentID, int customerID, int machineID, String status, Date rentDate, double paidFor, String discID) {
         this.rentID = rentID;
         this.customerID = customerID;
         this.machineID = machineID;
-        this.discID = discID;
+        this.movie = new Movie(discID, rentDate);
         this.status = status;
         this.rentDate = rentDate;
         this.paidFor = paidFor;
@@ -38,7 +40,7 @@ public class Order {
     }
 
     public void setDiscID(String discID) {
-        this.discID = discID;
+        this.movie = new Movie(discID);
     }
 
     public void setStatus(String status) {
@@ -61,8 +63,8 @@ public class Order {
         return this.machineID;
     }
 
-    public String getDiscID() {
-        return this.discID;
+    public Movie getMovie() {
+        return this.movie;
     }
 
     public String getStatus() {

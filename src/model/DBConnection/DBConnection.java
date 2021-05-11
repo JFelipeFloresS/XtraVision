@@ -131,6 +131,62 @@ public class DBConnection {
         return customer;
     }
 
+    public Customer getCustomerFromEmailAdress(String email, String password) {
+        if (checkPassword(email, password) != 1) {
+            return null;
+        } else {
+            Customer customer = null;
+            PreparedStatement stmt = null;
+            ResultSet rs = null;
+            try {
+                String query = "SELECT * FROM customers WHERE email=?;";
+                stmt = this.CONNECTION.prepareStatement(query);
+                stmt.setString(1, email);
+                rs = stmt.executeQuery();
+                while (rs.next()) {
+                    customer = new Customer(rs.getInt("customers.customerID"), rs.getString("email"), rs.getInt("currentMovies"), rs.getInt("totalMovies"), rs.getString("loyalty"));
+                }
+            } catch (SQLException e) {
+                System.out.println("Error getCustomerFromEmailAddress(): \r\n" + e.getMessage());
+            } finally {
+                try {
+                    rs.close();
+                    stmt.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            return customer;
+        }
+    }
+    
+    public Customer getCustomerFromID(String id) {
+        Customer customer = null;
+            PreparedStatement stmt = null;
+            ResultSet rs = null;
+            try {
+                String query = "SELECT * FROM customers WHERE customerID=?;";
+                stmt = this.CONNECTION.prepareStatement(query);
+                stmt.setString(1, id);
+                rs = stmt.executeQuery();
+                while (rs.next()) {
+                    customer = new Customer(rs.getInt("customers.customerID"), rs.getString("email"), rs.getInt("currentMovies"), rs.getInt("totalMovies"), rs.getString("loyalty"));
+                }
+            } catch (SQLException e) {
+                System.out.println("Error getCustomerFromEmailAddress(): \r\n" + e.getMessage());
+            } finally {
+                try {
+                    rs.close();
+                    stmt.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            return customer;
+    }
+
     /**
      * Creates a customer
      *
@@ -168,24 +224,24 @@ public class DBConnection {
             stmt.setString(6, salt);
             stmt.executeQuery();
             stmt.close();
-            
+
             query = "SELECT customerID FROM customers WHERE email=?;";
             stmt = this.CONNECTION.prepareStatement(query);
             stmt.setString(1, email);
             rs = stmt.executeQuery();
             int customerID = -1;
-            while(rs.next()) {
+            while (rs.next()) {
                 customerID = rs.getInt("customerID");
             }
             rs.close();
             stmt.close();
-            
+
             query = "INSERT INTO creditCards(cardNumber, customerID) VALUES(?,?)";
             stmt = this.CONNECTION.prepareStatement(query);
             stmt.setString(1, card);
             stmt.setInt(2, customerID);
             stmt.execute();
-            
+
             return true;
         } catch (SQLException e) {
             System.out.println("Error createCustomerFromCreditCard(): \r\n" + e.getMessage());
@@ -422,7 +478,7 @@ public class DBConnection {
             stmt.setString(1, movieID);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                order = new Order(rs.getInt("rentID"), rs.getInt("customerID"), rs.getInt("machineID"), rs.getString("discID"), rs.getString("status"), rs.getDate("rentDate"), rs.getDouble("paidFor"));
+                order = new Order(rs.getInt("rentID"), rs.getInt("customerID"), rs.getInt("machineID"), rs.getString("status"), rs.getDate("rentDate"), rs.getDouble("paidFor"), rs.getString("discID"));
             }
 
         } catch (SQLException e) {
@@ -451,15 +507,15 @@ public class DBConnection {
     public boolean returnMovie(Order order, int machineID, double furtherPayment) {
         Statement stmt = null;
         ResultSet rs = null;
-        
+
         try {
             String query = "SELECT paidFor FROM rent WHERE rentID=" + order.getRentID() + ";";
             stmt = this.CONNECTION.createStatement();
             rs = stmt.executeQuery(query);
-            while(rs.next()) {
+            while (rs.next()) {
                 furtherPayment += rs.getDouble("paidFor");
             }
-            
+
         } catch (SQLException e) {
             System.out.println("Error returnMovie(): \r\n" + e.getMessage());
         } finally {
@@ -472,7 +528,7 @@ public class DBConnection {
         }
 
         try {
-            String query = "UPDATE rent SET status=available, paidFor=" + furtherPayment + " WHERE rentID=" + order.getRentID() + "; UPDATE discs SET machine=" + machineID + " WHERE discID=" + order.getDiscID() + ";";
+            String query = "UPDATE rent SET status=available, paidFor=" + furtherPayment + " WHERE rentID=" + order.getRentID() + "; UPDATE discs SET machine=" + machineID + " WHERE discID=" + order.getMovie().getId() + ";";
             stmt = this.CONNECTION.createStatement();
             stmt.executeUpdate(query);
 
@@ -596,12 +652,12 @@ public class DBConnection {
         ArrayList<Movie> newMovies = movies;
         Statement stmt = null;
         ResultSet rs = null;
-        
+
         try {
             String query = "SELECT * FROM moviesGenre;";
             stmt = this.CONNECTION.createStatement();
             rs = stmt.executeQuery(query);
-            while(rs.next()) {
+            while (rs.next()) {
                 String id = rs.getString("movieID");
                 String genre = rs.getString("genre");
                 for (Movie m : newMovies) {
@@ -611,7 +667,7 @@ public class DBConnection {
                     }
                 }
             }
-            
+
         } catch (SQLException e) {
             System.out.println("Error addCategoriesToMovies(): \r\n" + e.getMessage());
         } finally {
@@ -625,7 +681,7 @@ public class DBConnection {
 
         return newMovies;
     }
-    
+
     public String[] getMachineIDs() {
         String[] machines;
         Statement stmt = null;
@@ -635,17 +691,17 @@ public class DBConnection {
             String query = "SELECT DISTINCT machine FROM discs;";
             stmt = this.CONNECTION.createStatement();
             rs = stmt.executeQuery(query);
-            while(rs.next()) {
+            while (rs.next()) {
                 i++;
             }
-            
+
         } catch (SQLException e) {
             System.out.println("Error getmachineIDs(): \r\n" + e.getMessage());
         }
-        
+
         machines = new String[i];
         for (int j = 0; j < machines.length; j++) {
-            machines[j] = ""+(j+1);
+            machines[j] = "" + (j + 1);
         }
         return machines;
     }

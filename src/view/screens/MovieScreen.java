@@ -160,6 +160,8 @@ public class MovieScreen extends JPanel {
         east.add(rentPanel, BorderLayout.NORTH);
 
         JButton rent = new JButton("RENT");
+        rent.setActionCommand("rent " + movie.getId());
+        rent.addActionListener(this.controller);
         rentPanel.add(rent);
 
         JPanel returnPanel = new JPanel();
