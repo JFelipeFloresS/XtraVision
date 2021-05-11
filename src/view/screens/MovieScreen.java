@@ -15,7 +15,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.IOException;
-import java.util.regex.Pattern;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -53,7 +53,7 @@ public class MovieScreen extends JPanel {
         Image img = null;
         try {
             img = ImageIO.read(getClass().getResource("/Images/ExtraVision.jpeg"));
-            img = img.getScaledInstance(windowSize.width / 4, windowSize.height / 8, java.awt.Image.SCALE_SMOOTH);
+            img = img.getScaledInstance(windowSize.width / 6, windowSize.height / 10, java.awt.Image.SCALE_SMOOTH);
         } catch (IOException ex) {
             System.out.println("Image erro");
         }
@@ -70,15 +70,16 @@ public class MovieScreen extends JPanel {
         center.add(movieInfo);
         movieInfo.setLayout(new BorderLayout());
         movieInfo.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 2));
-        movieInfo.setPreferredSize(new Dimension(windowSize.width / 2, (int) (windowSize.height / 1.5)));
+        movieInfo.setPreferredSize(new Dimension(windowSize.width / 2, (int) (windowSize.height)));
 
         JLabel movieImg = new JLabel();
+        movieImg.setPreferredSize(new Dimension(windowSize.width / 2, (int) (windowSize.height * 0.34)));
         movieImg.setIcon(movie.getThumbnail());
         movieImg.setHorizontalAlignment(SwingConstants.CENTER);
         movieInfo.add(movieImg, BorderLayout.NORTH);
 
         JPanel titlePanel = new JPanel();
-        titlePanel.setPreferredSize(new Dimension(windowSize.width / 2, 100));
+        titlePanel.setPreferredSize(new Dimension(windowSize.width / 2, (int) (windowSize.height * 0.06)));
         movieInfo.add(titlePanel, BorderLayout.CENTER);
         titlePanel.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 2));
         titlePanel.setBackground(new Color(255, 210, 25));
@@ -91,7 +92,7 @@ public class MovieScreen extends JPanel {
 
         JPanel gridPanel = new JPanel();
         movieInfo.add(gridPanel, BorderLayout.SOUTH);
-
+        gridPanel.setPreferredSize(new Dimension(windowSize.width / 2, (int) (windowSize.height * 0.6)));
         gridPanel.setLayout(new BorderLayout(40, 40));
         gridPanel.setBackground(Color.white);
         gridPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 2));
@@ -101,17 +102,18 @@ public class MovieScreen extends JPanel {
         infoPanel.setBackground(Color.white);
 
         JPanel descriptionPanel = new JPanel();
-        descriptionPanel.setPreferredSize(new Dimension(windowSize.width / 2, 150));
+        descriptionPanel.setPreferredSize(new Dimension(windowSize.width / 2, 250));
         descriptionPanel.setBackground(Color.white);
-        descriptionPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 2));
-        descriptionPanel.setBackground(new Color(255, 210, 25));
+        descriptionPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 50));
 
-       
-        
-        
-        
+        JScrollPane scrollPane = new JScrollPane(descriptionPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBounds(50, 30, 300, 50);
+        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 2));
+
         infoPanel.setLayout(new GridLayout(4, 1, 10, 10));
-        gridPanel.add(descriptionPanel, BorderLayout.CENTER);
+        gridPanel.add(scrollPane, BorderLayout.CENTER);
 
         JLabel director = new JLabel("Director: " + movie.getDirector());
         infoPanel.add(director);
@@ -137,8 +139,8 @@ public class MovieScreen extends JPanel {
         description.setWrapStyleWord(true);
         description.setColumns(30);
         description.setRows(5);
-
         descriptionPanel.add(description);
+
 
         Component[] components = infoPanel.getComponents();
         for (Component c : components) {
