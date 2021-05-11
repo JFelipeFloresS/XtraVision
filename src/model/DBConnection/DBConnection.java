@@ -222,7 +222,7 @@ public class DBConnection {
             }
             stmt.setString(5, password);
             stmt.setString(6, salt);
-            stmt.executeQuery();
+            stmt.execute();
             stmt.close();
 
             query = "SELECT customerID FROM customers WHERE email=?;";

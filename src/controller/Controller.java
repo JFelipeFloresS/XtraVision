@@ -111,7 +111,7 @@ public class Controller implements ActionListener {
             case "Go to check out":
                 rentMovies();
                 break;
-                
+
             case "Check valid order":
                 this.frame.changePanel(new CheckOut(this));
                 break;
@@ -221,9 +221,11 @@ public class Controller implements ActionListener {
         for (Movie m : this.movieList) {
             if (m.getId().equals(movieID)) {
                 movie = m;
+                break;
             }
         }
         this.selectedMovies.remove(movie);
+        this.frame.changePanel(new CheckOut(this));
     }
 
     /**
@@ -245,6 +247,9 @@ public class Controller implements ActionListener {
 
         while (tryAgain == JOptionPane.NO_OPTION) {
             cardNumber = JOptionPane.showInputDialog(this.frame, "Please enter your card number", "Payment hub", JOptionPane.PLAIN_MESSAGE);
+            if (cardNumber == null || cardNumber.equals("")) {
+                return;
+            }
             // validates card number
             if (Validator.isValidCreditCard(cardNumber)) {
                 Customer customer = this.conn.getCustomerFromCreditCard(cardNumber); // get customer from credit card number
@@ -324,9 +329,9 @@ public class Controller implements ActionListener {
                                 break;
                             }
                         }
-                        // this.conn.createCustomer(cardNumber, email, password, currentMovies, totalMovies);
+                        this.conn.createCustomer(cardNumber, email, password, currentMovies, totalMovies);
                     } else {
-                        // this.conn.createCustomer(cardNumber, null, null, currentMovies, totalMovies);
+                        this.conn.createCustomer(cardNumber, null, null, currentMovies, totalMovies);
 
                     }
 
@@ -343,9 +348,9 @@ public class Controller implements ActionListener {
                     } else {
                         o.setPaidFor(MOVIE_PRICE);
                     }
-                    // success = success && this.conn.rentMovie(o.getMovie().getId(), o.getMachineID(), o.getCustomerID(), o.getPaidFor());
+                    success = success && this.conn.rentMovie(o.getMovie().getId(), o.getMachineID(), o.getCustomerID(), o.getPaidFor());
                 }
-                // this.conn.updateCustomer(currentMovies, totalMovies);
+                this.conn.updateCustomer(currentMovies, totalMovies);
                 if (success) {
                     int receipt = JOptionPane.showConfirmDialog(this.frame, "Your order was successful! Please don't forget to take your movies. Would you like your receipt?", "Thank you!", JOptionPane.YES_NO_OPTION);
 
@@ -354,12 +359,13 @@ public class Controller implements ActionListener {
                     }
 
                     resetSession();
+                    return;
                 } else {
                     JOptionPane.showMessageDialog(this.frame, "There seems to be an issue with your order. Please try again.", "Oops...", JOptionPane.PLAIN_MESSAGE);
                 }
             } else {
                 if (cardNumber.equals("")) {
-                    break;
+                    return;
                 } else {
                     JOptionPane.showMessageDialog(this.frame, "Please try a different card number", "Invalid card format", JOptionPane.ERROR_MESSAGE);
                 }
