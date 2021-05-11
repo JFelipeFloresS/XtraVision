@@ -30,7 +30,7 @@ import model.movie.Movie;
 
 /**
  *
- * @author thyag
+ * @author thyago
  */
 public class MovieScreen extends JPanel {
     
@@ -140,7 +140,7 @@ public class MovieScreen extends JPanel {
         description.setColumns(30);
         description.setRows(5);
         descriptionPanel.add(description);
-        
+        description.setAlignmentY(CENTER_ALIGNMENT);
         
         Component[] components = infoPanel.getComponents();
         for (Component c : components) {

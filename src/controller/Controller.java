@@ -21,6 +21,7 @@ import model.customer.Customer;
 import model.movie.Movie;
 import model.order.Order;
 import view.frame.Frame;
+import view.screens.CheckOut;
 import view.screens.HomeScreen;
 import view.screens.MovieScreen;
 import view.screens.RentHomescreens;
@@ -109,6 +110,10 @@ public class Controller implements ActionListener {
 
             case "Go to check out":
                 rentMovies();
+                break;
+                
+            case "Check valid order":
+                this.frame.changePanel(new CheckOut(this));
                 break;
 
             default:
