@@ -5,6 +5,7 @@
  */
 package model.movie;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -166,6 +167,13 @@ public class Movie {
 
     public ImageIcon getThumbnail() {
         return thumbnail;
+    }
+    
+    public ImageIcon getResizedThumbnail(int width, int height) {
+        Image img = this.thumbnail.getImage();
+        img = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        
+        return new ImageIcon(img);
     }
 
     public String getId() {
