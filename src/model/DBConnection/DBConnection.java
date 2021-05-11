@@ -473,7 +473,7 @@ public class DBConnection {
         ResultSet rs = null;
 
         try {
-            String query = "SELECT * FROM rent WHERE movieID=? AND status='rented';";
+            String query = "SELECT * FROM rent WHERE discID=? AND status='rented';";
             stmt = this.CONNECTION.prepareStatement(query);
             stmt.setString(1, movieID);
             rs = stmt.executeQuery();
@@ -558,7 +558,7 @@ public class DBConnection {
         paidFor += 15.00;
 
         try {
-            String query = "UPDATE rent SET status=paid, paidFor=" + paidFor + " WHERE rentID=" + order.getRentID() + ";";
+            String query = "UPDATE rent SET status='paid', paidFor=" + paidFor + " WHERE rentID=" + order.getRentID() + ";";
             stmt = this.CONNECTION.createStatement();
             stmt.executeUpdate(query);
 
