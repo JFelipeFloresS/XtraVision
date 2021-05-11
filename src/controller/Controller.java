@@ -226,6 +226,7 @@ public class Controller implements ActionListener {
         }
         this.selectedMovies.remove(movie);
         this.frame.changePanel(new CheckOut(this));
+        JOptionPane.showMessageDialog(this.frame, "You removed " + movie.getTitle() + " successfully!", "Movie removed", JOptionPane.PLAIN_MESSAGE);
     }
 
     /**

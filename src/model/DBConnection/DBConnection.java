@@ -706,4 +706,14 @@ public class DBConnection {
         return machines;
     }
 
+    
+    public boolean updateCustomer(int currentMovies, int totalMovies) {
+        Statement stmt = null;
+        try {
+            String query = "UPDATE ";
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
