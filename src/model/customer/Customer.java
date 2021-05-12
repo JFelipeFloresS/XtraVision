@@ -73,6 +73,7 @@ public class Customer {
  */
     public void addMoviesRented(int moviesRented) {
         this.currentMovies += moviesRented;
+        this.totalMovies += moviesRented;
     }
     
   /**

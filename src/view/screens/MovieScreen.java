@@ -174,11 +174,6 @@ public class MovieScreen extends JPanel {
         returnButton.setActionCommand("Go to rent home screem");
         returnButton.addActionListener(this.controller);
         
-        System.out.println(movie.getDescription());
-    }
-    
-    private void getContentPane() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

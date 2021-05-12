@@ -39,13 +39,11 @@ public class Controller implements ActionListener {
     private final DBConnection conn;
     private ArrayList<Movie> movieList;
     private final ArrayList<Movie> selectedMovies;
-    private final ArrayList<Order> order;
     private int machineID;
     private Customer currentCustomer;
 
     public Controller() {
         this.machineID = 1;
-        this.order = new ArrayList<>();
         this.selectedMovies = new ArrayList<>();
         this.currentCustomer = null;
 
@@ -113,21 +111,21 @@ public class Controller implements ActionListener {
                 break;
 
             case "Check valid order":
-                this.frame.changePanel(new CheckOut(this));
+                if (this.selectedMovies.size() > 0) {
+                    this.frame.changePanel(new CheckOut(this));
+                } else {
+                    JOptionPane.showMessageDialog(this.frame, "Please add a movie to your cart before proceeding to checkout.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+                }
                 break;
 
             default:
-                System.out.println(e.getActionCommand());
+                //System.out.println(e.getActionCommand());
                 break;
         }
     }
 
     public Customer getCurrentCustomer() {
         return currentCustomer;
-    }
-
-    public ArrayList<Order> getOrder() {
-        return order;
     }
 
     public int getMachineID() {
@@ -236,6 +234,11 @@ public class Controller implements ActionListener {
      * Sends receipt.
      */
     private void rentMovies() {
+        if (this.currentCustomer != null) {
+            rentMoviesLoggedIn();
+            return;
+        }
+
         String cardNumber = "";
         String email = "";
         String password = "";
@@ -338,20 +341,172 @@ public class Controller implements ActionListener {
 
                 } else {
                     email = customer.getEmail();
-                    currentMovies = customer.getCurrentMovies() + selectedMovies.size();
-                    totalMovies = customer.getTotalMovies() + selectedMovies.size();
+                    currentMovies = customer.getCurrentMovies();
+                    totalMovies = customer.getTotalMovies();
+                }
+
+                customer = this.conn.getCustomerFromCreditCard(cardNumber);
+
+                double totalPrice = 0.0;
+                for (Movie m : this.selectedMovies) {
+                    if (!isFirstFree) {
+                        totalPrice += MOVIE_PRICE;
+                    }
+                }
+
+                int pay = JOptionPane.showConfirmDialog(this.frame, "Your order will total €" + totalPrice + "\r\n Proceed with payment?", "TOTAL", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if (pay == JOptionPane.NO_OPTION) {
+                    return;
+                }
+
+                JOptionPane.showInputDialog(this.frame, "Mock payment card PIN required (won't be checked now).", "Enter PIN", JOptionPane.PLAIN_MESSAGE);
+
+                for (Movie m : this.selectedMovies) {
+                    double price;
+                    if (isFirstFree) {
+                        price = 0.0;
+                    } else {
+                        price = MOVIE_PRICE;
+                    }
+                    if (this.conn.rentMovie(m.getId(), this.getMachineID(), customer.getId(), price)) {
+
+                        currentMovies += 1;
+                        totalMovies += 1;
+                    }
+                }
+                this.conn.updateCustomerNumberOfMovies(currentMovies, totalMovies, customer.getId());
+                int receipt = JOptionPane.showConfirmDialog(this.frame, "Your order was successful! Please don't forget to take your movies. Would you like your receipt?", "Thank you!", JOptionPane.YES_NO_OPTION);
+
+                if (receipt == JOptionPane.YES_OPTION) {
+                    // ****** BOTAR CODIGO DE MANDAR EMAIL AQUI **********
+                }
+
+                resetSession();
+                return;
+            } else {
+                if (cardNumber.equals("")) {
+                    return;
+                } else {
+                    JOptionPane.showMessageDialog(this.frame, "Please try a different card number", "Invalid card format", JOptionPane.ERROR_MESSAGE);
+                }
+
+            }
+        }
+    }
+
+    private void rentMoviesLoggedIn() {
+        int limitOfMovies = 4;
+        String cardNumber = "";
+        boolean isNextFree = false;
+
+        int tryAgain = JOptionPane.NO_OPTION;
+
+        while (tryAgain == JOptionPane.NO_OPTION) {
+            cardNumber = JOptionPane.showInputDialog(this.frame, "Please enter your card number", "Payment hub", JOptionPane.PLAIN_MESSAGE);
+            if (cardNumber == null || cardNumber.equals("")) {
+                return;
+            }
+            // validates card number
+            if (Validator.isValidCreditCard(cardNumber)) {
+                if (!this.currentCustomer.getCreditCards().contains(cardNumber)) {
+                    this.currentCustomer.addCreditCard(cardNumber);
+                }
+
+                // 
+                if (this.getCurrentCustomer().getCurrentMovies() + this.selectedMovies.size() > limitOfMovies) {
+                    JOptionPane.showMessageDialog(this.frame, "Customers can only rent " + limitOfMovies + " movies at a time. \r\n"
+                            + "Please remove " + (this.getCurrentCustomer().getCurrentMovies() - limitOfMovies) + " movie(s) from your cart before proceeding to payment. \r\nOr return the movies you've already rented.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+                    return;
+                }
+
+                if (this.currentCustomer.getEmail() == null) {
+                    String email = "";
+                    String password = "";
+                    int wantsAccount = JOptionPane.showConfirmDialog(this.frame, "Would you like to add an email to your account?", "Add email", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    if (wantsAccount == JOptionPane.YES_OPTION) {
+                        while (!Validator.isValidEmail(email)) {
+                            email = JOptionPane.showInputDialog(this.frame, "Please insert your email", "Email address", JOptionPane.PLAIN_MESSAGE);
+                            if (!Validator.isValidEmail(email)) {
+                                JOptionPane.showConfirmDialog(this.frame, "Please try a valid email address.", "Error", JOptionPane.PLAIN_MESSAGE);
+                            }
+                        }
+
+                        this.currentCustomer.setEmail(email);
+
+                        String confirmPassword = " ";
+                        while (!Validator.isValidPassword(password) && !password.equals(confirmPassword)) {
+                            JPasswordField passField = new JPasswordField(10);
+                            JLabel passLabel = new JLabel("Please enter your password");
+                            Box passBox = Box.createHorizontalBox();
+                            passBox.add(passLabel);
+                            passBox.add(passField);
+                            int pAnswer = JOptionPane.showConfirmDialog(this.frame, passBox, "Password", JOptionPane.PLAIN_MESSAGE);
+                            if (pAnswer == JOptionPane.OK_OPTION) {
+                                password = passField.getText();
+                                if (!Validator.isValidPassword(password)) {
+                                    JOptionPane.showConfirmDialog(this.frame, "Your password must contain at least 8 characters, one digit, one lower case letter, one upper case letter and a symbol.");
+                                    continue;
+                                }
+
+                                JPasswordField confirm = new JPasswordField(10);
+                                JLabel confirmLabel = new JLabel("Please confirm you password.");
+                                Box confirmBox = Box.createHorizontalBox();
+                                confirmBox.add(confirmLabel);
+                                confirmBox.add(confirm);
+                                int cAnswer = JOptionPane.showConfirmDialog(this.frame, confirmBox, "Confirm password", JOptionPane.PLAIN_MESSAGE);
+                                if (cAnswer == JOptionPane.OK_OPTION) {
+                                    confirmPassword = confirm.getText();
+                                    if (!password.equals(confirmPassword)) {
+                                        JOptionPane.showConfirmDialog(this.frame, "Your passwords don't match, please try again.");
+                                        continue;
+                                    }
+                                    this.conn.updateCustomerPassword(password);
+                                } else {
+                                    break;
+                                }
+                            } else {
+                                break;
+                            }
+                        }
+
+                    }
+
+                    this.conn.updateCustomerEmail(email);
                 }
 
                 boolean success = true;
-                for (Order o : this.order) {
-                    if (isFirstFree) {
-                        o.setPaidFor(0.0);
-                    } else {
-                        o.setPaidFor(MOVIE_PRICE);
+                double totalPrice = 0.0;
+
+                for (Movie m : this.selectedMovies) {
+                    if (!isNextFree) {
+                        totalPrice += MOVIE_PRICE;
                     }
-                    success = success && this.conn.rentMovie(o.getMovie().getId(), o.getMachineID(), o.getCustomerID(), o.getPaidFor());
                 }
-                this.conn.updateCustomer(currentMovies, totalMovies);
+
+                int proceed = JOptionPane.showConfirmDialog(this.frame, "Your order will total €" + totalPrice + "\r\n Proceed with payment?", "TOTAL", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if (proceed == JOptionPane.NO_OPTION) {
+                    return;
+                }
+
+                JOptionPane.showInputDialog(this.frame, "Mock payment card PIN required (won't be checked now).", "Enter PIN", JOptionPane.PLAIN_MESSAGE);
+
+                for (Movie m : this.selectedMovies) {
+                    double price;
+                    if (isNextFree) {
+                        price = 0.0;
+                    } else {
+                        price = MOVIE_PRICE;
+                    }
+
+                    if (this.conn.rentMovie(m.getId(), this.getMachineID(), this.getCurrentCustomer().getId(), price)) {
+                        this.currentCustomer.addMoviesRented(1);
+
+                    }
+
+                }
+
+                this.conn.updateCustomerNumberOfMovies(this.getCurrentCustomer().getCurrentMovies(), this.getCurrentCustomer().getTotalMovies(), this.getCurrentCustomer().getId());
                 if (success) {
                     int receipt = JOptionPane.showConfirmDialog(this.frame, "Your order was successful! Please don't forget to take your movies. Would you like your receipt?", "Thank you!", JOptionPane.YES_NO_OPTION);
 
@@ -413,12 +568,13 @@ public class Controller implements ActionListener {
         } else {
             String email = "";
             String password = "";
-            int check;
-            while ((check = this.conn.checkPassword(email, password)) != 1) {
+            int check = 0;
+            while (check != 1) {
                 JLabel emailLabel = new JLabel("Email:");
                 emailLabel.setForeground(Color.WHITE);
                 JTextField emailField = new JTextField(20);
                 JLabel passLabel = new JLabel("Password:");
+                passLabel.setForeground(Color.WHITE);
                 JPasswordField passField = new JPasswordField(20);
                 Box logBox = Box.createVerticalBox();
                 logBox.add(emailLabel);
@@ -431,6 +587,7 @@ public class Controller implements ActionListener {
                 } else {
                     email = emailField.getText();
                     password = passField.getText();
+                    check = this.conn.checkPassword(email, password);
                 }
 
                 switch (check) {
@@ -458,7 +615,6 @@ public class Controller implements ActionListener {
      */
     private void resetSession() {
         this.selectedMovies.removeAll(this.selectedMovies);
-        this.order.removeAll(this.order);
         this.currentCustomer = null;
         this.frame.changePanel(new HomeScreen(this));
     }
@@ -474,7 +630,11 @@ public class Controller implements ActionListener {
         if (priceToBePaid > 0) {
             System.out.println("late payment");
         } else {
-            System.out.println("just return");
+            if (this.conn.returnMovie(o, this.machineID, 0.0)) {
+                JOptionPane.showMessageDialog(this.frame, "Please insert yout DVD. No further charges are required.", "Thank you!", JOptionPane.PLAIN_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this.frame, "Please try again. There has been a problem with your return.", "Thank you!", JOptionPane.PLAIN_MESSAGE);
+            }
         }
 
         resetSession();

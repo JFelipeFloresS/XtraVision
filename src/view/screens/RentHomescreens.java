@@ -166,11 +166,12 @@ public class RentHomescreens extends JPanel {
         north.add(topImage);
         topImage.setHorizontalAlignment(SwingConstants.CENTER);
 
+        JPanel northwest = new JPanel();
+        northwest.setBackground(new Color(9, 9, 9));
+        north.add(northwest, BorderLayout.WEST);
+
         if (this.controller.getCurrentCustomer() == null) {
 
-            JPanel northwest = new JPanel();
-            northwest.setBackground(new Color(9, 9, 9));
-            north.add(northwest, BorderLayout.WEST);
             JButton login = new JButton("LOG IN");
             login.setActionCommand("log in");
             login.addActionListener(this.controller);
@@ -180,7 +181,39 @@ public class RentHomescreens extends JPanel {
             login.setPreferredSize(new Dimension(75, 50));
             login.setCursor(new Cursor(Cursor.HAND_CURSOR));
             northwest.add(login);
-        
+
+        } else {
+
+            northwest.setLayout(new BorderLayout());
+
+            JButton logout = new JButton("LOG OUT");
+            logout.setActionCommand("log out");
+            logout.addActionListener(this.controller);
+            logout.setForeground(Color.WHITE);
+            logout.setBorder(BorderFactory.createLineBorder(new Color(250, 210, 25), 2));
+            logout.setFont(new Font("DIALOG", Font.BOLD, 20));
+            logout.setPreferredSize(new Dimension(75, 50));
+            logout.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            northwest.add(logout, BorderLayout.NORTH);
+
+            JPanel userPanel = new JPanel();
+            userPanel.setBackground(new Color(9, 9, 9));
+            northwest.add(userPanel, BorderLayout.CENTER);
+
+            if (this.controller.getCurrentCustomer().getEmail() != null) {
+                userPanel.setLayout(new GridLayout(2, 1));
+
+                JLabel eLabel = new JLabel("E-mail: " + this.controller.getCurrentCustomer().getEmail());
+                eLabel.setForeground(Color.WHITE);
+                eLabel.setFont(new Font("DIALOG", Font.BOLD, 20));
+                userPanel.add(eLabel);
+            }
+
+            JLabel userLabel = new JLabel("Current loyalty: " + this.controller.getCurrentCustomer().getLoyalty().getName());
+            userLabel.setForeground(Color.WHITE);
+            userLabel.setFont(new Font("DIALOG", Font.BOLD, 20));
+            userPanel.add(userLabel);
+
         }
 
         JPanel sidePanel = new JPanel();
@@ -197,8 +230,14 @@ public class RentHomescreens extends JPanel {
             genre.setActionCommand("selected genre " + genres.get(i));
             genre.addActionListener(this.controller);
             sidePanel.add(genre);
-            genre.setBackground(new Color(9, 9, 9));
-            genre.setForeground(Color.WHITE);
+            if (this.currentGenre.equals(genres.get(i))) {
+                genre.setBackground(new Color(9, 9, 9));
+                genre.setForeground(Color.WHITE);
+
+            } else {
+                genre.setBackground(new Color(186, 199, 202));
+                genre.setForeground(new Color(9,9,9));
+            }
             genre.setFont(new Font("DIALOG", Font.BOLD, 30));
             genre.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
             genre.setCursor(new Cursor(Cursor.HAND_CURSOR));

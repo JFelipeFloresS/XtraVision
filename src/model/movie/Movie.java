@@ -23,8 +23,8 @@ import javax.swing.ImageIcon;
  */
 public class Movie {
 
-    private final String id, title, description, restriction, duration, director;
-    private final ArrayList<String> category;
+    private String id, title, description, restriction, duration, director;
+    private  ArrayList<String> category;
     private boolean isAvailable;
     private Date rentDate, returnDate;
     private ImageIcon thumbnail;
@@ -146,11 +146,13 @@ public class Movie {
     }
 
     public Movie(String discID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.id = discID;
+        
     }
 
     public Movie(String discID, Date rentDate) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.id = discID;
+        this.rentDate = rentDate;
     }
 
     public String getDuration() {
