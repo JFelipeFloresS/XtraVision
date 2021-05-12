@@ -817,4 +817,36 @@ public class DBConnection {
             }
         }
     }
+    
+    public ArrayList<Order> getCustomerRentedMovies(String cardNumber) {
+        Customer customer = getCustomerFromCreditCard(cardNumber);
+        ArrayList<Order> rented = new ArrayList<>();
+        
+        Statement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            String query = "SELECT * FROM rent WHERE customerID="+customer.getId()+" AND status='rented';";
+            stmt = this.CONNECTION.createStatement();
+            rs = stmt.executeQuery(query);
+            while(rs.next()) {
+                rented.add(getOrderFromMovieID(rs.getString("discID")));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getCustomerRentedMovies(): \r\n" + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            for(Order m: rented) {
+                System.out.println(m.getMovie().getTitle());
+            }
+        }
+        
+        return rented;
+    }
 }

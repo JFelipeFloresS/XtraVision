@@ -94,6 +94,7 @@ public class Controller implements ActionListener {
             break;
 
             case "Go to return home screem":
+                this.conn.getCustomerRentedMovies("4000400040004000");
                 this.frame.changePanel(new ReturnHomeScreem(this));
 
                 break;

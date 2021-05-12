@@ -155,6 +155,12 @@ public class Movie {
         this.rentDate = rentDate;
     }
 
+    public Movie(String discID, String title, Date rentDate) {
+        this.id = discID;
+        this.title = title;
+        this.rentDate = rentDate;
+    }
+
     public String getDuration() {
         return duration;
     }
