@@ -88,9 +88,9 @@ public class CheckOut extends JPanel {
             
             JLabel name = new JLabel(movie.getTitle());
             p.add(name);
-            name.setVerticalTextPosition(SwingConstants.CENTER);
             name.setForeground(new Color(9, 9, 9));
             name.setFont(new Font(Font.SERIF, Font.BOLD, 38));
+            
 
             JButton x = new JButton();
             Image imgX = null;
@@ -126,7 +126,7 @@ public class CheckOut extends JPanel {
 
         double totalPrice = 2.99 * this.controller.getSelectedMovies().size();
         
-        JLabel priceLabel = new JLabel("<html>Movies rented: "+this.controller.getSelectedMovies().size()+   "<br>Price per movie: €2.99<br>Total: €" + totalPrice+"</html>");
+        JLabel priceLabel = new JLabel("<html> Use the code FREEMOVIE for your first order be <u>FREE</u> of charge!!! <br> <br><br> Movies rented: "+this.controller.getSelectedMovies().size()+   "<br>Price per movie: €2.99<br>Total: €" + totalPrice+"</html>");
         payment.add(priceLabel, BorderLayout.CENTER);
         priceLabel.setBackground(new Color(186,199,202));
         priceLabel.setForeground(new Color(9, 9, 9));
