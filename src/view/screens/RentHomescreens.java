@@ -157,7 +157,7 @@ public class RentHomescreens extends JPanel {
         JLabel topImage = new JLabel();
         Image img = null;
         try {
-            img = ImageIO.read(getClass().getResource("/Images/ExtraVision.jpeg"));
+            img = ImageIO.read(getClass().getResource("/Images/LogoVai.jpeg"));
             img = img.getScaledInstance(winSize.width / 2, winSize.height / 6, java.awt.Image.SCALE_SMOOTH);
         } catch (IOException ex) {
             System.out.println("Image error");

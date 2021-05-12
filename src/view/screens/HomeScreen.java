@@ -60,8 +60,8 @@ public class HomeScreen extends JPanel{
         JLabel image2 = new JLabel();
         Image img = null;
         try {
-            img = ImageIO.read(getClass().getResource("/Images/ExtraVision.jpeg"));
-            img = img.getScaledInstance(windowSize.width / 2,windowSize.height / 8 , java.awt.Image.SCALE_SMOOTH);
+            img = ImageIO.read(getClass().getResource("/Images/LogoVai.jpeg"));
+            img = img.getScaledInstance((int) (windowSize.width / 2.5),windowSize.height / 6 , java.awt.Image.SCALE_SMOOTH);
         } catch (IOException ex) {
             System.out.println("Image erro");
         }

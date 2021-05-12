@@ -45,8 +45,8 @@ public class CheckOut extends JPanel {
         JLabel image = new JLabel();
         Image img = null;
         try {
-            img = ImageIO.read(getClass().getResource("/Images/ExtraVision.jpeg"));
-            img = img.getScaledInstance((int) (windowSize.width * 0.45), (int) (windowSize.height * 0.25), java.awt.Image.SCALE_SMOOTH);
+            img = ImageIO.read(getClass().getResource("/Images/LogoVai.jpeg"));
+            img = img.getScaledInstance((int) (windowSize.width * 0.35), (int) (windowSize.height * 0.20), java.awt.Image.SCALE_SMOOTH);
 
         } catch (IOException ex) {
             System.out.println("Image erro");

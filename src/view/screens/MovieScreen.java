@@ -53,7 +53,7 @@ public class MovieScreen extends JPanel {
         JLabel image = new JLabel();
         Image img = null;
         try {
-            img = ImageIO.read(getClass().getResource("/Images/ExtraVision.jpeg"));
+            img = ImageIO.read(getClass().getResource("/Images/LogoVai.jpeg"));
             img = img.getScaledInstance(windowSize.width / 6, windowSize.height / 10, java.awt.Image.SCALE_SMOOTH);
         } catch (IOException ex) {
             System.out.println("Image erro");
