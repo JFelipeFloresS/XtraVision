@@ -9,6 +9,7 @@ import controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -94,16 +95,16 @@ public class MovieScreen extends JPanel {
         movieInfo.add(gridPanel, BorderLayout.SOUTH);
         gridPanel.setPreferredSize(new Dimension(windowSize.width / 2, (int) (windowSize.height * 0.6)));
         gridPanel.setLayout(new BorderLayout(40, 40));
-        gridPanel.setBackground(Color.white);
+        gridPanel.setBackground(new Color(186, 199, 202));
         gridPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 2));
         
         JPanel infoPanel = new JPanel();
         gridPanel.add(infoPanel, BorderLayout.NORTH);
-        infoPanel.setBackground(Color.white);
+        infoPanel.setBackground(new Color(186, 199, 202));
         
         JPanel descriptionPanel = new JPanel();
         descriptionPanel.setPreferredSize(new Dimension(windowSize.width / 2, 250));
-        descriptionPanel.setBackground(Color.white);
+        descriptionPanel.setBackground(new Color(186, 199, 202));
         descriptionPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 50));
         
         JScrollPane scrollPane = new JScrollPane(descriptionPanel);
@@ -134,6 +135,7 @@ public class MovieScreen extends JPanel {
         infoPanel.add(category);
         
         JTextArea description = new JTextArea(movie.getDescription());
+        description.setBackground(new Color(186, 199, 202));
         description.setEditable(false);
         description.setLineWrap(true);
         description.setWrapStyleWord(true);
@@ -165,12 +167,25 @@ public class MovieScreen extends JPanel {
         rent.setActionCommand("rent " + movie.getId());
         rent.addActionListener(this.controller);
         rentPanel.add(rent);
+        rent.setPreferredSize(new Dimension(windowSize.width / 7, windowSize.height / 8));
+        rent.setBackground(new Color(186, 199, 202));
+        rent.setForeground(new Color(9, 9, 9));
+        rent.setFont(new Font(Font.SERIF, Font.BOLD, 30));;
+        rent.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        
         
         JPanel returnPanel = new JPanel();
         east.add(returnPanel, BorderLayout.SOUTH);
         
         JButton returnButton = new JButton("HOME SCREEN");
         returnPanel.add(returnButton);
+        returnButton.setPreferredSize(new Dimension(windowSize.width / 7, windowSize.height / 8));
+        returnButton.setBackground(new Color(186, 199, 202));
+        returnButton.setForeground(new Color(9, 9, 9));
+        returnButton.setFont(new Font(Font.SERIF, Font.BOLD, 30));;
+        returnButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
         returnButton.setActionCommand("Go to rent home screem");
         returnButton.addActionListener(this.controller);
         
