@@ -8,6 +8,7 @@ package view.screens;
 import controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -59,7 +60,9 @@ public class CheckOut extends JPanel {
 
         JButton cancelButton = new JButton("Cancel Order");
         northButtonPanel.add(cancelButton);
+        
         cancelButton.addActionListener(this.controller);
+        cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         cancelButton.setActionCommand("Go to main home screen");
         cancelButton.setPreferredSize(new Dimension(windowSize.width / 7, windowSize.height / 8));
         cancelButton.setBackground(new Color(186, 199, 202));
@@ -96,7 +99,7 @@ public class CheckOut extends JPanel {
             Image imgX = null;
             try {
                 imgX = ImageIO.read(getClass().getResource("/Images/XXXXXX.jpeg"));
-                imgX = imgX.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH);
+                imgX = imgX.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
             } catch (IOException ex) {
                 System.out.println("Image erro");
             }
@@ -104,7 +107,7 @@ public class CheckOut extends JPanel {
             p.add(x);
             x.setActionCommand("remove movie " + movie.getId());
             x.addActionListener(this.controller);
-
+            x.setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
 
         JPanel east = new JPanel();
@@ -164,7 +167,10 @@ public class CheckOut extends JPanel {
         returnButton.setBackground(new Color(186, 199, 202));
         returnButton.setForeground(new Color(9, 9, 9));
         returnButton.setFont(new Font(Font.SERIF, Font.BOLD, 30));;
-
+        returnButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        
+        
         JPanel paymentPanel = new JPanel();
         south.add(paymentPanel, BorderLayout.EAST);
 
@@ -176,6 +182,8 @@ public class CheckOut extends JPanel {
         paymentButton.setBackground(new Color(186, 199, 202));
         paymentButton.setForeground(new Color(9, 9, 9));
         paymentButton.setFont(new Font(Font.SERIF, Font.BOLD, 30));
+        paymentButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    
     }
 
 }
