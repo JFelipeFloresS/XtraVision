@@ -64,9 +64,10 @@ public class ReturnHomeScreem extends JPanel {
         
         JPanel centerText = new JPanel();
         center2.add(centerText,BorderLayout.CENTER);
+      
         
         JButton returnDvd = new JButton("Return DVD");
-        centerText.add(returnDvd);
+        center.add(returnDvd,BorderLayout.WEST);
         
         returnDvd.setCursor(new Cursor(Cursor.HAND_CURSOR));
         returnDvd.setActionCommand("return DVD");
@@ -79,13 +80,13 @@ public class ReturnHomeScreem extends JPanel {
         
         
         JLabel label = new JLabel("Insert The DVD ID:");
-        
         label.setForeground(Color.WHITE);
         
-        
-        
+         
+     
         
         JButton homeS = new JButton("Home Screen");
+        center.add(homeS,BorderLayout.EAST);
         
         homeS.setCursor(new Cursor(Cursor.HAND_CURSOR));
         homeS.setActionCommand("Go to rent home screem");
@@ -97,10 +98,10 @@ public class ReturnHomeScreem extends JPanel {
         
         
         
-        center.add(homeS);
+        center.add(homeS,BorderLayout.EAST);
         center.add(label);
         center.add(ReturnHomeScreem.idInput);
-        center.add(returnDvd);
+        center.add(returnDvd,BorderLayout.WEST);
         
     }
     

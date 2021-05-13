@@ -123,6 +123,7 @@ public class RentHomescreens extends JPanel {
         returnButtonPanel.setPreferredSize(new Dimension(winSize.width / 12, winSize.height / 6));
         returnButtonPanel.setBackground(new Color(9, 9, 9));
         returnButtonPanel.setLayout(new BorderLayout(5, 5));
+        
         JButton homeScreen = new JButton("HOME");
         homeScreen.setPreferredSize(new Dimension(75, 50));
         homeScreen.addActionListener(this.controller);
@@ -133,6 +134,7 @@ public class RentHomescreens extends JPanel {
         homeScreen.setFont(new Font("DIALOG", Font.BOLD, 20));
         homeScreen.setCursor(new Cursor(Cursor.HAND_CURSOR));
         returnButtonPanel.add(homeScreen, BorderLayout.NORTH);
+        
         JButton cart = new JButton();
         cart.setActionCommand("Check valid order");
         cart.addActionListener(this.controller);
@@ -157,7 +159,8 @@ public class RentHomescreens extends JPanel {
         JLabel topImage = new JLabel();
         Image img = null;
         try {
-            img = ImageIO.read(getClass().getResource("/Images/LogoVai.jpeg"));
+            img = ImageIO.read(getClass().getResource("/Images/LogoVai.jpeg"
+                    + ""));
             img = img.getScaledInstance(winSize.width / 2, winSize.height / 6, java.awt.Image.SCALE_SMOOTH);
         } catch (IOException ex) {
             System.out.println("Image error");
