@@ -280,6 +280,7 @@ public class Controller implements ActionListener {
                                 + "Please remove " + (this.selectedMovies.size() - limitOfMovies) + " from your cart before proceeding to payment.", "Oops...", JOptionPane.PLAIN_MESSAGE);
                         return;
                     }
+                   
 
                     JLabel freeLabel = new JLabel("Please enter code");
                     freeLabel.setForeground(Color.WHITE);
@@ -361,6 +362,13 @@ public class Controller implements ActionListener {
 
                 customer = this.conn.getCustomerFromCreditCard(cardNumber);
 
+                 // 
+                    if (customer.getCurrentMovies() + this.selectedMovies.size() > limitOfMovies) {
+                        JOptionPane.showMessageDialog(this.frame, "New customers can only rent " + limitOfMovies + " movies at a time. "
+                                + "Please remove " + (this.selectedMovies.size() - limitOfMovies) + " from your cart before proceeding to payment.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+                        return;
+                    }
+                    
                 double totalPrice = 0.0;
                 for (Movie m : this.selectedMovies) {
                     if (!isFirstFree) {
