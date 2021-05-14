@@ -57,16 +57,16 @@ public class ReturnHomeScreem extends JPanel {
         JPanel center2 = new JPanel();
         center.add(center2, BorderLayout.CENTER);
 
-        ReturnHomeScreem.idInput = new JTextField(20);
-        center2.add(ReturnHomeScreem.idInput);
 
         JPanel centerText = new JPanel();
         center2.add(centerText, BorderLayout.CENTER);
+        center2.add(ReturnHomeScreem.idInput);
 
         JLabel label = new JLabel("Insert The DVD ID:");
-        label.setForeground(Color.WHITE);
         center.add(label);
+        label.setForeground(Color.WHITE);
         center.add(ReturnHomeScreem.idInput);
+        ReturnHomeScreem.idInput = new JTextField(20);
 
         JPanel east = new JPanel();
         this.add(east, BorderLayout.EAST);
