@@ -425,7 +425,7 @@ public class Controller implements ActionListener {
                 }
 
                 // 
-                if (this.getCurrentCustomer().getCurrentMovies() + this.selectedMovies.size() > limitOfMovies) {
+                if (this.getCurrentCustomer().getCurrentMovies() + this.selectedMovies.size() >= limitOfMovies) {
                     JOptionPane.showMessageDialog(this.frame, "Customers can only rent " + limitOfMovies + " movies at a time. \r\n"
                             + "Please remove " + (this.getCurrentCustomer().getCurrentMovies() - limitOfMovies) + " movie(s) from your cart before proceeding to payment. \r\nOr return the movies you've already rented.", "Oops...", JOptionPane.PLAIN_MESSAGE);
                     return;
