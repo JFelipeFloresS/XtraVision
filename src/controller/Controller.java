@@ -270,7 +270,7 @@ public class Controller implements ActionListener {
                     customer = new Customer(cardNumber, currentMovies, totalMovies);
 
                     // 
-                    if (this.selectedMovies.size() > limitOfMovies) {
+                    if (this.selectedMovies.size() >= limitOfMovies) {
                         JOptionPane.showMessageDialog(this.frame, "New customers can only rent " + limitOfMovies + " movies at a time. "
                                 + "Please remove " + (this.selectedMovies.size() - limitOfMovies) + " from your cart before proceeding to payment.", "Oops...", JOptionPane.PLAIN_MESSAGE);
                         return;
@@ -357,7 +357,7 @@ public class Controller implements ActionListener {
                 customer = this.conn.getCustomerFromCreditCard(cardNumber);
 
                 // 
-                if (customer.getCurrentMovies() + this.selectedMovies.size() > 4) {
+                if (customer.getCurrentMovies() + this.selectedMovies.size() >= 4) {
                     JOptionPane.showMessageDialog(this.frame, "Customers can only rent 4 movies at a time. "
                             + "Please remove " + (customer.getCurrentMovies() + this.selectedMovies.size() - 4) + " from your cart before proceeding to payment.", "Oops...", JOptionPane.PLAIN_MESSAGE);
                     return;
@@ -509,20 +509,17 @@ public class Controller implements ActionListener {
 
                 JOptionPane.showInputDialog(this.frame, "Mock payment card PIN required (won't be checked now).", "Enter PIN", JOptionPane.PLAIN_MESSAGE);
 
-                for (Movie m : this.selectedMovies) {
+                this.selectedMovies.forEach((m) -> {
                     double price;
                     if (isNextFree) {
                         price = 0.0;
                     } else {
                         price = MOVIE_PRICE;
                     }
-
                     if (this.conn.rentMovie(m.getId(), this.getMachineID(), this.getCurrentCustomer().getId(), price)) {
                         this.currentCustomer.addMoviesRented(1);
-
                     }
-
-                }
+                });
 
                 this.conn.updateCustomerNumberOfMovies(this.getCurrentCustomer().getCurrentMovies(), this.getCurrentCustomer().getTotalMovies(), this.getCurrentCustomer().getId());
                 if (success) {
