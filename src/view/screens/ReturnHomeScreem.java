@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package view.screens;
 
 import controller.Controller;
@@ -44,7 +40,7 @@ public class ReturnHomeScreem extends JPanel {
         north.setLayout(new BorderLayout());
         north.add(homeS, BorderLayout.WEST);
         homeS.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        homeS.setActionCommand("Go to rent home screem");
+        homeS.setActionCommand("Go to main home screen");
         homeS.addActionListener(this.controller);
         homeS.setPreferredSize(new Dimension(windowSize.width / 7, windowSize.height / 8));
         homeS.setBackground(new Color(186, 199, 202));
@@ -74,7 +70,7 @@ public class ReturnHomeScreem extends JPanel {
 
        
 
-        JLabel label = new JLabel("<html><u>Choose DVD to return</u></html> :");
+        JLabel label = new JLabel("Choose DVD to return :");
         center.add(label);
         label.setFont(new Font(Font.SERIF, Font.BOLD, 33));
         label.setForeground(Color.WHITE);
