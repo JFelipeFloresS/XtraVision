@@ -104,7 +104,7 @@ public class Controller implements ActionListener {
             case "log in":
                 logIn();
                 break;
-                
+
             case "log out":
                 resetSession();
                 break;
@@ -280,7 +280,6 @@ public class Controller implements ActionListener {
                                 + "Please remove " + (this.selectedMovies.size() - limitOfMovies) + " from your cart before proceeding to payment.", "Oops...", JOptionPane.PLAIN_MESSAGE);
                         return;
                     }
-                   
 
                     JLabel freeLabel = new JLabel("Please enter code");
                     freeLabel.setForeground(Color.WHITE);
@@ -362,13 +361,13 @@ public class Controller implements ActionListener {
 
                 customer = this.conn.getCustomerFromCreditCard(cardNumber);
 
-                 // 
-                    if (customer.getCurrentMovies() + this.selectedMovies.size() > limitOfMovies) {
-                        JOptionPane.showMessageDialog(this.frame, "New customers can only rent " + limitOfMovies + " movies at a time. "
-                                + "Please remove " + (this.selectedMovies.size() - limitOfMovies) + " from your cart before proceeding to payment.", "Oops...", JOptionPane.PLAIN_MESSAGE);
-                        return;
-                    }
-                    
+                // 
+                if (customer.getCurrentMovies() + this.selectedMovies.size() > limitOfMovies) {
+                    JOptionPane.showMessageDialog(this.frame, "Customers can only rent 4 movies at a time. "
+                            + "Please remove " + (customer.getCurrentMovies() + this.selectedMovies.size() - limitOfMovies) + " from your cart before proceeding to payment.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+                    return;
+                }
+
                 double totalPrice = 0.0;
                 for (Movie m : this.selectedMovies) {
                     if (!isFirstFree) {
@@ -679,7 +678,7 @@ public class Controller implements ActionListener {
         if (paid == JOptionPane.CANCEL_OPTION) {
             return;
         }
-        
+
         if ((LATE_DAY_PRICE * 10) <= price) {
             this.conn.payForMaxFee(o);
             JOptionPane.showMessageDialog(this.frame, "You can keep your disc, no need to return it.", "Keep your movie", JOptionPane.PLAIN_MESSAGE);
@@ -687,7 +686,7 @@ public class Controller implements ActionListener {
             this.conn.returnMovie(o, this.machineID, price);
             JOptionPane.showMessageDialog(this.frame, "Please return your disc.", "Return movie", JOptionPane.PLAIN_MESSAGE);
         }
-        
+
         resetSession();
     }
 
