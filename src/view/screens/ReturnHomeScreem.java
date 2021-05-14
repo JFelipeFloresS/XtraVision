@@ -51,8 +51,8 @@ public class ReturnHomeScreem extends JPanel {
         homeS.setForeground(new Color(9, 9, 9));
         homeS.setFont(new Font(Font.SERIF, Font.BOLD, 25));
 
+       
         JLabel image = new JLabel();
-
         Image img = null;
         try {
             img = ImageIO.read(getClass().getResource("/Images/LogoVai.jpeg"));
@@ -74,10 +74,13 @@ public class ReturnHomeScreem extends JPanel {
 
        
 
-        JLabel label = new JLabel("Choose DVD to return:");
+        JLabel label = new JLabel("<html><u>Choose DVD to return</u></html> :");
         center.add(label);
+        label.setFont(new Font(Font.SERIF, Font.BOLD, 33));
         label.setForeground(Color.WHITE);
-
+       
+        
+        
         ReturnHomeScreem.cardInput = new JTextField(15);
         cardInput.setPreferredSize(new Dimension((int) (windowSize.width / 6), windowSize.height / 12));
         center.add(ReturnHomeScreem.cardInput);
@@ -91,7 +94,7 @@ public class ReturnHomeScreem extends JPanel {
         JButton returnDvd = new JButton("Return DVD");
         center.add(returnDvd, BorderLayout.SOUTH);
         returnDvd.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        returnDvd.setActionCommand("return DVD");
+        returnDvd.setActionCommand("return DVD using card");
         returnDvd.addActionListener(this.controller);
         returnDvd.setPreferredSize(new Dimension(windowSize.width / 7, windowSize.height / 12));
         returnDvd.setBackground(new Color(186, 199, 202));
@@ -107,7 +110,7 @@ public class ReturnHomeScreem extends JPanel {
         
     }
 
-    public static String getReturnIDInput() {
+    public static String getCardInput() {
         return ReturnHomeScreem.cardInput.getText();
     }
 
