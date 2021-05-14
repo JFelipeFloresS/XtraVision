@@ -29,7 +29,7 @@ import view.screens.RentHomescreens;
 import view.screens.ReturnHomeScreem;
 
 /**
- *
+ * @author Thyago De Oliveira Alves
  * @author José Felipe Flores da Silva
  */
 public class Controller implements ActionListener {

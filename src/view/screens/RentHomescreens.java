@@ -32,8 +32,8 @@ import model.movie.Movie;
 import view.screens.RentHomescreens.NoArrowScrollBarUI;
 
 /**
- *
- * @author thyago
+ * @author Thyago De Oliveira Alves
+ * @author José Felipe Flores da Silva
  */
 public class RentHomescreens extends JPanel {
 

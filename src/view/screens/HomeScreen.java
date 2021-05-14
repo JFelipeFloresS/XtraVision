@@ -25,8 +25,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 /**
- *
- * @author thyag
+ * @author Thyago De Oliveira Alves
+ * @author José Felipe Flores da Silva
  */
 public class HomeScreen extends JPanel{
 
