@@ -738,7 +738,7 @@ public class DBConnection {
         }
     }
 
-    public boolean addCardNumberToCustomer(String card) {
+    public boolean addCardNumberToCustomer(Customer customer, String card) {
         PreparedStatement stmt = null;
 
         try {
@@ -747,7 +747,7 @@ public class DBConnection {
 
             stmt = this.CONNECTION.prepareStatement(query);
             stmt.setString(1, card);
-            stmt.setInt(2, this.controller.getCurrentCustomer().getId());
+            stmt.setInt(2, customer.getId());
 
             stmt.execute();
 
@@ -804,6 +804,30 @@ public class DBConnection {
             return true;
         } catch (SQLException e) {
             System.out.println("Error updateCustomerEmail(): \r\n" + e.getMessage());
+            return false;
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public boolean updateCustomerLoyalty(Customer customer) {
+        
+        PreparedStatement stmt = null;
+
+        try {
+
+            String query = "UPDATE customers SET loyalty=? WHERE customerID=" + customer.getId() + ";";
+            stmt = this.CONNECTION.prepareStatement(query);
+            stmt.setString(1, customer.getLoyalty().getName());
+            stmt.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error updateCustomerLoyalty(): \r\n" + e.getMessage());
             return false;
         } finally {
             try {

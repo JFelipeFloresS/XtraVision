@@ -10,17 +10,19 @@ package model.customer;
  * @author José Felipe Flores da Silva
  */
 public enum Loyalty {
-    NONE("none", -1),
-    STANDARD("standard", 15),
-    PREMIUM("premium", 10),
-    ULTIMATE("ultimate", 5);
+    NONE("none", -1, 0),
+    STANDARD("standard", 15, 30),
+    PREMIUM("premium", 10, 50),
+    ULTIMATE("ultimate", 5, 0);
     
     private final String name;
     private final int numberOfMovies;
+    private final int promotionThreshold;
     
-    Loyalty(String loyalName, int num) {
+    Loyalty(String loyalName, int num, int threshold) {
         name = loyalName;
         numberOfMovies = num;
+        promotionThreshold = threshold;
     }
 
     public String getName() {
@@ -29,6 +31,10 @@ public enum Loyalty {
 
     public int getNumberOfMovies() {
         return numberOfMovies;
+    }
+    
+    public int getPromotionThreshold() {
+        return promotionThreshold;
     }
     
     public static Loyalty getLoyalty(String loyalName) {
@@ -40,8 +46,17 @@ public enum Loyalty {
         return Loyalty.NONE;
     }
     
-    public static boolean isNextFree(String loyalName, int rentedMovies) {
-        Loyalty loyalty = getLoyalty(loyalName);
-        return rentedMovies == loyalty.getNumberOfMovies();
+    public static Loyalty promoteLoyalty(Loyalty loyalty) {
+        switch(loyalty) {
+            case STANDARD:
+                return PREMIUM;
+            case PREMIUM:
+                return ULTIMATE;
+            default:
+                return loyalty;
+        }
+        
+        
     }
+    
 }
