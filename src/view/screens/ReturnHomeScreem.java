@@ -75,7 +75,7 @@ public class ReturnHomeScreem extends JPanel {
         returnDvd.setPreferredSize(new Dimension(windowSize.width / 7, windowSize.height / 8));
         returnDvd.setBackground(new Color(186, 199, 202));
         returnDvd.setForeground(new Color(9, 9, 9));
-        returnDvd.setFont(new Font(Font.SERIF, Font.BOLD, 30));;
+        returnDvd.setFont(new Font(Font.SERIF, Font.BOLD, 25));;
         
         
         
@@ -94,7 +94,7 @@ public class ReturnHomeScreem extends JPanel {
         homeS.setPreferredSize(new Dimension(windowSize.width / 7, windowSize.height / 8));
         homeS.setBackground(new Color(186, 199, 202));
         homeS.setForeground(new Color(9, 9, 9));
-        homeS.setFont(new Font(Font.SERIF, Font.BOLD, 30));;
+        homeS.setFont(new Font(Font.SERIF, Font.BOLD, 25));;
         
         
         
@@ -104,7 +104,18 @@ public class ReturnHomeScreem extends JPanel {
         center.add(returnDvd,BorderLayout.WEST);
         
         
-        JPanel south = new JPanel
+        JPanel south = new JPanel();
+        this.add(south,BorderLayout.SOUTH);
+        
+        JButton dvdR = new JButton("return DVD using card");
+        south.add(dvdR,BorderLayout.CENTER);
+        dvdR.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        dvdR.setActionCommand("return DVD using card");
+        dvdR.addActionListener(this.controller);        
+        dvdR.setPreferredSize(new Dimension(windowSize.width / 7, windowSize.height / 8));
+        dvdR.setBackground(new Color(186, 199, 202));
+        dvdR.setForeground(new Color(9, 9, 9));
+        dvdR.setFont(new Font(Font.SERIF, Font.BOLD, 20));;
         
         
         
