@@ -6,7 +6,7 @@
 package model.customer;
 
 /**
- *
+ * @author Thyago De Oliveira Alves
  * @author José Felipe Flores da Silva
  */
 public enum Loyalty {

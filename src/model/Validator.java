@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * @author Thyago De Oliveira Alves
  * @author José Felipe Flores da Silva
  */
 public class Validator {

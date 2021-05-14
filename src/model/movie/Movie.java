@@ -18,7 +18,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
- *
+ * @author Thyago De Oliveira Alves
  * @author José Felipe Flores da Silva
  */
 public class Movie {

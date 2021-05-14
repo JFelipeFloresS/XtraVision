@@ -26,7 +26,7 @@ import model.customer.Loyalty;
 import model.order.Order;
 
 /**
- *
+ * @author Thyago De Oliveira Alves
  * @author José Felipe Flores da Silva
  */
 public class DBConnection {

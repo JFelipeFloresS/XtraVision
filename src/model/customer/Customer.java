@@ -8,7 +8,7 @@ package model.customer;
 import java.util.ArrayList;
 
 /**
- *
+ * @author Thyago De Oliveira Alves
  * @author José Felipe Flores da Silva
  */
 public class Customer {

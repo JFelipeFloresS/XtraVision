@@ -19,7 +19,7 @@ import javax.swing.plaf.ColorUIResource;
 import view.screens.HomeScreen;
 
 /**
- *
+ * @author Thyago De Oliveira Alves
  * @author José Felipe Flores da Silva
  */
 public class Frame extends JFrame {

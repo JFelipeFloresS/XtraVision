@@ -15,6 +15,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,7 +25,7 @@ import javax.swing.SwingConstants;
 
 /**
  *
- * @author thyag
+ * @author thyago
  */
 public class ReturnHomeScreem extends JPanel {
 
@@ -60,14 +61,21 @@ public class ReturnHomeScreem extends JPanel {
 
         JPanel centerText = new JPanel();
         center2.add(centerText, BorderLayout.CENTER);
-        center2.add(ReturnHomeScreem.idInput);
 
         JLabel label = new JLabel("Insert The DVD ID:");
         center.add(label);
         label.setForeground(Color.WHITE);
+        
+        
+        
+        ReturnHomeScreem.idInput = new JTextField(15);
+        idInput.setPreferredSize( new Dimension((int) (windowSize.width / 5), windowSize.height / 13));
         center.add(ReturnHomeScreem.idInput);
-        ReturnHomeScreem.idInput = new JTextField(20);
-
+        center2.add(ReturnHomeScreem.idInput);
+        idInput.setFont(new Font(Font.SERIF, Font.BOLD, 30));
+        idInput.setForeground(Color.red);
+        idInput.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 3));
+        
         JPanel east = new JPanel();
         this.add(east, BorderLayout.EAST);
 
@@ -80,7 +88,7 @@ public class ReturnHomeScreem extends JPanel {
         returnDvd.setPreferredSize(new Dimension(windowSize.width / 7, windowSize.height / 8));
         returnDvd.setBackground(new Color(186, 199, 202));
         returnDvd.setForeground(new Color(9, 9, 9));
-        returnDvd.setFont(new Font(Font.SERIF, Font.BOLD, 25));
+        returnDvd.setFont(new Font(Font.SERIF, Font.BOLD, 30));
 
         JPanel west = new JPanel();
         this.add(west, BorderLayout.WEST);
