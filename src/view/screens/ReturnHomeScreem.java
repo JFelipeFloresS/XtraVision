@@ -70,7 +70,7 @@ public class ReturnHomeScreem extends JPanel {
 
        
 
-        JLabel label = new JLabel("Choose DVD to return :");
+        JLabel label = new JLabel("Insert card number:");
         center.add(label);
         label.setFont(new Font(Font.SERIF, Font.BOLD, 33));
         label.setForeground(Color.WHITE);
