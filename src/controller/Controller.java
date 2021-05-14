@@ -107,6 +107,10 @@ public class Controller implements ActionListener {
                 returnDVD(ReturnHomeScreem.getReturnIDInput());
                 break;
 
+            case "return DVD using card":
+                returnUsingCard();
+                break;
+
             case "Go to check out":
                 rentMovies();
                 break;
@@ -639,5 +643,34 @@ public class Controller implements ActionListener {
         }
 
         resetSession();
+    }
+
+    private void returnUsingCard() {
+        JLabel cardLabel = new JLabel("Please insert your card number.");
+        JTextField cardField = new JTextField(16);
+        Box cardBox = Box.createVerticalBox();
+        cardBox.add(cardLabel);
+        cardBox.add(cardField);
+        int answer = JOptionPane.showConfirmDialog(this.frame, cardBox, "Return using credit card", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (answer == JOptionPane.OK_OPTION) {
+            String cardNum = cardField.getText();
+            if (!Validator.isValidCreditCard(cardNum)) {
+                JOptionPane.showMessageDialog(this.frame, "Invalid card number, please try again.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+                return;
+            }
+            ArrayList<Order> currentRented = this.conn.getCustomerRentedMovies(cardNum);
+            if (currentRented == null || currentRented.isEmpty()) {
+                JOptionPane.showMessageDialog(this.frame, "No rented movies found, please try again.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+                return;
+            }
+
+            String[] movies = new String[currentRented.size()];
+            for (int i = 0; i < movies.length; i++) {
+                movies[i] = currentRented.get(i).getMovie().getId();
+            }
+
+            int movieToReturn = JOptionPane.showOptionDialog(this.frame, "Which movie would you like to rent?", "Return movie", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, movies, movies[0]);
+            returnDVD(movies[movieToReturn]);
+        }
     }
 }
