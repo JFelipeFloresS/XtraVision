@@ -510,7 +510,7 @@ public class DBConnection {
         ResultSet rs = null;
         int custID = 0;
         Customer customer = null;
-        
+
         try {
             String query = "SELECT customerID, paidFor FROM rent WHERE rentID=" + order.getRentID() + ";";
             stmt = this.CONNECTION.createStatement();
@@ -521,7 +521,7 @@ public class DBConnection {
             }
             rs.close();
             stmt.close();
-            
+
             query = "SELECT * FROM customers WHERE customerID=" + order.getCustomerID() + ";";
             stmt = this.CONNECTION.createStatement();
             rs = stmt.executeQuery(query);
@@ -734,12 +734,12 @@ public class DBConnection {
             stmt = this.CONNECTION.createStatement();
             stmt.executeUpdate(query);
 
-                stmt.close();
+            stmt.close();
             return true;
         } catch (SQLException e) {
             System.out.println("Error updateCustomerNumberOfMovies(): \r\n" + e.getMessage());
             return false;
-        } 
+        }
     }
 
     public boolean addCardNumberToCustomer(String card) {
@@ -748,11 +748,11 @@ public class DBConnection {
         try {
 
             String query = "INSERT INTO creditCards(cardNumber, customerID) VALUES(?,?)";
-            
-            stmt=this.CONNECTION.prepareStatement(query);
+
+            stmt = this.CONNECTION.prepareStatement(query);
             stmt.setString(1, card);
             stmt.setInt(2, this.controller.getCurrentCustomer().getId());
-            
+
             stmt.execute();
 
             return true;
@@ -761,18 +761,18 @@ public class DBConnection {
             return false;
         }
     }
-    
+
     public boolean updateCustomerEmail(String email) {
         PreparedStatement stmt = null;
-        
+
         try {
-            
-            String query = "UPDATE customers SET email=? WHERE customerID=" + this.controller.getCurrentCustomer().getId()+";";
+
+            String query = "UPDATE customers SET email=? WHERE customerID=" + this.controller.getCurrentCustomer().getId() + ";";
             stmt = this.CONNECTION.prepareStatement(query);
             stmt.setString(1, email);
-            
+
             stmt.executeUpdate();
-            
+
             return true;
         } catch (SQLException e) {
             System.out.println("Error updateCustomerEmail(): \r\n" + e.getMessage());
@@ -785,7 +785,7 @@ public class DBConnection {
             }
         }
     }
-    
+
     public boolean updateCustomerPassword(String passwordInput) {
         String password = null;
         String salt = null;
@@ -795,16 +795,16 @@ public class DBConnection {
             password = createHash(passwordInput, salt);
         }
         PreparedStatement stmt = null;
-        
+
         try {
-            
-            String query = "UPDATE customers SET password=?, salt=? WHERE customerID=" + this.controller.getCurrentCustomer().getId()+";";
+
+            String query = "UPDATE customers SET password=?, salt=? WHERE customerID=" + this.controller.getCurrentCustomer().getId() + ";";
             stmt = this.CONNECTION.prepareStatement(query);
             stmt.setString(1, password);
             stmt.setString(2, salt);
-            
+
             stmt.executeUpdate();
-            
+
             return true;
         } catch (SQLException e) {
             System.out.println("Error updateCustomerEmail(): \r\n" + e.getMessage());
@@ -817,19 +817,19 @@ public class DBConnection {
             }
         }
     }
-    
+
     public ArrayList<Order> getCustomerRentedMovies(String cardNumber) {
         Customer customer = getCustomerFromCreditCard(cardNumber);
         ArrayList<Order> rented = new ArrayList<>();
-        
+
         Statement stmt = null;
         ResultSet rs = null;
-        
+
         try {
-            String query = "SELECT * FROM rent WHERE customerID="+customer.getId()+" AND status='rented';";
+            String query = "SELECT * FROM rent WHERE customerID=" + customer.getId() + " AND status='rented';";
             stmt = this.CONNECTION.createStatement();
             rs = stmt.executeQuery(query);
-            while(rs.next()) {
+            while (rs.next()) {
                 rented.add(getOrderFromMovieID(rs.getString("discID")));
             }
         } catch (SQLException e) {
@@ -841,12 +841,34 @@ public class DBConnection {
             } catch (SQLException ex) {
                 Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+
+        return rented;
+    }
+
+    public Movie getMovieFromID(String id) {
+        Movie movie = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            String query = "SELECT * FROM discs INNER JOIN movies ON discs.movieID=movies.movieID WHERE discID=?";
+            stmt = this.CONNECTION.prepareStatement(query);
+            stmt.setString(1, id);
+            rs = stmt.executeQuery();
+            while(rs.next()) {
+                movie = new Movie(rs.getString("discID"),rs.getString("title"),null);
+            }
             
-            for(Order m: rented) {
-                System.out.println(m.getMovie().getTitle());
+        } catch (SQLException e) {
+            System.out.println("Error getMovieFromID(): \r\n" + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        return rented;
+        return movie;
     }
 }

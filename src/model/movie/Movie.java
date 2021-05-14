@@ -161,6 +161,11 @@ public class Movie {
         this.rentDate = rentDate;
     }
 
+    @Override
+    public String toString() {
+        return this.title;
+    }
+    
     public String getDuration() {
         return duration;
     }

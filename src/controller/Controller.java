@@ -34,6 +34,7 @@ import view.screens.ReturnHomeScreem;
 public class Controller implements ActionListener {
 
     private final double MOVIE_PRICE = 2.99;
+    private final double LATE_DAY_PRICE = 1.5;
     private final String FREE_CODE = "FREEMOVIE";
     private final Frame frame;
     private final DBConnection conn;
@@ -633,7 +634,8 @@ public class Controller implements ActionListener {
         this.currentCustomer = this.conn.getCustomerFromID(id);
         double priceToBePaid = Movie.getLateReturnPrice(o.getMovie());
         if (priceToBePaid > 0) {
-            System.out.println("late payment");
+            payForLateReturn(o, priceToBePaid);
+            return;
         } else {
             if (this.conn.returnMovie(o, this.machineID, 0.0)) {
                 JOptionPane.showMessageDialog(this.frame, "Please insert yout DVD. No further charges are required.", "Thank you!", JOptionPane.PLAIN_MESSAGE);
@@ -645,6 +647,29 @@ public class Controller implements ActionListener {
         resetSession();
     }
 
+    private void payForLateReturn(Order o, double price) {
+        JLabel paidLabel = new JLabel("Your late return will total €" + price + ".\r\nPlease enter your card PIN (Mock PIN, won't be checked).");
+        paidLabel.setForeground(Color.WHITE);
+        JTextField paidField = new JTextField(4);
+        Box paidBox = Box.createVerticalBox();
+        paidBox.add(paidLabel);
+        paidBox.add(paidField);
+        int paid = JOptionPane.showConfirmDialog(this.frame, paidBox, "Total late return price.", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (paid == JOptionPane.CANCEL_OPTION) {
+            return;
+        }
+        
+        if ((LATE_DAY_PRICE * 10) <= price) {
+            this.conn.payForMaxFee(o);
+            JOptionPane.showMessageDialog(this.frame, "You can keep your disc, no need to return it.", "Keep your movie", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            this.conn.returnMovie(o, this.machineID, price);
+            JOptionPane.showMessageDialog(this.frame, "Please return your disc.", "Return movie", JOptionPane.PLAIN_MESSAGE);
+        }
+        
+        resetSession();
+    }
+
     private void returnUsingCard() {
         JLabel cardLabel = new JLabel("Please insert your card number.");
         JTextField cardField = new JTextField(16);
@@ -652,8 +677,11 @@ public class Controller implements ActionListener {
         cardBox.add(cardLabel);
         cardBox.add(cardField);
         int answer = JOptionPane.showConfirmDialog(this.frame, cardBox, "Return using credit card", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (answer == JOptionPane.CANCEL_OPTION) {
+            return;
+        }
         if (cardField.getText().equals("")) {
-                JOptionPane.showMessageDialog(this.frame, "Please enter a card number and try again.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(this.frame, "Please enter a card number and try again.", "Oops...", JOptionPane.PLAIN_MESSAGE);
             return;
         }
         if (answer == JOptionPane.OK_OPTION) {
@@ -668,13 +696,14 @@ public class Controller implements ActionListener {
                 return;
             }
 
-            String[] movies = new String[currentRented.size()];
+            Movie[] movies = new Movie[currentRented.size()];
             for (int i = 0; i < movies.length; i++) {
-                movies[i] = currentRented.get(i).getMovie().getId();
+                movies[i] = this.conn.getMovieFromID(currentRented.get(i).getMovie().getId());
             }
 
-            int movieToReturn = JOptionPane.showOptionDialog(this.frame, "Which movie would you like to rent?", "Return movie", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, movies, movies[0]);
-            returnDVD(movies[movieToReturn]);
+            int movieToReturn = JOptionPane.showOptionDialog(this.frame, "Which movie would you like to return?", "Return movie", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, movies, movies[0]);
+            returnDVD(movies[movieToReturn].getId());
         }
     }
+
 }
