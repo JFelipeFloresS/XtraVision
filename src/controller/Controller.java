@@ -341,10 +341,10 @@ public class Controller implements ActionListener {
                                         JOptionPane.showConfirmDialog(this.frame, "Your passwords don't match, please try again.");
                                     }
                                 } else {
-                                    break;
+                                    return;
                                 }
                             } else {
-                                break;
+                                return;
                             }
                         }
                         this.conn.createCustomer(cardNumber, email, password, currentMovies, totalMovies);
@@ -362,9 +362,9 @@ public class Controller implements ActionListener {
                 customer = this.conn.getCustomerFromCreditCard(cardNumber);
 
                 // 
-                if (customer.getCurrentMovies() + this.selectedMovies.size() > limitOfMovies) {
+                if (customer.getCurrentMovies() + this.selectedMovies.size() > 4) {
                     JOptionPane.showMessageDialog(this.frame, "Customers can only rent 4 movies at a time. "
-                            + "Please remove " + (customer.getCurrentMovies() + this.selectedMovies.size() - limitOfMovies) + " from your cart before proceeding to payment.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+                            + "Please remove " + (customer.getCurrentMovies() + this.selectedMovies.size() - 4) + " from your cart before proceeding to payment.", "Oops...", JOptionPane.PLAIN_MESSAGE);
                     return;
                 }
 
@@ -691,41 +691,30 @@ public class Controller implements ActionListener {
     }
 
     private void returnUsingCard() {
-        JLabel cardLabel = new JLabel("Please insert your card number.");
-        cardLabel.setForeground(Color.WHITE);
-        JTextField cardField = new JTextField(16);
-        cardField.setFont(new Font("DIALOG", Font.PLAIN, 30));
-        Box cardBox = Box.createVerticalBox();
-        cardBox.add(cardLabel);
-        cardBox.add(cardField);
-        int answer = JOptionPane.showConfirmDialog(this.frame, cardBox, "Return using credit card", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (answer == JOptionPane.CANCEL_OPTION) {
-            return;
-        }
-        if (cardField.getText().equals("")) {
+        String cardNum = ReturnHomeScreem.getCardInput();
+        
+        if (cardNum.equals("")) {
             JOptionPane.showMessageDialog(this.frame, "Please enter a card number and try again.", "Oops...", JOptionPane.PLAIN_MESSAGE);
             return;
         }
-        if (answer == JOptionPane.OK_OPTION) {
-            String cardNum = cardField.getText();
-            if (!Validator.isValidCreditCard(cardNum)) {
-                JOptionPane.showMessageDialog(this.frame, "Invalid card number, please try again.", "Oops...", JOptionPane.PLAIN_MESSAGE);
-                return;
-            }
-            ArrayList<Order> currentRented = this.conn.getCustomerRentedMovies(cardNum);
-            if (currentRented == null || currentRented.isEmpty()) {
-                JOptionPane.showMessageDialog(this.frame, "No rented movies found, please try again.", "Oops...", JOptionPane.PLAIN_MESSAGE);
-                return;
-            }
-
-            Movie[] movies = new Movie[currentRented.size()];
-            for (int i = 0; i < movies.length; i++) {
-                movies[i] = this.conn.getMovieFromID(currentRented.get(i).getMovie().getId());
-            }
-
-            int movieToReturn = JOptionPane.showOptionDialog(this.frame, "Which movie would you like to return?", "Return movie", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, movies, movies[0]);
-            returnDVD(movies[movieToReturn].getId());
+        if (!Validator.isValidCreditCard(cardNum)) {
+            JOptionPane.showMessageDialog(this.frame, "Invalid card number, please try again.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+            return;
         }
+        ArrayList<Order> currentRented = this.conn.getCustomerRentedMovies(cardNum);
+        if (currentRented == null || currentRented.isEmpty()) {
+            JOptionPane.showMessageDialog(this.frame, "No rented movies found, please try again.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        Movie[] movies = new Movie[currentRented.size()];
+        for (int i = 0; i < movies.length; i++) {
+            movies[i] = this.conn.getMovieFromID(currentRented.get(i).getMovie().getId());
+        }
+
+        int movieToReturn = JOptionPane.showOptionDialog(this.frame, "Which movie would you like to return?", "Return movie", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, movies, movies[0]);
+        returnDVD(movies[movieToReturn].getId());
+
     }
 
 }
