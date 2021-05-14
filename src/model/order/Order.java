@@ -16,6 +16,16 @@ public class Order {
     private Date rentDate;
     private double paidFor;
 
+    /**
+     * Constructor full
+     * @param rentID
+     * @param customerID
+     * @param machineID
+     * @param status
+     * @param rentDate
+     * @param paidFor
+     * @param discID 
+     */
     public Order(int rentID, int customerID, int machineID, String status, Date rentDate, double paidFor, String discID) {
         this.rentID = rentID;
         this.customerID = customerID;
@@ -26,12 +36,7 @@ public class Order {
         this.paidFor = paidFor;
     }
     
-    public Order(int machineID) {
-        this.machineID = machineID;
-        this.status = "not ready";
-    }
-
-    public void setCustomerID(int customerID) {
+       public void setCustomerID(int customerID) {
         this.customerID = customerID;
     }
 

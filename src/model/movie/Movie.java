@@ -22,10 +22,22 @@ public class Movie {
     private String id, title, description, restriction, duration, director;
     private  ArrayList<String> category;
     private boolean isAvailable;
-    private Date rentDate, returnDate;
+    private Date rentDate;
     private ImageIcon thumbnail;
     private int machine;
 
+    /**
+     * Constructor with no machineID
+     * @param id discID
+     * @param title
+     * @param description
+     * @param restriction
+     * @param isAvailable is it currently available
+     * @param rentDate when it was rented
+     * @param thumbnail link to image
+     * @param duration
+     * @param director 
+     */
     public Movie(String id, String title, String description, String restriction, boolean isAvailable, Date rentDate, String thumbnail, String duration, String director)  {
         this.id = id;
         this.title = title;
@@ -33,7 +45,6 @@ public class Movie {
         this.restriction = restriction;
         this.isAvailable = isAvailable;
         this.rentDate = rentDate;
-        this.returnDate = null;
         try {
             this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
         } catch (MalformedURLException ex) {
@@ -46,6 +57,16 @@ public class Movie {
         this.category = new ArrayList<>();
     }
 
+    /**
+     * Constructor with no rentDate, no machine and no availability
+     * @param id discID
+     * @param title
+     * @param description
+     * @param restriction
+     * @param thumbnail link to image
+     * @param duration
+     * @param director 
+     */
     public Movie(String id, String title, String description, String restriction, String thumbnail, String duration, String director) {
         this.id = id;
         this.title = title;
@@ -63,6 +84,17 @@ public class Movie {
         this.category = new ArrayList<>();
     }
 
+    /**
+     * Constructor with no description and no machine
+     * @param id
+     * @param title
+     * @param restriction
+     * @param isAvailable
+     * @param rentDate
+     * @param thumbnail
+     * @param duration
+     * @param director 
+     */
     public Movie(String id, String title, String restriction, boolean isAvailable, Date rentDate, String thumbnail, String duration, String director) {
         this.id = id;
         this.title = title;
@@ -70,7 +102,6 @@ public class Movie {
         this.isAvailable = isAvailable;
         this.description = "Description not currently available.";
         this.rentDate = rentDate;
-        this.returnDate = null;
         try {
             this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
         } catch (MalformedURLException ex) {
@@ -83,6 +114,17 @@ public class Movie {
         this.category = new ArrayList<>();
     }
 
+    /**
+     * Constructor with no rentDate and no machine
+     * @param id
+     * @param title
+     * @param description
+     * @param restriction
+     * @param isAvailable
+     * @param thumbnail
+     * @param duration
+     * @param director 
+     */
     public Movie(String id, String title, String description, String restriction, boolean isAvailable, String thumbnail, String duration, String director) {
         this.id = id;
         this.title = title;
@@ -90,7 +132,6 @@ public class Movie {
         this.restriction = restriction;
         this.isAvailable = isAvailable;
         this.rentDate = null;
-        this.returnDate = null;
         try {
             this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
         } catch (MalformedURLException ex) {
@@ -103,6 +144,16 @@ public class Movie {
         this.category = new ArrayList<>();
     }
 
+    /**
+     * Constructor with no description, no rentDate and no machine
+     * @param id
+     * @param title
+     * @param restriction
+     * @param isAvailable
+     * @param thumbnail
+     * @param duration
+     * @param director 
+     */
     public Movie(String id, String title, String restriction, boolean isAvailable, String thumbnail, String duration, String director) {
         this.id = id;
         this.title = title;
@@ -110,7 +161,6 @@ public class Movie {
         this.restriction = restriction;
         this.isAvailable = isAvailable;
         this.rentDate = null;
-        this.returnDate = null;
         try {
             this.thumbnail = new ImageIcon(ImageIO.read(new URL(thumbnail)));
         } catch (MalformedURLException ex) {
@@ -123,6 +173,17 @@ public class Movie {
         this.category = new ArrayList<>();
     }
 
+    /**
+     * Constructor with no machine and no availability
+     * @param id
+     * @param title
+     * @param description
+     * @param restriction
+     * @param thumbnail
+     * @param machine
+     * @param duration
+     * @param director 
+     */
     public Movie(String id, String title, String description, String restriction, String thumbnail, int machine, String duration, String director){
         this.id = id;
         this.title = title;
@@ -141,22 +202,40 @@ public class Movie {
         this.category = new ArrayList<>();
     }
 
+    /**
+     * Constructor with ID only
+     * @param discID 
+     */
     public Movie(String discID) {
         this.id = discID;
-        
     }
 
+    /**
+     * Constructor with only discID and rentDate
+     * @param discID
+     * @param rentDate 
+     */
     public Movie(String discID, Date rentDate) {
         this.id = discID;
         this.rentDate = rentDate;
     }
 
+    /**
+     * Constructor with only discID, title and rentDate
+     * @param discID
+     * @param title
+     * @param rentDate 
+     */
     public Movie(String discID, String title, Date rentDate) {
         this.id = discID;
         this.title = title;
         this.rentDate = rentDate;
     }
 
+    /**
+     * 
+     * @return movie title
+     */
     @Override
     public String toString() {
         return this.title;
@@ -170,14 +249,20 @@ public class Movie {
         return director;
     }
 
-    public Date getReturnDate() {
-        return returnDate;
-    }
-
+    /**
+     * Get an ImageIcon
+     * @return 
+     */
     public ImageIcon getThumbnail() {
         return thumbnail;
     }
     
+    /**
+     * 
+     * @param width
+     * @param height
+     * @return resized ImageIcon
+     */
     public ImageIcon getResizedThumbnail(int width, int height) {
         Image img = this.thumbnail.getImage();
         img = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
@@ -197,6 +282,10 @@ public class Movie {
         return category;
     }
     
+    /**
+     * Adds a genre to a movie
+     * @param c genre
+     */
     public void addCategory(String c) {
         this.category.add(c);
     }

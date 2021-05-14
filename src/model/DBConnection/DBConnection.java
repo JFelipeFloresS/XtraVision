@@ -27,20 +27,20 @@ import model.order.Order;
  */
 public class DBConnection {
 
-    private Controller controller;
+    private final Controller controller;
     private final Connection CONNECTION;
 
+    /**
+     * Constructor
+     * @param controller 
+     */
     public DBConnection(Controller controller) {
         this.controller = controller;
         this.CONNECTION = establishConnection();
     }
 
-    public DBConnection() {
-        this.CONNECTION = establishConnection();
-    }
-
     /**
-     *
+     * Establishes a connection to the DB using the DriverManager
      * @return connection to DB
      */
     private Connection establishConnection() {
@@ -96,7 +96,7 @@ public class DBConnection {
     }
 
     /**
-     *
+     * Gets a customer from any of their credit cards
      * @param card credit card number
      * @return customer with the given card
      */
@@ -127,6 +127,12 @@ public class DBConnection {
         return customer;
     }
 
+    /**
+     * Gets a customer from their email address
+     * @param email email address
+     * @param password password input by user
+     * @return customer if successful, null if not
+     */
     public Customer getCustomerFromEmailAdress(String email, String password) {
         if (checkPassword(email, password) != 1) {
             return null;
@@ -157,14 +163,19 @@ public class DBConnection {
         }
     }
 
-    public Customer getCustomerFromID(String id) {
+    /**
+     * Gets a customer from thei ID
+     * @param id customerID
+     * @return customer
+     */
+    public Customer getCustomerFromID(int id) {
         Customer customer = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
             String query = "SELECT * FROM customers WHERE customerID=?;";
             stmt = this.CONNECTION.prepareStatement(query);
-            stmt.setString(1, id);
+            stmt.setInt(1, id);
             rs = stmt.executeQuery();
             while (rs.next()) {
                 customer = new Customer(rs.getInt("customers.customerID"), rs.getString("email"), rs.getInt("currentMovies"), rs.getInt("totalMovies"), rs.getString("loyalty"));
@@ -665,6 +676,11 @@ public class DBConnection {
         return movies;
     }
 
+    /**
+     * Adds genres to a list of movies
+     * @param movies list of movies
+     * @return list of movies with genre
+     */
     private ArrayList<Movie> addCategoriesToMovies(ArrayList<Movie> movies) {
         ArrayList<Movie> newMovies = movies;
         Statement stmt = null;
@@ -699,6 +715,10 @@ public class DBConnection {
         return newMovies;
     }
 
+    /**
+     * Gets all machine IDs
+     * @return array of IDs
+     */
     public String[] getMachineIDs() {
         String[] machines;
         Statement stmt = null;
@@ -723,6 +743,13 @@ public class DBConnection {
         return machines;
     }
 
+    /**
+     * 
+     * @param currentMovies
+     * @param totalMovies
+     * @param customerID
+     * @return success of update
+     */
     public boolean updateCustomerNumberOfMovies(int currentMovies, int totalMovies, int customerID) {
         Statement stmt = null;
         try {
@@ -738,6 +765,12 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Inserts a new row to the table creditCards.
+     * @param customer
+     * @param card card number
+     * @return success of insertion
+     */
     public boolean addCardNumberToCustomer(Customer customer, String card) {
         PreparedStatement stmt = null;
 
@@ -758,6 +791,11 @@ public class DBConnection {
         }
     }
 
+    /**
+     * 
+     * @param email email address
+     * @return success of update
+     */
     public boolean updateCustomerEmail(String email) {
         PreparedStatement stmt = null;
 
@@ -782,6 +820,11 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Updates password and salt for a customer
+     * @param passwordInput customer password
+     * @return success of update
+     */
     public boolean updateCustomerPassword(String passwordInput) {
         String password = null;
         String salt = null;
@@ -814,6 +857,11 @@ public class DBConnection {
         }
     }
     
+    /**
+     * Updates loyalty based on the customer object current loyalty
+     * @param customer 
+     * @return success of update
+     */
     public boolean updateCustomerLoyalty(Customer customer) {
         
         PreparedStatement stmt = null;
@@ -838,6 +886,11 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Gets all rented movies by a user
+     * @param cardNumber
+     * @return a list of orders
+     */
     public ArrayList<Order> getCustomerRentedMovies(String cardNumber) {
         Customer customer = getCustomerFromCreditCard(cardNumber);
         ArrayList<Order> rented = new ArrayList<>();
@@ -866,6 +919,11 @@ public class DBConnection {
         return rented;
     }
 
+    /**
+     * 
+     * @param id discID
+     * @return movie with that ID
+     */
     public Movie getMovieFromID(String id) {
         Movie movie = null;
         PreparedStatement stmt = null;

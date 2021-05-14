@@ -1,7 +1,6 @@
 package model.customer;
 
 import java.util.ArrayList;
-import model.DBConnection.DBConnection;
 
 /**
  * @author Thyago De Oliveira Alves
@@ -15,6 +14,14 @@ public class Customer {
     private int currentMovies, totalMovies;
     private Loyalty loyalty;
 
+    /**
+     * Constructor with no credit card numbers
+     * @param id customerID
+     * @param email email address
+     * @param moviesRented number of movies currently rented
+     * @param totalMovies number of movies rented in total
+     * @param loyalty name of loyalty status
+     */
     public Customer(int id, String email, int moviesRented, int totalMovies, String loyalty) {
         this.id = id;
         this.email = email;
@@ -24,6 +31,12 @@ public class Customer {
         this.loyalty = Loyalty.getLoyalty(loyalty);
     }
 
+    /**
+     * Constructor with no ID and email. Loyalty set to NONE
+     * @param cardNumber credit card number to be added to credit cards
+     * @param moviesRented number of movies currently rented
+     * @param totalMovies number of movies rented in total
+     */
     public Customer(String cardNumber, int moviesRented, int totalMovies) {
         this.creditCards = new ArrayList<>();
         this.creditCards.add(cardNumber);
@@ -32,6 +45,10 @@ public class Customer {
         this.loyalty = Loyalty.NONE;
     }
 
+    /**
+     * Constructor nearly empty
+     * @param id customerID
+     */
     public Customer(int id) {
         this.id = id;
     }
@@ -56,16 +73,23 @@ public class Customer {
         this.email = email;
     }
 
+    /**
+     * Sets the customer's loyalty to the most basic programme
+     */
     public void startLoyaltyProgramme() {
         this.loyalty = Loyalty.STANDARD;
     }
 
+    /**
+     * Adds a credit card number to the array list of credit cards
+     * @param creditCard card number
+     */
     public void addCreditCard(String creditCard) {
         this.creditCards.add(creditCard);
     }
 
     /**
-     * add movies currently rented by the account
+     * Adds movies to the account currentMovies and totalMovies
      *
      * @param moviesRented number of movies to add
      */
@@ -75,7 +99,7 @@ public class Customer {
     }
 
     /**
-     * remove movies rented currently by the account
+     * Remove currentMovies and totalMovies rented by the account
      *
      * @param moviesRented number of movies to remove
      */
@@ -97,19 +121,25 @@ public class Customer {
 
     }
 
+    /**
+     * Adds 1 movie to the account and checks the current number against the user's current loyalty next number
+     * @return true if the movie is free or false if it isn't
+     */
     public boolean isNextFree() {
         this.addMoviesRented(1);
-        System.out.println("Next free: " + (this.totalMovies % this.loyalty.getNumberOfMovies() == 0) + "\r\nTotal: " + this.totalMovies);
         return this.totalMovies % this.loyalty.getNumberOfMovies() == 0;
     }
     
+    /**
+     * Checks current number of movies against the user's current loyalty promotion threshold number
+     * @return true if it's a promoting rent, false if it isn't
+     */
     public boolean checkLoyaltyPromotion() {
         if (this.loyalty.getPromotionThreshold() == 0) {
             return false;
         }
         if (this.totalMovies % this.loyalty.getPromotionThreshold() == 0) {
             this.loyalty = Loyalty.promoteLoyalty(this.loyalty);
-            System.out.println("Promoted to: " + this.loyalty.getName());
             return true;
         } 
         return false;

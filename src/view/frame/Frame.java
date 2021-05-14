@@ -1,4 +1,3 @@
-
 package view.frame;
 
 import controller.Controller;
@@ -25,6 +24,11 @@ public class Frame extends JFrame {
     private final Controller controller;
     private Dimension windowSize;
 
+    /**
+     * Constructor
+     *
+     * @param controller
+     */
     public Frame(Controller controller) {
         this.controller = controller;
         setUpWindow();
@@ -32,7 +36,8 @@ public class Frame extends JFrame {
     }
 
     /**
-     * Window settings, such as size, visible and close default operations
+     * Window settings, such as size, visible and close default operations as
+     * well as look and feel customisation
      */
     private void setUpWindow() {
 
@@ -55,7 +60,7 @@ public class Frame extends JFrame {
         UIManager.put("OptionPane.buttonPadding", 50);
         UIManager.put("OptionPane.questionIcon", null);
         UIManager.put("OptionPane.warningIcon", null);
-        UIManager.put("OptionPane.messageForeground", new Color(255,255,255));
+        UIManager.put("OptionPane.messageForeground", new Color(255, 255, 255));
         UIManager.put("OptionPane.minimumSize", new Dimension(500, 200));
         UIManager.put("OptionPane.messageFont", new Font("DIALOG", Font.PLAIN, 30));
         UIManager.put("Panel.background", new ColorUIResource(9, 9, 9));
@@ -63,7 +68,7 @@ public class Frame extends JFrame {
         UIManager.put("Button.font", new Font("DIALOG", Font.PLAIN, 30));
         UIManager.put("Button.cursor", new Cursor(Cursor.HAND_CURSOR));
         UIManager.put("Button.foreground", new Color(255, 255, 255));
-        UIManager.put("Button.background", new Color(9,9,9));
+        UIManager.put("Button.background", new Color(9, 9, 9));
         UIManager.put("Button.border", BorderFactory.createLineBorder(new Color(255, 210, 25), 2));
         UIManager.getLookAndFeelDefaults().put("OptionPane.sameSizeButtons", true);
 
@@ -87,11 +92,13 @@ public class Frame extends JFrame {
 
         this.getContentPane().removeAll();
         this.add(panel);
-        this.validate();
-        this.repaint();
+        update();
 
     }
 
+    /**
+     * Validates and repaints frame.
+     */
     public void update() {
         this.validate();
         this.repaint();
