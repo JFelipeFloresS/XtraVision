@@ -96,7 +96,6 @@ public class Controller implements ActionListener {
             break;
 
             case "Go to return home screem":
-                this.conn.getCustomerRentedMovies("4000400040004000");
                 this.frame.changePanel(new ReturnHomeScreem(this));
 
                 break;
@@ -107,10 +106,6 @@ public class Controller implements ActionListener {
 
             case "log out":
                 resetSession();
-                break;
-
-            case "return DVD":
-                returnDVD(ReturnHomeScreem.getReturnIDInput());
                 break;
 
             case "return DVD using card":
