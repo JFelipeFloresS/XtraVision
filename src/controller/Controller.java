@@ -685,6 +685,7 @@ public class Controller implements ActionListener {
 
     private void returnUsingCard() {
         JLabel cardLabel = new JLabel("Please insert your card number.");
+        cardLabel.setForeground(Color.WHITE);
         JTextField cardField = new JTextField(16);
         cardField.setFont(new Font("DIALOG", Font.PLAIN, 30));
         Box cardBox = Box.createVerticalBox();
