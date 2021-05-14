@@ -7,7 +7,9 @@ package view.frame;
 
 import controller.Controller;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -59,11 +61,15 @@ public class Frame extends JFrame {
         UIManager.put("OptionPane.warningIcon", null);
         UIManager.put("OptionPane.messageForeground", new Color(255,255,255));
         UIManager.put("OptionPane.minimumSize", new Dimension(500, 200));
+        UIManager.put("OptionPane.messageFont", new Font("DIALOG", Font.PLAIN, 30));
         UIManager.put("Panel.background", new ColorUIResource(9, 9, 9));
         UIManager.put("Viewport.background", new Color(255, 210, 25));
+        UIManager.put("Button.font", new Font("DIALOG", Font.PLAIN, 30));
+        UIManager.put("Button.cursor", new Cursor(Cursor.HAND_CURSOR));
         UIManager.put("Button.foreground", new Color(255, 255, 255));
         UIManager.put("Button.background", new Color(9,9,9));
         UIManager.put("Button.border", BorderFactory.createLineBorder(new Color(255, 210, 25), 2));
+        UIManager.getLookAndFeelDefaults().put("OptionPane.sameSizeButtons", true);
 
     }
 

@@ -6,6 +6,7 @@
 package controller;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -102,6 +103,10 @@ public class Controller implements ActionListener {
 
             case "log in":
                 logIn();
+                break;
+                
+            case "log out":
+                resetSession();
                 break;
 
             case "return DVD":
@@ -279,6 +284,7 @@ public class Controller implements ActionListener {
                     JLabel freeLabel = new JLabel("Please enter code");
                     freeLabel.setForeground(Color.WHITE);
                     JTextField freeField = new JTextField(16);
+                    freeField.setFont(new Font("DIALOG", Font.PLAIN, 30));
                     Box freeBox = Box.createVerticalBox();
                     freeBox.add(freeLabel);
                     freeBox.add(freeField);
@@ -309,6 +315,7 @@ public class Controller implements ActionListener {
                         String confirmPassword = " ";
                         while (!Validator.isValidPassword(password) && !password.equals(confirmPassword)) {
                             JPasswordField passField = new JPasswordField(10);
+                            passField.setFont(new Font("DIALOG", Font.PLAIN, 30));
                             JLabel passLabel = new JLabel("Please enter your password");
                             Box passBox = Box.createHorizontalBox();
                             passBox.add(passLabel);
@@ -322,6 +329,7 @@ public class Controller implements ActionListener {
                                 }
 
                                 JPasswordField confirm = new JPasswordField(10);
+                                confirm.setFont(new Font("DIALOG", Font.PLAIN, 30));
                                 JLabel confirmLabel = new JLabel("Please confirm you password.");
                                 Box confirmBox = Box.createHorizontalBox();
                                 confirmBox.add(confirmLabel);
@@ -442,6 +450,7 @@ public class Controller implements ActionListener {
                         String confirmPassword = " ";
                         while (!Validator.isValidPassword(password) && !password.equals(confirmPassword)) {
                             JPasswordField passField = new JPasswordField(10);
+                            passField.setFont(new Font("DIALOG", Font.PLAIN, 30));
                             JLabel passLabel = new JLabel("Please enter your password");
                             Box passBox = Box.createHorizontalBox();
                             passBox.add(passLabel);
@@ -455,6 +464,7 @@ public class Controller implements ActionListener {
                                 }
 
                                 JPasswordField confirm = new JPasswordField(10);
+                                confirm.setFont(new Font("DIALOG", Font.PLAIN, 30));
                                 JLabel confirmLabel = new JLabel("Please confirm you password.");
                                 Box confirmBox = Box.createHorizontalBox();
                                 confirmBox.add(confirmLabel);
@@ -549,6 +559,7 @@ public class Controller implements ActionListener {
                 JLabel cardLabel = new JLabel("Please insert your card number");
                 cardLabel.setForeground(Color.WHITE);
                 JTextField cardField = new JTextField(16);
+                cardField.setFont(new Font("DIALOG", Font.PLAIN, 30));
                 Box cardBox = Box.createVerticalBox();
                 cardBox.add(cardLabel);
                 cardBox.add(cardField);
@@ -579,9 +590,11 @@ public class Controller implements ActionListener {
                 JLabel emailLabel = new JLabel("Email:");
                 emailLabel.setForeground(Color.WHITE);
                 JTextField emailField = new JTextField(20);
+                emailField.setFont(new Font("DIALOG", Font.PLAIN, 30));
                 JLabel passLabel = new JLabel("Password:");
                 passLabel.setForeground(Color.WHITE);
                 JPasswordField passField = new JPasswordField(20);
+                passField.setFont(new Font("DIALOG", Font.PLAIN, 30));
                 Box logBox = Box.createVerticalBox();
                 logBox.add(emailLabel);
                 logBox.add(emailField);
@@ -673,6 +686,7 @@ public class Controller implements ActionListener {
     private void returnUsingCard() {
         JLabel cardLabel = new JLabel("Please insert your card number.");
         JTextField cardField = new JTextField(16);
+        cardField.setFont(new Font("DIALOG", Font.PLAIN, 30));
         Box cardBox = Box.createVerticalBox();
         cardBox.add(cardLabel);
         cardBox.add(cardField);
