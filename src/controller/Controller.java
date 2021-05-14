@@ -1,4 +1,3 @@
-
 package controller;
 
 import java.awt.Color;
@@ -272,7 +271,7 @@ public class Controller implements ActionListener {
                         return;
                     }
 
-                    JLabel freeLabel = new JLabel("Please enter code");
+                    JLabel freeLabel = new JLabel("Please enter FREEMOVIE code to get your first order free!");
                     freeLabel.setForeground(Color.WHITE);
                     JTextField freeField = new JTextField(16);
                     freeField.setFont(new Font("DIALOG", Font.PLAIN, 30));
@@ -304,7 +303,7 @@ public class Controller implements ActionListener {
                         customer.setEmail(email);
 
                         String confirmPassword = " ";
-                        while (!Validator.isValidPassword(password) && !password.equals(confirmPassword)) {
+                        while (!Validator.isValidPassword(password) || !password.equals(confirmPassword)) {
                             JPasswordField passField = new JPasswordField(10);
                             passField.setFont(new Font("DIALOG", Font.PLAIN, 30));
                             JLabel passLabel = new JLabel("Please enter your password");
@@ -328,14 +327,16 @@ public class Controller implements ActionListener {
                                 int cAnswer = JOptionPane.showConfirmDialog(this.frame, confirmBox, "Confirm password", JOptionPane.PLAIN_MESSAGE);
                                 if (cAnswer == JOptionPane.OK_OPTION) {
                                     confirmPassword = confirm.getText();
-                                    if (!password.equals(confirmPassword)) {
-                                        JOptionPane.showConfirmDialog(this.frame, "Your passwords don't match, please try again.");
-                                    }
                                 } else {
                                     return;
                                 }
                             } else {
                                 return;
+                            }
+                            if (!password.equals(confirmPassword)) {
+                                JOptionPane.showConfirmDialog(this.frame, "Your passwords don't match, please try again.");
+                                password = "";
+                                confirmPassword = " ";
                             }
                         }
                         this.conn.createCustomer(cardNumber, email, password, currentMovies, totalMovies);
@@ -345,20 +346,13 @@ public class Controller implements ActionListener {
                     }
 
                 } else {
-                    email = customer.getEmail();
-                    currentMovies = customer.getCurrentMovies();
-                    totalMovies = customer.getTotalMovies();
-                }
-
-                customer = this.conn.getCustomerFromCreditCard(cardNumber);
-
-                // 
-                if (customer.getCurrentMovies() + this.selectedMovies.size() >= 4) {
-                    JOptionPane.showMessageDialog(this.frame, "Customers can only rent 4 movies at a time. "
-                            + "Please remove " + (customer.getCurrentMovies() + this.selectedMovies.size() - 4) + " from your cart before proceeding to payment.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+                    this.currentCustomer = this.conn.getCustomerFromCreditCard(cardNumber);
+                    rentMoviesLoggedIn();
                     return;
                 }
 
+                customer = this.conn.getCustomerFromCreditCard(cardNumber);
+                
                 double totalPrice = 0.0;
                 for (Movie m : this.selectedMovies) {
                     if (!isFirstFree) {
@@ -494,6 +488,9 @@ public class Controller implements ActionListener {
                 for (Movie m : this.selectedMovies) {
                     if (!isNextFree) {
                         totalPrice += MOVIE_PRICE;
+                    } else {
+                        // THISSSSSSSSSSSSSSSSSSSSSSSSS *******************"!""""""""!!!!!!!!!!!! loyalty thing
+                        JOptionPane.showMessageDialog(this.frame, " is on us. You have rented ", "Loyalty at work", JOptionPane.PLAIN_MESSAGE);
                     }
                 }
 
@@ -646,7 +643,7 @@ public class Controller implements ActionListener {
             return;
         } else {
             if (this.conn.returnMovie(o, this.machineID, 0.0)) {
-                JOptionPane.showMessageDialog(this.frame, "Please insert yout DVD. No further charges are required.", "Thank you!", JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(this.frame, "Please insert your DVD. No further charges are required.", "Thank you!", JOptionPane.PLAIN_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this.frame, "Please try again. There has been a problem with your return.", "Thank you!", JOptionPane.PLAIN_MESSAGE);
             }
@@ -680,7 +677,7 @@ public class Controller implements ActionListener {
 
     private void returnUsingCard() {
         String cardNum = ReturnHomeScreem.getCardInput();
-        
+
         if (cardNum.equals("")) {
             JOptionPane.showMessageDialog(this.frame, "Please enter a card number and try again.", "Oops...", JOptionPane.PLAIN_MESSAGE);
             return;
