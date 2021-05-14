@@ -652,6 +652,10 @@ public class Controller implements ActionListener {
         cardBox.add(cardLabel);
         cardBox.add(cardField);
         int answer = JOptionPane.showConfirmDialog(this.frame, cardBox, "Return using credit card", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (cardField.getText().equals("")) {
+                JOptionPane.showMessageDialog(this.frame, "Please enter a card number and try again.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
         if (answer == JOptionPane.OK_OPTION) {
             String cardNum = cardField.getText();
             if (!Validator.isValidCreditCard(cardNum)) {
