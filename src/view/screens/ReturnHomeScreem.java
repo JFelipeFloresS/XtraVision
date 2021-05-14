@@ -30,7 +30,7 @@ import javax.swing.SwingConstants;
 public class ReturnHomeScreem extends JPanel {
 
     private final Controller controller;
-    private static JTextField idInput;
+    private static JTextField cardInput;
 
     public ReturnHomeScreem(Controller controller) {
         this.controller = controller;
@@ -68,13 +68,13 @@ public class ReturnHomeScreem extends JPanel {
         
         
         
-        ReturnHomeScreem.idInput = new JTextField(15);
-        idInput.setPreferredSize( new Dimension((int) (windowSize.width / 5), windowSize.height / 13));
-        center.add(ReturnHomeScreem.idInput);
-        center2.add(ReturnHomeScreem.idInput);
-        idInput.setFont(new Font(Font.SERIF, Font.BOLD, 30));
-        idInput.setForeground(Color.red);
-        idInput.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 3));
+        ReturnHomeScreem.cardInput = new JTextField(15);
+        cardInput.setPreferredSize( new Dimension((int) (windowSize.width / 5), windowSize.height / 13));
+        center.add(ReturnHomeScreem.cardInput);
+        center2.add(ReturnHomeScreem.cardInput);
+        cardInput.setFont(new Font(Font.SERIF, Font.BOLD, 30));
+        cardInput.setForeground(Color.red);
+        cardInput.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 3));
         
         JPanel east = new JPanel();
         this.add(east, BorderLayout.EAST);
@@ -104,23 +104,23 @@ public class ReturnHomeScreem extends JPanel {
         homeS.setForeground(new Color(9, 9, 9));
         homeS.setFont(new Font(Font.SERIF, Font.BOLD, 25));
 
-        JPanel south = new JPanel();
-        this.add(south, BorderLayout.SOUTH);
+       // JPanel south = new JPanel();
+       // this.add(south, BorderLayout.SOUTH);
 
-        JButton dvdR = new JButton("return DVD using card");
-        south.add(dvdR, BorderLayout.CENTER);
-        dvdR.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        dvdR.setActionCommand("return DVD using card");
-        dvdR.addActionListener(this.controller);
-        dvdR.setPreferredSize(new Dimension(windowSize.width / 7, windowSize.height / 8));
-        dvdR.setBackground(new Color(186, 199, 202));
-        dvdR.setForeground(new Color(9, 9, 9));
-        dvdR.setFont(new Font(Font.SERIF, Font.BOLD, 20));;
+       // JButton dvdR = new JButton("return DVD using card");
+       // south.add(dvdR, BorderLayout.CENTER);
+        //dvdR.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        //dvdR.setActionCommand("return DVD using card");
+        //dvdR.addActionListener(this.controller);
+      //  dvdR.setPreferredSize(new Dimension(windowSize.width / 7, windowSize.height / 8));
+       //dvdR.setBackground(new Color(186, 199, 202));
+      //dvdR.setForeground(new Color(9, 9, 9));
+      //  dvdR.setFont(new Font(Font.SERIF, Font.BOLD, 20));;
 
     }
 
     public static String getReturnIDInput() {
-        return ReturnHomeScreem.idInput.getText();
+        return ReturnHomeScreem.cardInput.getText();
     }
 
 }
