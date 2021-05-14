@@ -54,7 +54,7 @@ public class ReturnHomeScreem extends JPanel {
          
          
         JPanel center = new JPanel();
-        this.add(center, BorderLayout.CENTER);
+        this.add(center,BorderLayout.CENTER);
         
         JPanel center2 = new JPanel();
         center.add(center2, BorderLayout.CENTER);
