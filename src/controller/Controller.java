@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,10 +22,12 @@ import model.movie.Movie;
 import model.order.Order;
 import view.frame.Frame;
 import view.screens.CheckOut;
+import view.screens.FailureScreen;
 import view.screens.HomeScreen;
 import view.screens.MovieScreen;
 import view.screens.RentHomescreens;
 import view.screens.ReturnHomeScreem;
+import view.screens.SuccessScreen;
 
 /**
  * @author Thyago De Oliveira Alves
@@ -432,9 +437,7 @@ public class Controller implements ActionListener {
                 // receipt handling
                 int receipt = JOptionPane.showConfirmDialog(this.frame, "Your order was successful!\r\nPlease don't forget to take your movies.", "Thank you!", JOptionPane.YES_NO_OPTION);
 
-                if (receipt == JOptionPane.YES_OPTION) {
-                    // email code would go here
-                }
+                createSuccessScreen(true);
 
                 resetSession();
                 return;
@@ -593,14 +596,12 @@ public class Controller implements ActionListener {
             if (success) {
                 int receipt = JOptionPane.showConfirmDialog(this.frame, "Your order was successful! Please don't forget to take your movies.", "Thank you!", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-                if (receipt == JOptionPane.YES_OPTION) {
-                    // ****** BOTAR CODIGO DE MANDAR EMAIL AQUI **********
-                }
+                createSuccessScreen(true);
 
                 resetSession();
                 return;
             } else {
-                JOptionPane.showMessageDialog(this.frame, "There seems to be an issue with your order. Please try again.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+                createSuccessScreen(false);
             }
         }
     }
@@ -670,7 +671,7 @@ public class Controller implements ActionListener {
 
                 switch (check) {
                     case 0:
-                        JOptionPane.showMessageDialog(this.frame, "Connection error, please inform a staff member.", "Oops...", JOptionPane.PLAIN_MESSAGE);
+                        createSuccessScreen(false);
                         resetSession();
                         break;
                     case 1:
@@ -719,7 +720,7 @@ public class Controller implements ActionListener {
             if (this.conn.returnMovie(o, this.machineID, 0.0)) {
                 JOptionPane.showMessageDialog(this.frame, "Please insert your DVD. No further charges are required.", "Thank you!", JOptionPane.PLAIN_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this.frame, "Please try again. There has been a problem with your return.", "Thank you!", JOptionPane.PLAIN_MESSAGE);
+                createSuccessScreen(false);
             }
         }
 
@@ -789,6 +790,14 @@ public class Controller implements ActionListener {
             return;
         }
         returnDVD(movies[movieToReturn].getId());
+    }
+    
+    public void createSuccessScreen(boolean success) {
+        if (success) {
+            new SuccessScreen();
+        } else {
+            new FailureScreen();
+        }
     }
 
 }

@@ -2,6 +2,8 @@
 package xtravision;
 
 import controller.Controller;
+import view.screens.FailureScreen;
+import view.screens.SuccessScreen;
 
 /**
  * @author Thyago De Oliveira Alves

@@ -9,17 +9,17 @@ package view.screens;
  *
  * @author thyag
  */
-public class SuccessScreen extends SuccessFailureScreen {
-    
-    public SuccessScreen() {
+public class FailureScreen extends SuccessFailureScreen {
+
+    public FailureScreen() {
         super();
     }
-
+    
     @Override
     protected void setImageMessageTitle() {
-        this.imgString = "/Images/success.jpeg";
-        this.message = "<html>Your rental was successful!<br>Thank you for using Xtra-Vision!</html>";
-        this.title = "Success!!";
+        this.imgString = "/Images/failure.jpeg";
+        this.message = "There seems to be a problem with your order...";
+        this.title = "Oops...";
     }
     
 }
