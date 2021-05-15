@@ -785,8 +785,10 @@ public class Controller implements ActionListener {
         }
 
         int movieToReturn = JOptionPane.showOptionDialog(this.frame, "Which movie would you like to return?", "Return movie", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, movies, movies[0]);
+        if (movieToReturn== -1) {
+            return;
+        }
         returnDVD(movies[movieToReturn].getId());
-
     }
 
 }

@@ -9,6 +9,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -84,7 +86,7 @@ public class ReturnHomeScreem extends JPanel {
         cardInput.setFont(new Font(Font.SERIF, Font.BOLD, 30));
         cardInput.setForeground(Color.red);
         cardInput.setBorder(BorderFactory.createLineBorder(new Color(255, 210, 25), 3));
-
+        
        
         
         JButton returnDvd = new JButton("Return DVD");
@@ -96,7 +98,17 @@ public class ReturnHomeScreem extends JPanel {
         returnDvd.setBackground(new Color(186, 199, 202));
         returnDvd.setForeground(new Color(9, 9, 9));
         returnDvd.setFont(new Font(Font.SERIF, Font.BOLD, 30));
-        
+        cardInput.addKeyListener(new KeyAdapter() {
+            
+            public void keyPressed(KeyEvent e){
+                if (e.getKeyCode()== KeyEvent.VK_ENTER) {
+                   returnDvd.doClick();
+                }
+ 
+               
+                
+            }
+        });
         
         /**
          * Screen where the costumer will return the DVD, also the costumer will be able to see if there are any DVD past due 
