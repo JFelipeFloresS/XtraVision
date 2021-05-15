@@ -14,7 +14,7 @@ public class XtraVision {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-     new Controller();  
+        new Controller();  
     }
     
 }
