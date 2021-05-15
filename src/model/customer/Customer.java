@@ -127,6 +127,9 @@ public class Customer {
      */
     public boolean isNextFree() {
         this.addMoviesRented(1);
+        if (this.loyalty.getNumberOfMovies() == Loyalty.NONE.getNumberOfMovies()) {
+            return false;
+        }
         return this.totalMovies % this.loyalty.getNumberOfMovies() == 0;
     }
     
