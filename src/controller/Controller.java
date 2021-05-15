@@ -717,7 +717,7 @@ public class Controller implements ActionListener {
             payForLateReturn(o, priceToBePaid);
             return;
         } else {
-            if (this.conn.returnMovie(o, this.machineID, 0.0)) {
+            if (this.conn.returnMovie(o, this.machineID, 0.0, this.currentCustomer)) {
                 JOptionPane.showMessageDialog(this.frame, "Please insert your DVD. No further charges are required.", "Thank you!", JOptionPane.PLAIN_MESSAGE);
             } else {
                 createSuccessScreen(false);
@@ -752,7 +752,7 @@ public class Controller implements ActionListener {
             this.conn.payForMaxFee(o);
             JOptionPane.showMessageDialog(this.frame, "You can keep your disc, no need to return it.", "Keep your movie", JOptionPane.PLAIN_MESSAGE);
         } else {
-            this.conn.returnMovie(o, this.machineID, price);
+            this.conn.returnMovie(o, this.machineID, price, this.currentCustomer);
             JOptionPane.showMessageDialog(this.frame, "Please return your disc.", "Return movie", JOptionPane.PLAIN_MESSAGE);
         }
 

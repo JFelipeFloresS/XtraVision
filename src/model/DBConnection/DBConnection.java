@@ -512,29 +512,19 @@ public class DBConnection {
      * @param furtherPayment how much more to be paid
      * @return success of return
      */
-    public boolean returnMovie(Order order, int machineID, double furtherPayment) {
+    public boolean returnMovie(Order order, int machineID, double furtherPayment, Customer customer) {
         Statement stmt = null;
         ResultSet rs = null;
-        int custID = 0;
-        Customer customer = null;
 
         try {
-            String query = "SELECT customerID, paidFor FROM rent WHERE rentID=" + order.getRentID() + ";";
+            String query = "SELECT paidFor FROM rent WHERE rentID=" + order.getRentID() + ";";
             stmt = this.CONNECTION.createStatement();
             rs = stmt.executeQuery(query);
             while (rs.next()) {
-                custID = rs.getInt("customerID");
                 furtherPayment += rs.getDouble("paidFor");
             }
             rs.close();
             stmt.close();
-
-            query = "SELECT * FROM customers WHERE customerID=" + order.getCustomerID() + ";";
-            stmt = this.CONNECTION.createStatement();
-            rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                customer = new Customer(rs.getInt("customerID"));
-            }
 
         } catch (SQLException e) {
             System.out.println("Error returnMovie(): \r\n" + e.getMessage());
