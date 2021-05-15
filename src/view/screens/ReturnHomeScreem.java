@@ -98,7 +98,10 @@ public class ReturnHomeScreem extends JPanel {
         returnDvd.setFont(new Font(Font.SERIF, Font.BOLD, 30));
         
         
-        
+        /**
+         * Screen where the costumer will return the DVD, also the costumer will be able to see if there are any DVD past due 
+         * and be able to pay it.
+         */
         
         
         
@@ -108,6 +111,14 @@ public class ReturnHomeScreem extends JPanel {
 
     public static String getCardInput() {
         return ReturnHomeScreem.cardInput.getText();
+     /**
+      *  add card currently use by the account
+      * @param getCardInput get the costumer credit card from the database.
+      * 
+      */
+
+
     }
+
 
 }

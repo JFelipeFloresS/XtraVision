@@ -57,7 +57,7 @@ public class MovieScreen extends JPanel {
         image.setIcon(new ImageIcon(img));
         west.add(image);
         image.setHorizontalAlignment(SwingConstants.CENTER);
-        
+      
         JPanel center = new JPanel();
         this.add(center, BorderLayout.CENTER);
         
@@ -184,7 +184,14 @@ public class MovieScreen extends JPanel {
         
         returnButton.setActionCommand("Go to rent home screem");
         returnButton.addActionListener(this.controller);
+        /***
+        * Created the Movie Screen ,where show all the informations about the Movie selected. 
+        * also the Buttons to go back to the main page , and rent the movie .
+        */
         
+              
+                
+                
     }
     
 }

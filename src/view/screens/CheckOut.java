@@ -179,7 +179,12 @@ public class CheckOut extends JPanel {
         paymentButton.setForeground(new Color(9, 9, 9));
         paymentButton.setFont(new Font(Font.SERIF, Font.BOLD, 30));
         paymentButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    
+    /**
+     * Checkout screen ***Where the Payment will be made *** Also where the costumer will inform  credit card and password .
+     * 
+     */
+        
+        
     }
 
 }
